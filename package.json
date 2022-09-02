@@ -1,0 +1,31 @@
+{
+  "name": "projectgraph_pa",
+  "version": "1.0.0",
+  "description": "Development of a back-end system which allows to create and assess graph optimization model.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChriAsc/ProjectGraph_pa.git"
+  },
+  "keywords": [
+    "dijkstra",
+    "node",
+    "graph",
+    "shortest-path"
+  ],
+  "author": "Ascani Christian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChriAsc/ProjectGraph_pa/issues"
+  },
+  "homepage": "https://github.com/ChriAsc/ProjectGraph_pa#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3",
+    "node-dijkstra": "^2.5.0",
+    "sequelize": "^6.21.4"
+  }
+}
