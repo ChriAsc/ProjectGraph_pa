@@ -1,7 +1,7 @@
 {
   "name": "projectgraph_pa",
   "version": "1.0.0",
-  "description": "Development of a back-end system which allows to create and assess graph optimization model.",
+  "description": "Development of a back-end system which allows to create and assess graph optimization model. In particular, authenticated users can manage weights' update",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
