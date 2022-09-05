@@ -1,12 +1,12 @@
 CREATE DATABASE IF NOT EXISTS optimization;
-
+/*
 DROP TABLE IF EXISTS users,graphmodels,executions;
-
+*/
 CREATE TABLE IF NOT EXISTS users (
 username VARCHAR(255) NOT NULL PRIMARY KEY,
 main_role VARCHAR(255) NOT NULL,
 mail  VARCHAR(255) NOT NULL UNIQUE,
-credit DECIMAL(5,2) NOT NULL
+budget DECIMAL(5,2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS graphmodels (
@@ -31,7 +31,7 @@ CONSTRAINT executions_ibfk_1 FOREIGN KEY (model) REFERENCES graphmodels(model_id
 
 USE optimization;
 
-INSERT INTO users(username,main_role,mail,credit) VALUES 
+INSERT INTO users(username,main_role,mail,budget) VALUES 
 ('mario_rossi','user','mario@rossi.com',10.00),
 ('giuseppe_verdi','user','giuseppe@verdi.com',10.00),
 ('admin','admin','admin@admin.com',0);
