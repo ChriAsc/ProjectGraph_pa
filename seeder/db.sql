@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS users,graphmodels,executions;
 */
 CREATE TABLE IF NOT EXISTS users (
 username VARCHAR(255) NOT NULL PRIMARY KEY,
-main_role VARCHAR(255) NOT NULL,
+main_role INT NOT NULL,
 mail  VARCHAR(255) NOT NULL UNIQUE,
 budget DECIMAL(5,2) NOT NULL
 );
@@ -32,9 +32,9 @@ CONSTRAINT executions_ibfk_1 FOREIGN KEY (model) REFERENCES graphmodels(model_id
 USE optimization;
 
 INSERT INTO users(username,main_role,mail,budget) VALUES 
-('mario_rossi','user','mario@rossi.com',10.00),
-('giuseppe_verdi','user','giuseppe@verdi.com',10.00),
-('admin','admin','admin@admin.com',0);
+('mario_rossi',1,'mario@rossi.com',10.00),
+('giuseppe_verdi',1,'giuseppe@verdi.com',10.00),
+('admin',2,'admin@admin.com',0);
   
 INSERT INTO graphmodels(creator,graph_struct,model_version) VALUES
 ('mario_rossi','{"A": {"B": 1},"B": {"A": 1,"C": 2,"D": 4},"C": {"B": 2,"D": 1},"D": {"B": 4,"C": 1}}',1),
