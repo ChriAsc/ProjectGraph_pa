@@ -8,7 +8,7 @@ export const checkHeader = (req, res, next) => {
     if (authHeader) {
         next();
     } else {
-        let err = new Error('Header mancante!');
+        var err = new Error('Header mancante!');
         next(err);
     }
 }
@@ -21,7 +21,7 @@ export const checkToken = (req, res, next) => {
             req.token = bearerToken;
             next();
         } else {
-            let err = new Error ('Token non corretto!');
+            var err = new Error ('Token non corretto!');
             next(err);
         }
     } catch (err) {
@@ -37,7 +37,7 @@ export const verifyAndAuthenticate = (req, res, next) => {
             next();
         }
         else {
-            let err = new Error('Autenticazione fallita!')
+            var err = new Error('Autenticazione fallita!')
             next(err);
         }
     } catch (err) {

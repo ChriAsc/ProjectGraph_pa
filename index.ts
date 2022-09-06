@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import { checkHeader, checkToken, verifyAndAuthenticate } from './Middleware/auth';
-import { logErrors, errorHandler } from './Middleware/error';
+import { errorLogger, errorHandler } from './Middleware/error';
 
 const express = require('express');
 
@@ -13,13 +13,13 @@ const HOST = process.env.HOST || '0.0.0.0';
 let app = express();
 
 /* middleware utile per il parsing JSON */
-app.use(bodyParser());
+app.use(bodyParser.json());
 
 /* middleware utile per verificare il token JWT */
 app.use([checkHeader, checkToken, verifyAndAuthenticate]);
 
 /* middleware di gestione dell'errore */
-app.use(logErrors);
+app.use(errorLogger);
 app.use(errorHandler);
 
 
