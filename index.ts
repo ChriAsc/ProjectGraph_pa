@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-import { checkHeader, checkToken, verifyAndAuthenticate } from './Middleware/auth';
+import { checkHeader, checkToken, verifyAndAuthenticate, checkUser } from './Middleware/auth';
 import { errorLogger, errorHandler } from './Middleware/error';
 
 const express = require('express');

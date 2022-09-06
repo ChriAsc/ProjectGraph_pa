@@ -30,5 +30,8 @@
     "mysql2": "^2.3.3",
     "node-dijkstra": "^2.5.0",
     "sequelize": "^6.21.4"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.9"
   }
 }

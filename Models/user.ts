@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { Singleton } from '../Singleton/singleton';
-import { interfaceProxy } from '../Proxy/interfaceProxy'
+import { interfaceUser } from '../Proxy/interfaceUser'
 
-export class User implements interfaceProxy {
+export class User implements interfaceUser {
     private user: any;
 
     constructor() {
@@ -33,23 +33,24 @@ export class User implements interfaceProxy {
             timestamps: false
         });
     }
-
-    public addNew = async () => {
-        
-    }
     
-    public find = async (name: string) => {
+    public findByName = async (name: string) => {
         let usr = await this.user.findAll({ where: { username: name } });
         return usr;
     }
 
+    public findByEmail = async (email: string) => {
+        let usr = await this.user.findAll({ where: { mail: email } });
+        return usr;
+    }
+
     public getBudget = async (name: string) => {
-        try {
-            let budget = await this.user.findAll({ attributes: ['budget'], where: { username: name}});
-            return budget;
-        } catch (err) {
-            console.log(err);
-        }
+        let budget: number = await this.user.findAll({ attributes: ['budget'], where: { username: name}});
+        return budget;
+    }
+
+    public updateBudget = async (name: string, budget: number) => {
+        let usr = await this.user.update({ budget: budget }, { where: { username: name} });
     }
     
 }

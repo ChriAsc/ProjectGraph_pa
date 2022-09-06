@@ -31,7 +31,7 @@ export const checkToken = (req, res, next) => {
 
 export const verifyAndAuthenticate = (req, res, next) => {
     try {
-        var decodedPayload = jwt.verify(req.token, process.env.SECRET_KEY);
+        var decodedPayload = jwt.verify(req.token, process.env.SECRET_KEY as string);
         if (decodedPayload !== null) {
             req.user = decodedPayload;
             next();
@@ -41,6 +41,19 @@ export const verifyAndAuthenticate = (req, res, next) => {
             next(err);
         }
     } catch (err) {
+        next(err);
+    }
+}
+
+export const checkUser = (req, res, next) => {
+    try {
+        if(req.user.main_role !== 1) {
+            var err = new Error('Ammesso solo ruolo user!');
+            next(err);
+        } else {
+            next();
+    }
+    } catch(err) {
         next(err);
     }
 }

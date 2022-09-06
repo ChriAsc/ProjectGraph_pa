@@ -1,27 +1,36 @@
 import { User } from '../Models/user';
-import { interfaceProxy } from './interfaceProxy';
+import { interfaceUser } from './interfaceUser';
 
-export class UserProxy implements interfaceProxy {
+export class UserProxy implements interfaceUser {
 
-    private user: User;
+    private user: User = new User();
 
-    public addNew = async () => {
-        throw new Error('Method not implemented.');
-    }
-    
-    public find = async (name: string) => {
+    public findByName = async (username: string)  => {
         try {
-            let user = await this.user.find(name);
+            let user = await this.user.findByName(username);
             return user;
         } catch (err) {
             console.log("Username non trovato!")
         }
     }
 
-    public getBudget = async (name: string) => {
+    public findByEmail = async (email: string) => {
+        let usr = await this.user.findByEmail(email);
+        return usr;
+    }
+
+    public getBudget = async (username: string) => {
         try {
-            let budget = await this.user.getBudget(name);
+            let budget = await this.user.getBudget(username);
             return budget;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    public updateBudget = async (name: string, budget: number) => {
+        try {
+            let usr = await this.user.updateBudget(name, budget);
         } catch (err) {
             console.log(err);
         }
