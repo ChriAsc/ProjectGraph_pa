@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS graphmodels (
 model_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 creator VARCHAR(50) NOT NULL,
 graph_struct JSON NOT NULL,
-model_version INT NOT TULL,
+model_version INT NOT NULL,
 CONSTRAINT graphmodels_ibfk_1 FOREIGN KEY (creator) REFERENCES users(username)
 );
 
