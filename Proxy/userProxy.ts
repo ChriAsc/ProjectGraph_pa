@@ -7,8 +7,8 @@ export class UserProxy implements interfaceUser {
 
     public findByName = async (username: string)  => {
         try {
-            let user = await this.user.findByName(username);
-            return user;
+            let usr = await this.user.findByName(username);
+            return usr;
         } catch (err) {
             console.log("Username non trovato!")
         }

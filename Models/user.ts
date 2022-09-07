@@ -3,6 +3,7 @@ import { Singleton } from '../Singleton/singleton';
 import { interfaceUser } from '../Proxy/interfaceUser'
 
 export class User implements interfaceUser {
+    
     private user: any;
 
     constructor() {
@@ -34,6 +35,7 @@ export class User implements interfaceUser {
         });
     }
     
+    
     public findByName = async (name: string) => {
         let usr = await this.user.findAll({ where: { username: name } });
         return usr;
@@ -50,7 +52,7 @@ export class User implements interfaceUser {
     }
 
     public updateBudget = async (name: string, budget: number) => {
-        let usr = await this.user.update({ budget: budget }, { where: { username: name} });
+        await this.user.update({ budget: budget }, { where: { username: name} });
     }
     
 }

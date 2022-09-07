@@ -32,6 +32,7 @@
     "sequelize": "^6.21.4"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^8.5.9"
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/node-dijkstra": "^2.5.3"
   }
 }
