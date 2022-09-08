@@ -1,3 +1,5 @@
+import { User } from "../Models/user";
+
 export const checkAdmin = (req, res, next) => {
     try {
         if (req.user.main_role === 2) {
@@ -11,9 +13,15 @@ export const checkAdmin = (req, res, next) => {
     }
 }
 
-export const checkMail = (req, res, next) => {
+export const checkEmail = async (req, res, next) => {
     try {
-        // TODO
+        let Us: any = new User();
+        let usr: any = await Us.findByEmail(req.user.mail);
+        if (usr.mail !== req.user.mail) {
+            var err = new Error('Email non corretta!');
+            next(err);
+        } else
+        next();
     } catch (err) {
         next(err);
     }

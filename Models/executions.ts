@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { Singleton } from '../Singleton/singleton';
-import { Graph } from './graph';
+import { GraphModel } from './graph';
 
 export class Execution {
     
@@ -11,7 +11,7 @@ export class Execution {
 
         const sequelize = Singleton.getInstance().getConnection();
 
-        this.graph = new Graph();
+        this.graph = new GraphModel();
 
         this.execution = sequelize.define('Execution', {
             exec_id: {

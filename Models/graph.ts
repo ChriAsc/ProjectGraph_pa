@@ -1,9 +1,9 @@
 import { DataTypes } from 'sequelize';
 import { Singleton } from '../Singleton/singleton';
-import { interfaceGraph  } from '../Proxy/interfaceGraph';
+import { interfaceGraph  } from './interfaceGraph';
 import { User } from './user';
 
-export class Graph implements interfaceGraph {
+export class GraphModel implements interfaceGraph {
 
     private graph: any;
     private user: any;
@@ -44,8 +44,8 @@ export class Graph implements interfaceGraph {
     }
 
     
-    public addGraphModel = async (username: string, struct: any, version: number) => {
-        let model = await this.graph.create({ creator: username, graph_struct: struct, model_version: version });
+    public addGraphModel = async (username: string, struct: any) => {
+        let model = await this.graph.create({ creator: username, graph_struct: struct });
         return model;
     }
     
@@ -65,33 +65,74 @@ export class Graph implements interfaceGraph {
     }
 
     public changeWeight = async (idModel: number, firstNode: string, secondNode: string, new_weight: number) => {
-        let graph: string = await this.graph.findAll({ attributes: ['graph_struct'], where: { model_id: idModel }});
-        let objGraph: object = JSON.parse(graph);
+        if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
+            throw new SyntaxError('I nodi inseriti non sono di tipo stringa!')
+        } else if (!(this.assertType(new_weight, Number))) {
+            throw new SyntaxError('Il peso inserito non è un numero!')
+        } else {        
+            let graph: string = await this.graph.findAll({ attributes: ['graph_struct'], where: { model_id: idModel }});
+            let objGraph: object = JSON.parse(graph);
 
-        if(objGraph[firstNode][secondNode] === undefined) throw new SyntaxError("L\'arco " + firstNode + secondNode + " non esiste!");
-        else {
-            objGraph[firstNode][secondNode] = new_weight;
+            if(objGraph[firstNode][secondNode] === undefined) throw new SyntaxError("L\'arco " + firstNode + secondNode + " non esiste!");
+            else {
+                objGraph[firstNode][secondNode] = new_weight;
 
-            if(objGraph[firstNode][secondNode] !== undefined) {
-                objGraph[secondNode][firstNode] = new_weight;
+                if(objGraph[firstNode][secondNode] !== undefined) {
+                    objGraph[secondNode][firstNode] = new_weight;
+                }
+
+                let jsonGraph: string = JSON.stringify(objGraph);
+
+                await this.graph.update({ graph_struct: jsonGraph, where: { model_id: idModel }});
             }
-
-            let jsonGraph: string = JSON.stringify(objGraph);
-
-            await this.graph.update({ graph_struct: jsonGraph, where: { model_id: idModel }});
         }
     }
 
     public getWeight = async (idModel: number, firstNode: string, secondNode: string) => {
+        if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
+            console.log('I nodi inseriti non sono di tipo stringa!')
+        } else {
         let graph: string = await this.graph.findAll({ attributes: ['graph_struct'], where: { model_id: idModel }});
         let objGraph: object = JSON.parse(graph);
         let edgeWeight: number = objGraph[firstNode][secondNode];
         return edgeWeight;
+        }
+    }
+
+    public getCost = async (struct: any) => {
+        let total_cost: number = 0.0;
+        let node_cost: number = 0.25;
+        let edge_cost = 0.01;
+
+        let objGraph: object = JSON.parse(struct);
+        var node_number: number = Object.keys(objGraph).length;
+        total_cost += (node_number * node_cost);
+
+        for (let i=0; i < node_number; i++ ) {
+            let actual_node: object = objGraph[i];
+            let edge_number: number = Object.keys(actual_node).length;
+            total_cost += (edge_number * edge_cost);
+        }
+        return total_cost;
+    }
+
+    public checkCost = async (username: string, struct: any) => {
+        let budget: number = await this.user.getBudget(username);
+        let total_cost: number = await this.graph.getCost(struct);
+        if(total_cost < budget) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public associate = async () => {
         await this.user.hasMany(this.graph, { foreignKey: 'creator' });
         await this.graph.belongsTo(this.user, { foreignKey: 'creator' })
+    }
+
+    public assertType (obj: any, type: any): boolean {
+        return obj.constructor.name === type.name;
     }
 
 }

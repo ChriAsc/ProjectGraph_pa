@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+const jwt = require('jsonwebtoken');
 
+const dotenv = require('dotenv');
 dotenv.config();
 
 export const checkHeader = (req, res, next) => {

@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { Singleton } from '../Singleton/singleton';
-import { interfaceUser } from '../Proxy/interfaceUser'
+import { interfaceUser } from './interfaceUser'
 
 export class User implements interfaceUser {
     
@@ -55,4 +55,8 @@ export class User implements interfaceUser {
         await this.user.update({ budget: budget }, { where: { username: name} });
     }
     
+    public assertType (obj: any, type: any): boolean {
+        return obj.constructor.name === type.name;
+    }
+
 }
