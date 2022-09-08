@@ -6,13 +6,10 @@ import { User } from './user';
 export class GraphModel implements interfaceGraph {
 
     private graph: any;
-    private user: any;
 
     constructor() {
 
         const sequelize = Singleton.getInstance().getConnection();
-
-        this.user = new User();
 
         this.graph = sequelize.define('Graph', {
             model_id: {
@@ -41,8 +38,9 @@ export class GraphModel implements interfaceGraph {
     }
 
     
-    public addGraphModel = async (username: string, struct: any) => {
-        let model = await this.graph.create({ creator: username, graph_struct: struct });
+    public addGraphModel = async (username: string, objGraph: any) => {
+        const jsonGraph = JSON.stringify(objGraph);
+        let model = await this.graph.create({ creator: username, graph_struct: jsonGraph });
         return model;
     }
     
@@ -96,31 +94,27 @@ export class GraphModel implements interfaceGraph {
         }
     }
 
-    public getCost = async (struct: any) => {
+    public getCost = async (objGraph: any) => {
         let total_cost: number = 0.0;
         let node_cost: number = 0.25;
         let edge_cost = 0.01;
 
-        let objGraph: object = JSON.parse(struct);
         var node_number: number = Object.keys(objGraph).length;
+
         total_cost += (node_number * node_cost);
 
-        for (let i=0; i < node_number; i++ ) {
-            let actual_node: object = objGraph[i];
+        for (const x in objGraph) {
+            let actual_node = objGraph[x];
             let edge_number: number = Object.keys(actual_node).length;
+            
             total_cost += (edge_number * edge_cost);
         }
         return total_cost;
     }
-
-    public checkCost = async (username: string, struct: any) => {
-        let budget: number = await this.user.getBudget(username);
-        let total_cost: number = await this.graph.getCost(struct);
-        if(total_cost < budget) {
-            return true;
-        } else {
-            return false;
-        }
+    
+    public getCreator = async (idModel: number) => {
+        let creator: string = await this.graph.findAll({ attributes: ['creator'], where: { model_id: idModel }});
+        return creator;
     }
 
     public assertType (obj: any, type: any): boolean {

@@ -22,8 +22,7 @@ app.use(bodyParser.json());
 /* middleware utile per verificare il token JWT */
 app.use([checkHeader, checkToken, verifyAndAuthenticate]);
 
-app.post("/addModel", auth.checkUser, async (req, res, next) => {controllerGraphModel.newGraphModel(req, res, next)
-})
+app.post("/addModel", auth.checkUser, async (req, res, next) => {controllerGraphModel.newGraphModel(req, res, next)});
 
 /* middleware di gestione dell'errore */
 app.use(errorLogger);

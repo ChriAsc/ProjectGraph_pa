@@ -33,9 +33,15 @@ export class User implements interfaceUser {
             tableName: 'users',
             timestamps: false
         });
+
     }
     
-    
+    /*
+    public addUser = async (username: string, role: number, email: string, budget: number) => {
+        let modelUsr = await this.user.create({ username: username, main_role: role, mail: email, budget: budget });
+        return modelUsr;
+    }
+    */
     public findByName = async (name: string) => {
         let usr = await this.user.findAll({ where: { username: name } });
         return usr;

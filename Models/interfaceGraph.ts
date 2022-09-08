@@ -5,5 +5,4 @@ export interface interfaceGraph {
     changeWeight(idModel: number, firstNode: string, secondNode: string, new_weight: number): Promise<any>;
     getWeight(idModel: number, firstNode: string, secondNode: string): Promise<any>;
     getCost(struct: any): Promise<any>;
-    checkCost(username: string, struct: any): Promise<any>;
 }
