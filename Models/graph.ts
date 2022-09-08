@@ -23,10 +23,7 @@ export class GraphModel implements interfaceGraph {
             },
             creator: {
                 type: DataTypes.STRING,
-                references: {
-                    model: this.user,
-                    key: 'username'
-                }
+                allowNull: false
             },
             graph_struct: {
                 type: DataTypes.JSON,
@@ -124,11 +121,6 @@ export class GraphModel implements interfaceGraph {
         } else {
             return false;
         }
-    }
-
-    public associate = async () => {
-        await this.user.hasMany(this.graph, { foreignKey: 'creator' });
-        await this.graph.belongsTo(this.user, { foreignKey: 'creator' })
     }
 
     public assertType (obj: any, type: any): boolean {

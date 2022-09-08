@@ -14,7 +14,6 @@ model_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 creator VARCHAR(50) NOT NULL,
 graph_struct JSON NOT NULL,
 model_version INT NOT NULL,
-CONSTRAINT graphmodels_ibfk_1 FOREIGN KEY (creator) REFERENCES users(username)
 );
 
 CREATE TABLE IF NOT EXISTS executions (
@@ -26,7 +25,6 @@ start_node VARCHAR(10) NOT NULL,
 goal_node VARCHAR(10) NOT NULL,
 cost_path DECIMAL(5,2) NOT NULL,
 opt_path VARCHAR(10000) NOT NULL,
-CONSTRAINT executions_ibfk_1 FOREIGN KEY (model) REFERENCES graphmodels(model_id)
 );
 
 USE optimization;
