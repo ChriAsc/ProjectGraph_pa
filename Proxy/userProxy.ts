@@ -7,32 +7,51 @@ export class UserProxy implements interfaceUser {
 
     public findByName = async (username: string)  => {
         try {
-            let usr = await this.user.findByName(username);
-            return usr;
+            if (this.assertType(username, String)) {
+                let usr = await this.user.findByName(username);
+                return usr;
+            } else throw new SyntaxError('Il valore inserito non è una stringa!')
         } catch (err) {
-            console.log("Username non trovato!")
+            console.log('Utente non trovato!')
         }
     }
 
     public findByEmail = async (email: string) => {
-        let usr = await this.user.findByEmail(email);
-        return usr;
+        try {
+            if (this.assertType(email, String)) {
+                let usr = await this.user.findByEmail(email);
+                return usr;
+        } else throw new SyntaxError('Il valore inserito non è una stringa!')
+    } catch (err) {
+        console.log('Utente non trovato!');
     }
+}
 
     public getBudget = async (username: string) => {
         try {
-            let budget = await this.user.getBudget(username);
-            return budget;
+            if (this.assertType(username, String)) {
+                let budget = await this.user.getBudget(username);
+                return budget;
+            } else throw new SyntaxError('Il valore inserito non è una stringa!')
         } catch (err) {
             console.log(err);
         }
     }
 
-    public updateBudget = async (name: string, budget: number) => {
+    public updateBudget = async (username: string, budget: number) => {
         try {
-            let usr = await this.user.updateBudget(name, budget);
+            if (this.assertType(username, String)) {
+                if (this.assertType(budget, Number)) {
+                    await this.user.updateBudget(username, budget);
+                } else throw new SyntaxError('Il valore inserito non è un numero!')
+            } else throw new SyntaxError('Il valore inserito non è una stringa!')
         } catch (err) {
             console.log(err);
         }
     }
+
+    public assertType (obj: any, type: any): boolean {
+        return obj.constructor.name === type.name;
+    }
+
 }
