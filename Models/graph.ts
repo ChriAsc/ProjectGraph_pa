@@ -44,7 +44,7 @@ export class GraphModel implements interfaceGraph {
     }
     
     public getGraphModels = async (username: string, nr_nodes: number, nr_edges: number) => {
-        console.log(nr_nodes, nr_edges);
+        
         let graphs: any = await this.graph.findAll({ attributes: ['graph_struct'], where: { creator: username } });
         let filteredGraphs: any = await graphs.filter(async (element) => {
             (await this.getNrNodes(element) === nr_nodes && await this.getNrEdges(element) === nr_edges)
@@ -52,6 +52,11 @@ export class GraphModel implements interfaceGraph {
             await this.graph.findAll({ where: { graph_struct: item}})
         });
         return filteredGraphs;
+    }
+
+    public getGraphStruct = async (idModel: number) => {
+        let graphStruct: any = await this.graph.findAll({ attributes: ['graph_struct'], where: { modelId: idModel } });
+        return graphStruct;
     }
 
     public deleteGraphModel = async (idModel: number) => {
@@ -85,8 +90,9 @@ export class GraphModel implements interfaceGraph {
                 }
 
                 let jsonGraph: string = JSON.stringify(objGraph);
-
+                
                 await this.graph.update({ graph_struct: jsonGraph, where: { model_id: idModel }});
+                await this.graph.increment({ model_version: 1}, {where: { model_id: idModel }});
             }
         }
     }
@@ -128,11 +134,6 @@ export class GraphModel implements interfaceGraph {
             edges += edge_number;
         }
         return edges;
-    }
-    
-    public getCreator = async (idModel: number) => {
-        let creator: string = await this.graph.findAll({ attributes: ['creator'], where: { model_id: idModel }});
-        return creator;
     }
 
     public assertType (obj: any, type: any): boolean {

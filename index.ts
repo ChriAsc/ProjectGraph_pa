@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 app.use([checkHeader, checkToken, verifyAndAuthenticate]);
 
 app.post('/addModel', auth.checkUser, async (req, res, next) => {controllerGraphModel.newGraphModel(req, res, next)});
+app.post('/executeModel', auth.checkUser, async (req, res, next) => {controllerGraphModel.execModel(req, res, next)});
 app.post('/changeWeight', auth.checkUser, async (req, res, next) => {controllerGraphModel.changeEdgeWeight(req, res, next)});
 app.get('/models/:nodes/:edges', auth.checkUser, async (req, res, next) => {controllerGraphModel.filterModels(req, res, next)});
 app.post('/delete/:ids', auth.checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
