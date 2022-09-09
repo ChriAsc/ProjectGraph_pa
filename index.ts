@@ -22,7 +22,10 @@ app.use(bodyParser.json());
 /* middleware utile per verificare il token JWT */
 app.use([checkHeader, checkToken, verifyAndAuthenticate]);
 
-app.post("/addModel", auth.checkUser, async (req, res, next) => {controllerGraphModel.newGraphModel(req, res, next)});
+app.post('/addModel', auth.checkUser, async (req, res, next) => {controllerGraphModel.newGraphModel(req, res, next)});
+app.post('/changeWeight', auth.checkUser, async (req, res, next) => {controllerGraphModel.changeEdgeWeight(req, res, next)});
+app.get('/models/:nodes/:edges', auth.checkUser, async (req, res, next) => {controllerGraphModel.filterModels(req, res, next)});
+app.post('/delete/:ids', auth.checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
 
 /* middleware di gestione dell'errore */
 app.use(errorLogger);
