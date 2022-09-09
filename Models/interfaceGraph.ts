@@ -1,5 +1,5 @@
 export interface interfaceGraph {
-    addGraphModel(username: string, struct: any): Promise<any>;
+    addGraphModel(username: string, struct: any, version?: number): Promise<any>;
     getGraphModels(username: string, nr_nodes: number, nr_edges: number): Promise<any>;
     deleteGraphModel(idModel: number, ...otherId: number[]): Promise<any>;
     changeWeight(idModel: number, firstNode: string, secondNode: string, new_weight: number): Promise<any>;

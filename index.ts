@@ -1,7 +1,7 @@
 import { checkHeader, checkToken, verifyAndAuthenticate, checkUser } from './Middleware/auth';
 import { errorLogger, errorHandler } from './Middleware/error';
 import { graphController } from './Controllers/graphController';
-import * as auth from './Middleware/auth'
+import { checkAdmin, checkEmail } from './Middleware/admin';
 
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -22,12 +22,13 @@ app.use(bodyParser.json());
 /* middleware utile per verificare il token JWT */
 app.use([checkHeader, checkToken, verifyAndAuthenticate]);
 
-app.post('/addModel', auth.checkUser, async (req, res, next) => {controllerGraphModel.newGraphModel(req, res, next)});
-app.post('/executeModel', auth.checkUser, async (req, res, next) => {controllerGraphModel.execModel(req, res, next)});
-app.post('/changeWeight', auth.checkUser, async (req, res, next) => {controllerGraphModel.changeEdgeWeight(req, res, next)});
-app.get('/models/:nodes/:edges', auth.checkUser, async (req, res, next) => {controllerGraphModel.filterModels(req, res, next)});
-app.post('/delete/:ids', auth.checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
-
+app.post('/addModel', checkUser, async (req, res, next) => {controllerGraphModel.newGraphModel(req, res, next)});
+app.post('/executeModel', checkUser, async (req, res, next) => {controllerGraphModel.execModel(req, res, next)});
+app.post('/changeWeight', checkUser, async (req, res, next) => {controllerGraphModel.changeEdgeWeight(req, res, next)});
+app.get('/models/:nodes/:edges', checkUser, async (req, res, next) => {controllerGraphModel.filterModels(req, res, next)});
+app.post('/delete/:ids', checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
+app.get('/executions', checkUser, async (req, res, next) => {controllerGraphModel.getExecutions(req, res, next)});
+app.get('/admin', checkAdmin, checkEmail, async (req, res, next) => {res.send(201)});
 /* middleware di gestione dell'errore */
 app.use(errorLogger);
 app.use(errorHandler);

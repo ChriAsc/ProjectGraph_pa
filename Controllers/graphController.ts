@@ -110,9 +110,11 @@ export class graphController {
         }
     }
 
-    public executions = async (req, res, next) => {
+    public getExecutions = async (req, res, next) => {
         const execModel = new Execution();
         try {
+            let executions: any = await execModel.getAllExec();
+            res.send(executions);
         } catch (err) {
             next(err);
         }

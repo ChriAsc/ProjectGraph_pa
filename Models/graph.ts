@@ -37,10 +37,15 @@ export class GraphModel implements interfaceGraph {
     }
 
     
-    public addGraphModel = async (username: string, objGraph: any) => {
+    public addGraphModel = async (username: string, objGraph: any, version?: number) => {
         const jsonGraph = JSON.stringify(objGraph);
-        let model = await this.graph.create({ creator: username, graph_struct: jsonGraph });
+        if((typeof version) === "number") {
+        let model = await this.graph.create({ creator: username, graph_struct: jsonGraph, model_version: version });
         return model;
+        } else {
+            let model = await this.graph.create({ creator: username, graph_struct: jsonGraph });
+            return model;
+        }
     }
     
     public getGraphModels = async (username: string, nr_nodes: number, nr_edges: number) => {
@@ -90,9 +95,9 @@ export class GraphModel implements interfaceGraph {
                 }
 
                 let jsonGraph: string = JSON.stringify(objGraph);
-                
-                await this.graph.update({ graph_struct: jsonGraph, where: { model_id: idModel }});
-                await this.graph.increment({ model_version: 1}, {where: { model_id: idModel }});
+                let username: string = this.graph.findAll({ attributes: ['creator'], where: { model_id: idModel }});
+                let new_version: number = this.graph.findAll({ attributes: ['model_version'], where: { model_id: idModel }}) +1;
+                await this.addGraphModel(username, jsonGraph, new_version);
             }
         }
     }
