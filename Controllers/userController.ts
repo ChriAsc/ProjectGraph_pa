@@ -1,10 +1,5 @@
 import { User } from "../Models/user";
 
-const dotenv = require('dotenv');
-const Graph = require('node-dijkstra');
-
-dotenv.config();
-
 export class userController {
 
     public rechargeUser = async (req, res, next) => {
@@ -14,6 +9,7 @@ export class userController {
             let old: number = await Us.getBudget(usr.username);
             let new_budget: number = old + parseFloat(req.user.budget);
             await usr.updateBudget(usr.username, new_budget);
+            res.status(200).send("La ricarica a " + usr.username + " è avvenuta con successo!");
             next();
         } catch (err) {
             next(err);
