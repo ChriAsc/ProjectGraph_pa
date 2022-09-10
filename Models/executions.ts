@@ -60,7 +60,7 @@ export class Execution implements interfaceExec {
     }
 
     public getAllExec = async () => {
-        let execs: any = await this.execution.findAll({ attributes: ['exec_id','exec_time','model','cost_path','start_node','goal_node','exec_cost']});
+        let execs: any = await this.execution.findAll({ exclude: ['opt_path']});
         return execs;
     }
 

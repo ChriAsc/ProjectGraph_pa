@@ -24,7 +24,6 @@ export class graphController {
                 let new_budget: number = budget - total_cost;
                 await userModel.updateBudget(req.user.username, new_budget);
                 res.status(201).send("Inserimento avvenuto con successo.");
-                
             } 
             next();
         } catch (err) {
@@ -116,11 +115,19 @@ export class graphController {
     public getExecutions = async (req, res, next) => {
         const execModel = new Execution();
         try {
-            let executions: any = await execModel.getAllExec();
+            let raw: any = await execModel.getAllExec();
+            let executions: any = JSON.stringify(raw);
             res.status(201).send(executions);
+            next();
         } catch (err) {
             next(err);
         }
     }
 
+    public startSimulation = async (req, res, next) => {
+        try {
+        } catch (err) {
+            next(err);
+        }
+    }
 }

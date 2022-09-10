@@ -43,17 +43,17 @@ export class User implements interfaceUser {
     }
     */
     public findByName = async (name: string) => {
-        let usr = await this.user.findAll({ where: { username: name } });
+        let usr = await this.user.findOne({ where: { username: name } });
         return usr;
     }
 
     public findByEmail = async (email: string) => {
-        let usr = await this.user.findAll({ where: { mail: email } });
+        let usr = await this.user.findOne({ where: { mail: email } });
         return usr;
     }
 
     public getBudget = async (name: string) => {
-        let budget: number = await this.user.findAll({ attributes: ['budget'], where: { username: name}});
+        let budget: number = await this.user.findOne({ attributes: ['budget'], where: { username: name}});
         return budget;
     }
 

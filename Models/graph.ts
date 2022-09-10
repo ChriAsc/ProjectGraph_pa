@@ -51,30 +51,18 @@ export class GraphModel implements interfaceGraph {
     public getGraphModels = async (username: string, nr_nodes: number, nr_edges: number) => {
         
         let graphs: any = await this.graph.findAll({ attributes: ['graph_struct'], where: { creator: username } });
-        let filteredGraphs: any = await graphs.filter(async (element) => {
-            (await this.getNrNodes(element) === nr_nodes && await this.getNrEdges(element) === nr_edges)
-        }).map(async (item) => {
-            await this.graph.findAll({ where: { graph_struct: item}})
-        });
+        let filteredGraphs: any = await graphs.filter(async (element) => { (await this.getNrNodes(element) === nr_nodes && await this.getNrEdges(element) === nr_edges) }).map(async (item) => { await this.graph.findAll({ where: { graph_struct: item } }) });
         return filteredGraphs;
     }
 
     public getGraphStruct = async (idModel: number) => {
-        let graphStruct: any = await this.graph.findAll({ attributes: ['graph_struct'], where: { modelId: idModel } });
+        let graphStruct: any = await this.graph.findOne({ attributes: ['graph_struct'], where: { modelId: idModel } });
         return graphStruct;
     }
 
     public deleteGraphModel = async (idModel: number) => {
-        let todelete: any = await this.graph.findAll( { where: { model_id: idModel} } );
+        let todelete: any = await this.graph.findOne( { where: { model_id: idModel} } );
         await todelete.destroy();
-        /*
-        if (otherId.length != 0) {
-            for(var val of otherId) {
-                var to_delete: any = await this.graph.findAll( { where: { model_id: val } });
-                await to_delete.destroy();
-            }
-        }
-        */
     }
 
     public changeWeight = async (idModel: number, firstNode: string, secondNode: string, new_weight: number) => {
@@ -83,7 +71,7 @@ export class GraphModel implements interfaceGraph {
         } else if (!(this.assertType(new_weight, Number))) {
             throw new SyntaxError('Il peso inserito non è un numero!')
         } else {        
-            let graph: string = await this.graph.findAll({ attributes: ['graph_struct'], where: { model_id: idModel }});
+            let graph: string = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
             let objGraph: object = JSON.parse(graph);
 
             if(objGraph[firstNode][secondNode] === undefined) throw new SyntaxError("L\'arco " + firstNode + secondNode + " non esiste!");
@@ -95,8 +83,8 @@ export class GraphModel implements interfaceGraph {
                 }
 
                 let jsonGraph: string = JSON.stringify(objGraph);
-                let username: string = this.graph.findAll({ attributes: ['creator'], where: { model_id: idModel }});
-                let new_version: number = this.graph.findAll({ attributes: ['model_version'], where: { model_id: idModel }}) +1;
+                let username: string = this.graph.findOne({ attributes: ['creator'], where: { model_id: idModel }});
+                let new_version: number = this.graph.findOne({ attributes: ['model_version'], where: { model_id: idModel }}) +1;
                 await this.addGraphModel(username, jsonGraph, new_version);
             }
         }
@@ -106,7 +94,7 @@ export class GraphModel implements interfaceGraph {
         if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
             throw new SyntaxError('I nodi inseriti non sono di tipo stringa!')
         } else {
-        let graph: string = await this.graph.findAll({ attributes: ['graph_struct'], where: { model_id: idModel }});
+        let graph: string = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
         let objGraph: object = JSON.parse(graph);
         let edgeWeight: number = objGraph[firstNode][secondNode];
         return edgeWeight;

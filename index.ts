@@ -3,7 +3,7 @@ import { errorLogger, errorHandler } from './Middleware/error';
 import { graphController } from './Controllers/graphController';
 import { checkAdmin, checkEmail } from './Middleware/admin';
 import { userController } from './Controllers/userController';
-import { checkStructure } from './Middleware/middleGraph';
+import { checkStructure } from './Middleware/structure';
 
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -32,7 +32,7 @@ app.get('/models/:nodes/:edges', checkUser, async (req, res, next) => {controlle
 app.post('/delete/:ids', checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
 app.get('/executions', checkUser, async (req, res, next) => {controllerGraphModel.getExecutions(req, res, next)});
 app.post('/admin', checkAdmin, checkEmail, async (req, res, next) => {controllerUser.rechargeUser(req, res, next)});
-//app.post('/simulation', checkUser, async (req, res, next) => {controllerGraphModel.startSimulation(req, res, next)});
+app.post('/simulation', checkUser, async (req, res, next) => {controllerGraphModel.startSimulation(req, res, next)});
 
 /* middleware di gestione dell'errore */
 app.use(errorLogger);
