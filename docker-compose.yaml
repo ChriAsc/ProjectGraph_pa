@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+    mysqldb:
+        image: mysql
+        restart: always
+        environment:
+          - MYSQL_ROOT_PASSWORD=
+          - MYSQL_USER=${MYSQL_USER}
+          - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+          - MYSQL_DATABASE=${MYSQL_DATABASE}
+          - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+          - MYSQL_TCP_PORT=${MYSQL_PORT}
+        volumes: 
+          - ./Seeder/db.sql:/docker-entrypoint-initdb.d/db.sql          
+    node:
+        build: .
+        ports:
+          - ${EXTERNAL_PORT}:${PORT}
+        environment:
+          - PORT=${PORT}
+          - EXTERNAL_PORT=${EXTERNAL_PORT}
+          - HOST=${MYSQL_HOST}
+          - USERNAME=${MYSQL_USER}
+          - PASSWORD=${MYSQL_PASSWORD}
+          - MYSQL_PORT=${MYSQL_PORT}
+          - SECRET_KEY=${SECRET_KEY}
+        depends_on:
+          - mysqldb
