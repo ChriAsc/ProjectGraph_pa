@@ -10,11 +10,12 @@ dotenv.config();
 export class graphController {
 
     public newGraphModel = async (req, res, next) => {
+        
         const graphModel = new GraphModel();
         const userModel = new User();
         try {
+            
             let total_cost: number = await graphModel.getCost(req.body.graph);
-            //let new_usr: any = await user.addUser("mario_rossi", 1, "mario@rossi.com", 5.0);
             let budget: any = await userModel.getBudget(req.user.username).catch(err => { next(err)});
             if(total_cost > budget) {
                 res.sendStatus(401);
@@ -22,13 +23,14 @@ export class graphController {
                 await graphModel.addGraphModel(req.user.username, req.body.graph);
                 let new_budget: number = budget - total_cost;
                 await userModel.updateBudget(req.user.username, new_budget);
-                res.send("Inserimento avvenuto con successo.");
-                next();
-            }
-            
+                res.status(201).send("Inserimento avvenuto con successo.");
+                
+            } 
+            next();
         } catch (err) {
             next(err);
         }
+        
     }
 
     public execModel = async (req, res, next) => {
@@ -42,13 +44,11 @@ export class graphController {
             if(total_cost > budget) {
                 res.sendStatus(401);
             } else {
-                
-                let graph_struct = req.body.graph;
                 let start: string = req.body.start;
                 let goal: string = req.body.goal;
                 const route = new Graph(graph_struct);
-
                 const start_time: number = new Date().getTime();
+
                 let resultObj: any = await route.path(start, goal, { cost: true });
                 let elapsed: number = new Date().getTime() - start_time;
 
@@ -74,7 +74,8 @@ export class graphController {
             let newWeight: number = alpha*(actual_weight) + (1 - alpha)*(proposedWeight);            
 
             await graphModel.changeWeight(req.body.id, node_1, node_2, newWeight);
-            res.send("Cambio peso dell'arco avvenuto con successo.");
+            res.status(201).send("Cambio peso dell'arco avvenuto con successo.");
+            next();
         } catch(err) {
             next(err);
         }
@@ -87,7 +88,8 @@ export class graphController {
             let nr_edges: number = parseInt(req.params.edges);
 
             let filteredModels = await graphModel.getGraphModels(req.user.username, nr_nodes, nr_edges);
-            res.send("Modelli disponibili: " + filteredModels);
+            res.status(201).send("Modelli disponibili: " + filteredModels);
+            next();
         } catch (err) {
             next(err);
         }
@@ -103,7 +105,9 @@ export class graphController {
                 var actual_id: number = parseInt(params[x]);
                 await graphModel.deleteGraphModel(actual_id);
             }
-            res.send("Eliminazione avvenuta con successo.");
+
+            res.status(201).send("Eliminazione avvenuta con successo.");
+            next();
         } catch (err) {
             next(err);
         }
@@ -113,7 +117,7 @@ export class graphController {
         const execModel = new Execution();
         try {
             let executions: any = await execModel.getAllExec();
-            res.send(executions);
+            res.status(201).send(executions);
         } catch (err) {
             next(err);
         }

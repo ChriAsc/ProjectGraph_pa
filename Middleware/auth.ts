@@ -53,12 +53,14 @@ export const checkUser = async (req, res, next) => {
             var err = new Error('Ammesso solo ruolo user!');
             next(err);
         } else {
+            /*
             const usr: any = new User();
             let actual_user: any = await usr.findByName(req.user.username);
             if (actual_user.username !== req.user.username) {
                 var err = new Error('User non trovato!');
                 next(err);
             } else
+            */
             next();
     }
     } catch(err) {
