@@ -2,6 +2,7 @@ import { checkHeader, checkToken, verifyAndAuthenticate, checkUser } from './Mid
 import { errorLogger, errorHandler } from './Middleware/error';
 import { graphController } from './Controllers/graphController';
 import { checkAdmin, checkEmail } from './Middleware/admin';
+import { userController } from './Controllers/userController';
 
 const bodyParser = require('body-parser');
 const express = require('express');
@@ -14,7 +15,8 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 let app = express();
 
-let controllerGraphModel = new graphController();
+const controllerGraphModel = new graphController();
+const controllerUser = new userController();
 
 /* middleware utile per il parsing JSON */
 app.use(bodyParser.json());
@@ -28,7 +30,8 @@ app.post('/changeWeight', checkUser, async (req, res, next) => {controllerGraphM
 app.get('/models/:nodes/:edges', checkUser, async (req, res, next) => {controllerGraphModel.filterModels(req, res, next)});
 app.post('/delete/:ids', checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
 app.get('/executions', checkUser, async (req, res, next) => {controllerGraphModel.getExecutions(req, res, next)});
-app.get('/admin', checkAdmin, checkEmail, async (req, res, next) => {res.send(201)});
+app.get('/admin', checkAdmin, checkEmail, async (req, res, next) => {controllerUser.rechargeUser(req, res, next)});
+
 /* middleware di gestione dell'errore */
 app.use(errorLogger);
 app.use(errorHandler);

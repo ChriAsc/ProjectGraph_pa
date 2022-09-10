@@ -1,4 +1,3 @@
-import * as auth from '../Middleware/auth'
 import { Execution } from '../Models/executions';
 import { GraphModel } from '../Models/graph';
 import { User } from '../Models/user';
