@@ -23,15 +23,17 @@ export const checkStructure = (req, res, next) => {
 
 export const checkWeight = (req, res, next) => {
     try {
-        if(typeof req.body.start !== 'number' || typeof req.body.stop !== 'number' || req.body.step !== 'number') {
-            res.status(400).send({"Errore": "I valori associati ai pesi e al passo devono essere dei numeri!"});
-        }
-        let start: number = req.body.start;
-        let stop: number = req.body.stop;
+
+        if(typeof req.body.startWeight !== "number") res.status(400).send("Il peso di partenza deve essere un numero!")
+        if(typeof req.body.stopWeight !== "number") res.status(400).send("Il peso di arrivo deve essere un numero!")
+
+        let start: number = req.body.startWeight;
+        let stop: number = req.body.stopWeight;
         if (start >= stop) {
             res.status(400).send({"Errore": "Il peso di arrivo deve essere maggiore del peso di partenza!"});
         }
-
+        if(typeof req.body.step !== "number") res.status(400).send("Il valore del passo deve essere un numero!")
+        
         let step: number = req.body.step;
         if (step <= 0) {
             res.status(400).send({"Errore": "Il valore del passo deve essere positivo!"})

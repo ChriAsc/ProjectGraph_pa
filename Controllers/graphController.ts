@@ -141,13 +141,14 @@ export class graphController {
     public startSimulation = async (req, res, next) => {
         const graphModel = new GraphModel();
         try {
-            let node_1: string = req.body.first_node;
-            let node_2: string = req.body.second_node;
+            
+            let node_1: string = req.body.startNode;
+            let node_2: string = req.body.goalNode;
             let start_weight: number = req.body.startWeight;
             let stop_weight: number = req.body.stopWeight;
             let step: number = req.body.step;
             let start_node: string = req.body.startNode;
-            let goal_node: string = req.body.startNode;
+            let goal_node: string = req.body.goalNode;
             let result: string[] = [];
             let best: any;
             let best_struct: any;
@@ -171,6 +172,7 @@ export class graphController {
             }
 
             res.status(200).send("Risultati della simulazione\n" + result + "\nConfigurazione migliore e percorso ottimo: " + best_struct + "\n" + best);
+            
             next();
         } catch (err) {
             next(err);

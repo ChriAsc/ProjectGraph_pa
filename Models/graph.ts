@@ -80,14 +80,14 @@ export class GraphModel implements interfaceGraph {
     /* Metodo utile a cambiare il peso di un particolare arco, specificando l'id, entrambi gli estremi e il nuovo peso da assegnare, ritornando il nuovo grafo */
     public changeWeight = async (idModel: number, firstNode: string, secondNode: string, new_weight: number) => {
         if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
-            throw new SyntaxError('I nodi inseriti non sono di tipo stringa!')
+            throw new TypeError('I nodi inseriti non sono di tipo stringa!')
         } else if (!(this.assertType(new_weight, Number))) {
-            throw new SyntaxError('Il peso inserito non è un numero!')
+            throw new TypeError('Il peso inserito non è un numero!')
         } else {        
             let graph: any = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
             let objGraph: object = JSON.parse(graph);
 
-            if(objGraph[firstNode][secondNode] === undefined) throw new SyntaxError("L\'arco " + firstNode + secondNode + " non esiste!");
+            if(objGraph[firstNode][secondNode] === undefined) throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!");
             else {
                 objGraph[firstNode][secondNode] = new_weight;
 
@@ -103,11 +103,11 @@ export class GraphModel implements interfaceGraph {
     /* Metodo utile ad ottenere il peso di un arco di un certo modello, specificando id del modello e i due estremi */
     public getWeight = async (idModel: number, firstNode: string, secondNode: string) => {
         if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
-            throw new SyntaxError('I nodi inseriti non sono di tipo stringa!')
+            throw new TypeError('I nodi inseriti non sono di tipo stringa!')
         } else {
         let graph: string = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
         let objGraph: object = JSON.parse(graph);
-        if(objGraph[firstNode][secondNode] === undefined) throw new SyntaxError("L\'arco " + firstNode + secondNode + " non esiste!")
+        if(objGraph[firstNode][secondNode] === undefined) throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!")
         else {
             let edgeWeight: number = objGraph[firstNode][secondNode];
             return edgeWeight;
