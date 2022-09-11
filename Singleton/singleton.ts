@@ -11,7 +11,7 @@ export class Singleton {
     private static instance: Singleton;
     private connection: Sequelize;
 
-    // Il costruttore del Singleton deve essere privato per evitare chiamate dirette
+    /* Il costruttore del Singleton deve essere privato per evitare chiamate dirette */
     private constructor() {
         const database: string = <string> process.env.MYSQL_DATABASE;
         const username: string = <string> process.env.MYSQL_USER;
@@ -26,7 +26,7 @@ export class Singleton {
         });
     }
 
-    // Il metodo statico controlla l'accesso all'istanza di un oggetto in modo che questa sia unica
+    /* Il metodo statico controlla l'accesso all'istanza di un oggetto in modo che questa sia unica */
     public static getInstance(): Singleton {
         if (!Singleton.instance) {
             Singleton.instance = new Singleton();
@@ -34,7 +34,7 @@ export class Singleton {
         return Singleton.instance;
     }
 
-    // Utile a restituire la connessione corrente
+    /* Utile a restituire la connessione corrente */
     public getConnection(): Sequelize {
         return this.connection;
     }

@@ -1,5 +1,6 @@
 import { User } from "../Models/user";
 
+/* Middleware necessario per verificare che la richiesta provenga da un admin esistente (ruolo 2) */
 export const checkAdmin = async (req, res, next) => {
     try {
         if(req.user.main_role !== 2) {
@@ -19,6 +20,7 @@ export const checkAdmin = async (req, res, next) => {
     }
 }
 
+/* Middleware necessario per verificare che la mail inserita sia associata ad un utente */
 export const checkEmail = async (req, res, next) => {
     try {
         const Us: any = new User();

@@ -2,6 +2,9 @@ import { DataTypes } from 'sequelize';
 import { Singleton } from '../Singleton/singleton';
 import { interfaceExec } from './interfaceExec';
 
+/**
+ * Classe che rappresenta la tabella executions nel db, accedendo ad un'unica istanza grazie al Singleton
+ */
 export class Execution implements interfaceExec {
     
     private execution: any;
@@ -52,6 +55,9 @@ export class Execution implements interfaceExec {
 
     }
     
+    /* Metodo necessario per creare una nuova esecuzione, specificando il tempo di esecuzione,
+     l'id del modello associato, il nordo di partenza, il nodo di arrivo, il costo (in termini di peso) del percorso,
+      il percorso e il costo (in termini di credito) dell'esecuzione */
     public addExec = async (ex_time: number, idModel: number, start: string, goal: string, pathCost: number, path: any, total_cost: number) => {
         await this.execution.create({ exec_time: ex_time, model: idModel, start_node: start, goal_node: goal, cost_path: pathCost, opt_path: path, exec_cost: total_cost});
         let obj = {Optimal_path: path, Start_node: start, Goal_node: goal, Path_cost: pathCost, Execution_time: ex_time, Execution_cost: total_cost};
@@ -59,6 +65,7 @@ export class Execution implements interfaceExec {
         return jsonExec;
     }
 
+    /* Metodo utile ad ottenere tutte le esecuzioni */
     public getAllExec = async () => {
         let execs: any = await this.execution.findAll({ exclude: ['opt_path']});
         return execs;

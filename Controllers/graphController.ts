@@ -8,8 +8,12 @@ const Graph = require('node-dijkstra');
 
 dotenv.config();
 
+/**
+ * Classe che implementa il controller del modello
+**/
 export class graphController {
 
+    /* Metodo che consente di inserire un nuovo modello */
     public newGraphModel = async (req, res, next) => {
         
         const graphModel = new GraphModel();
@@ -33,6 +37,7 @@ export class graphController {
         
     }
 
+    /* Metodo che consente di eseguire un modello da parte di un utente */
     public execModel = async (req, res, next) => {
         const graphModel = new GraphModel();
         const userModel = new User();
@@ -62,6 +67,7 @@ export class graphController {
         }
     }
 
+    /* Metodo che consente di gestire la richiesta di cambio peso da parte di un utente autenticato */
     public changeEdgeWeight = async (req, res, next) => {
         const graphModel = new GraphModel();
         let alpha: number = ALPHA;
@@ -84,6 +90,7 @@ export class graphController {
         }
     }
 
+    /* Metodo che restituisce l'elenco dei modelli associati all'utente filtrati per numeri di nodi e numero di archi */
     public filterModels = async (req, res, next) => {
         const graphModel = new GraphModel();
         try {
@@ -98,6 +105,7 @@ export class graphController {
         }
     }
 
+    /* Metodo che consente di cancellare uno o più modelli */
     public deleteModel = async (req, res, next) => {
         const graphModel = new GraphModel();
         try {
@@ -116,6 +124,7 @@ export class graphController {
         }
     }
 
+    /* Metodo che restituisce l'elenco delle esecuzioni */
     public getExecutions = async (req, res, next) => {
         const execModel = new Execution();
         try {
@@ -128,6 +137,7 @@ export class graphController {
         }
     }
 
+    /* Metodo che consente di effettuare una simulazione */
     public startSimulation = async (req, res, next) => {
         const graphModel = new GraphModel();
         try {

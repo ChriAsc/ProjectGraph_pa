@@ -1,7 +1,11 @@
 import { User } from "../Models/user";
 
+/**
+ * Classe che implementa il controller dell'utente
+**/
 export class userController {
 
+    /* Metodo che consente ad un admin di effettuare la ricarica per un utente */
     public rechargeUser = async (req, res, next) => {
         const Us: any = new User();
         try {
