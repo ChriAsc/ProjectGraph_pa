@@ -72,7 +72,9 @@ export class graphController {
 
             let newWeight: number = alpha*(actual_weight) + (1 - alpha)*(proposedWeight);            
 
-            await graphModel.changeWeight(req.body.id, node_1, node_2, newWeight);
+            let newGraph: any = JSON.stringify(await graphModel.changeWeight(req.body.id, node_1, node_2, newWeight));
+            let old_version: number = await graphModel.getVersion(req.body.id);
+            await graphModel.addGraphModel(req.user.username, newGraph, old_version+1);
             res.status(201).send("Cambio peso dell'arco avvenuto con successo.");
             next();
         } catch(err) {
@@ -125,7 +127,39 @@ export class graphController {
     }
 
     public startSimulation = async (req, res, next) => {
+        const graphModel = new GraphModel();
         try {
+            let node_1: string = req.body.first_node;
+            let node_2: string = req.body.second_node;
+            let start_weight: number = req.body.startWeight;
+            let stop_weight: number = req.body.stopWeight;
+            let step: number = req.body.step;
+            let start_node: string = req.body.startNode;
+            let goal_node: string = req.body.startNode;
+            let result: any = [];
+            let best: any;
+            let best_struct: any;
+
+            for(let i = start_weight; i <= stop_weight; i+step) {
+                var graph_struct = await graphModel.changeWeight(req.body.id, node_1, node_2, i);
+                var route = new Graph(graph_struct);
+                var resultObj: any = await route.path(start_node, goal_node, { cost: true });
+
+                if(i==start_weight) {
+                    best = resultObj;
+                    best_struct = graph_struct;
+                }
+
+                if (resultObj.cost < best.cost) {
+                    best = resultObj;
+                    best_struct = graph_struct;
+                }
+                var resultJson = JSON.stringify(resultObj);
+                result.push(resultJson);
+            }
+
+            res.status(200).send("Risultati della simulazione\n" + result + "\nConfigurazione migliore e percorso ottimo: " + best_struct + "\n" + best);
+            next();
         } catch (err) {
             next(err);
         }

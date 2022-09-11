@@ -57,7 +57,7 @@ export class GraphModel implements interfaceGraph {
 
     public getGraphStruct = async (idModel: number) => {
         let graphStruct: any = await this.graph.findOne({ attributes: ['graph_struct'], where: { modelId: idModel } });
-        return graphStruct;
+        return JSON.parse(graphStruct);
     }
 
     public deleteGraphModel = async (idModel: number) => {
@@ -71,7 +71,7 @@ export class GraphModel implements interfaceGraph {
         } else if (!(this.assertType(new_weight, Number))) {
             throw new SyntaxError('Il peso inserito non è un numero!')
         } else {        
-            let graph: string = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
+            let graph: any = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
             let objGraph: object = JSON.parse(graph);
 
             if(objGraph[firstNode][secondNode] === undefined) throw new SyntaxError("L\'arco " + firstNode + secondNode + " non esiste!");
@@ -82,12 +82,14 @@ export class GraphModel implements interfaceGraph {
                     objGraph[secondNode][firstNode] = new_weight;
                 }
 
-                let jsonGraph: string = JSON.stringify(objGraph);
-                let username: string = this.graph.findOne({ attributes: ['creator'], where: { model_id: idModel }});
-                let new_version: number = this.graph.findOne({ attributes: ['model_version'], where: { model_id: idModel }}) +1;
-                await this.addGraphModel(username, jsonGraph, new_version);
+                return objGraph;
             }
         }
+    }
+
+    public getVersion = async (idModel: number) => {
+        let v: number =  await this.graph.findOne({ attributes: ['model_version'], where: { model_id: idModel }});
+        return v;
     }
 
     public getWeight = async (idModel: number, firstNode: string, secondNode: string) => {
@@ -96,8 +98,11 @@ export class GraphModel implements interfaceGraph {
         } else {
         let graph: string = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
         let objGraph: object = JSON.parse(graph);
-        let edgeWeight: number = objGraph[firstNode][secondNode];
-        return edgeWeight;
+        if(objGraph[firstNode][secondNode] === undefined) throw new SyntaxError("L\'arco " + firstNode + secondNode + " non esiste!")
+        else {
+            let edgeWeight: number = objGraph[firstNode][secondNode];
+            return edgeWeight;
+            }
         }
     }
 

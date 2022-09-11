@@ -13,6 +13,9 @@ dotenv.config();
 
 const PORT = process.env.EXTERNAL_PORT || 8080;
 const HOST = process.env.HOST || '0.0.0.0';
+const ALPHA = parseFloat(process.env.ALPHA as string);
+
+if(ALPHA < 0 || ALPHA > 1) process.env.ALPHA = "0.9";
 
 let app = express();
 
