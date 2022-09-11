@@ -13,9 +13,8 @@ dotenv.config();
 
 const PORT = process.env.EXTERNAL_PORT || 8080;
 const HOST = process.env.HOST || '0.0.0.0';
-const ALPHA = parseFloat(process.env.ALPHA as string);
 
-if(ALPHA < 0 || ALPHA > 1) process.env.ALPHA = "0.9";
+export const ALPHA = parseFloat(process.env.ALPHA as string);
 
 let app = express();
 
@@ -32,7 +31,7 @@ app.post('/addModel', [checkUser, checkStructure], async (req, res, next) => {co
 app.post('/executeModel', checkUser, async (req, res, next) => {controllerGraphModel.execModel(req, res, next)});
 app.post('/changeWeight', checkUser, async (req, res, next) => {controllerGraphModel.changeEdgeWeight(req, res, next)});
 app.get('/models/:nodes/:edges', checkUser, async (req, res, next) => {controllerGraphModel.filterModels(req, res, next)});
-app.post('/delete/:ids', checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
+app.get('/delete/:ids', checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
 app.get('/executions', checkUser, async (req, res, next) => {controllerGraphModel.getExecutions(req, res, next)});
 app.post('/admin', checkAdmin, checkEmail, async (req, res, next) => {controllerUser.rechargeUser(req, res, next)});
 app.post('/simulation', checkUser, async (req, res, next) => {controllerGraphModel.startSimulation(req, res, next)});

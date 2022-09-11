@@ -1,3 +1,4 @@
+import { ALPHA } from '..';
 import { Execution } from '../Models/executions';
 import { GraphModel } from '../Models/graph';
 import { User } from '../Models/user';
@@ -63,11 +64,12 @@ export class graphController {
 
     public changeEdgeWeight = async (req, res, next) => {
         const graphModel = new GraphModel();
+        let alpha: number = ALPHA;
+            if(alpha < 0 || alpha > 1) alpha = 0.9;
         try {
             let node_1: any = req.body.first_node;
             let node_2: any = req.body.second_node;
             let proposedWeight: number = req.body.weight;
-            let alpha: number = parseFloat(process.env.ALPHA as string);
             let actual_weight: number = await graphModel.getWeight(req.body.id, node_1, node_2);
 
             let newWeight: number = alpha*(actual_weight) + (1 - alpha)*(proposedWeight);            
@@ -119,7 +121,7 @@ export class graphController {
         try {
             let raw: any = await execModel.getAllExec();
             let executions: any = JSON.stringify(raw);
-            res.status(201).send(executions);
+            res.status(201).send("Esecuzioni:\n" + executions);
             next();
         } catch (err) {
             next(err);
@@ -136,7 +138,7 @@ export class graphController {
             let step: number = req.body.step;
             let start_node: string = req.body.startNode;
             let goal_node: string = req.body.startNode;
-            let result: any = [];
+            let result: string[] = [];
             let best: any;
             let best_struct: any;
 
