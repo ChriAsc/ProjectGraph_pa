@@ -51,7 +51,6 @@ var PORT = process.env.EXTERNAL_PORT || 8080;
 var HOST = process.env.HOST || '0.0.0.0';
 /* Il valore di alpha viene verificato nel controller */
 exports.ALPHA = parseFloat(process.env.ALPHA);
-console.log(exports.ALPHA);
 var app = express();
 var controllerGraphModel = new graphController_1.graphController();
 var controllerUser = new userController_1.userController();

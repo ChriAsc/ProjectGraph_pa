@@ -293,8 +293,8 @@ var graphController = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 7, , 8]);
-                        node_1 = req.body.startNode;
-                        node_2 = req.body.goalNode;
+                        node_1 = req.body.fNode;
+                        node_2 = req.body.sNode;
                         start_weight = req.body.startWeight;
                         stop_weight = req.body.stopWeight;
                         step = req.body.step;
