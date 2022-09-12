@@ -81,8 +81,6 @@ export class GraphModel implements interfaceGraph {
     public changeWeight = async (idModel: number, firstNode: string, secondNode: string, new_weight: number) => {
         if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
             throw new TypeError('I nodi inseriti non sono di tipo stringa!')
-        } else if (!(this.assertType(new_weight, Number))) {
-            throw new TypeError('Il peso inserito non è un numero!')
         } else {        
             let graph: any = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
             let objGraph: object = JSON.parse(graph);
@@ -144,6 +142,11 @@ export class GraphModel implements interfaceGraph {
             edges += edge_number;
         }
         return edges;
+    }
+
+    public getCreator = async (idModel: number) => {
+        let username: string = await this.graph.findOne({ attributes: ['creator'], where: { modelId: idModel } });
+        return username;
     }
 
     /* Metodo necessario per capire senza ambiguità se due oggetti sono dello stesso tipo */

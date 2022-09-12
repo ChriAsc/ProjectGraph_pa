@@ -1,4 +1,5 @@
 import { ALPHA } from '..';
+import { ErrEnum } from '../Factory/errorFactory';
 import { Execution } from '../Models/executions';
 import { GraphModel } from '../Models/graph';
 import { User } from '../Models/user';
@@ -21,9 +22,9 @@ export class graphController {
         try {
             
             let total_cost: number = await graphModel.getCost(req.body.graph);
-            let budget: any = await userModel.getBudget(req.user.username).catch(err => { next(err)});
+            let budget: any = await userModel.getBudget(req.user.username);
             if(total_cost > budget) {
-                res.sendStatus(401);
+                next(ErrEnum.Unauthorized);
             } else {
                 await graphModel.addGraphModel(req.user.username, req.body.graph);
                 let new_budget: number = budget - total_cost;
@@ -32,7 +33,7 @@ export class graphController {
             } 
             next();
         } catch (err) {
-            next(err);
+            next(ErrEnum.BadRequest);
         }
         
     }
@@ -45,9 +46,9 @@ export class graphController {
         try{
             let graph_struct: any = await graphModel.getGraphStruct(req.body.id);
             let total_cost: number = await graphModel.getCost(graph_struct);
-            let budget: any = await userModel.getBudget(req.user.username).catch(err => { next(err)});
+            let budget: any = await userModel.getBudget(req.user.username);
             if(total_cost > budget) {
-                res.sendStatus(401);
+                next(ErrEnum.Unauthorized);
             } else {
                 let start: string = req.body.start;
                 let goal: string = req.body.goal;
@@ -60,10 +61,10 @@ export class graphController {
                 let weightCost: number = resultObj.cost;
                 let optPath: any = resultObj.path;
                 let result: string = await execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost);
-                res.send(result);
+                res.status(200).send(result);
             }
         } catch(err) {
-            next(err);
+            next(ErrEnum.BadRequest);
         }
     }
 
@@ -86,7 +87,7 @@ export class graphController {
             res.status(201).send("Cambio peso dell'arco avvenuto con successo.");
             next();
         } catch(err) {
-            next(err);
+            next(ErrEnum.BadRequest);
         }
     }
 
@@ -101,7 +102,7 @@ export class graphController {
             res.status(201).send("Modelli disponibili: " + filteredModels);
             next();
         } catch (err) {
-            next(err);
+            next(ErrEnum.Forbidden);
         }
     }
 
@@ -114,13 +115,17 @@ export class graphController {
 
             for(const x in params) {
                 var actual_id: number = parseInt(params[x]);
-                await graphModel.deleteGraphModel(actual_id);
+                if(await graphModel.getCreator(actual_id) == req.user.username) {
+                    await graphModel.deleteGraphModel(actual_id);
+                } else {
+                    next(ErrEnum.Unauthorized);
+                }
             }
 
             res.status(201).send("Eliminazione avvenuta con successo.");
             next();
         } catch (err) {
-            next(err);
+            next(ErrEnum.Forbidden);
         }
     }
 
@@ -133,7 +138,7 @@ export class graphController {
             res.status(201).send("Esecuzioni:\n" + executions);
             next();
         } catch (err) {
-            next(err);
+            next(ErrEnum.Generic);
         }
     }
 
@@ -154,7 +159,7 @@ export class graphController {
             let best_struct: any;
 
             for(let i = start_weight; i <= stop_weight; i+step) {
-                var graph_struct = await graphModel.changeWeight(req.body.id, node_1, node_2, i);
+                var graph_struct = await graphModel.changeWeight(req.body.id, node_1, node_2, i).catch(e => next(ErrEnum.InvalidNode));
                 var route = new Graph(graph_struct);
                 var resultObj: any = await route.path(start_node, goal_node, { cost: true });
 
@@ -175,7 +180,7 @@ export class graphController {
             
             next();
         } catch (err) {
-            next(err);
+            next(ErrEnum.BadRequest);
         }
     }
 }

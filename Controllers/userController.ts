@@ -1,4 +1,5 @@
 import { User } from "../Models/user";
+import { ErrEnum } from '../Factory/errorFactory';
 
 /**
  * Classe che implementa il controller dell'utente
@@ -16,7 +17,7 @@ export class userController {
             res.status(200).send("La ricarica a " + usr.username + " è avvenuta con successo!");
             next();
         } catch (err) {
-            next(err);
+            next(ErrEnum.BadRequest);
         }
     }
 }

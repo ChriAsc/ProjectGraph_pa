@@ -26,12 +26,12 @@ export const checkStructure = (req, res, next) => {
 export const checkWeight = (req, res, next) => {
     try {
 
-        if(typeof req.body.startWeight !== "number") next(ErrEnum.InvalidStartWeight);
-        if(typeof req.body.stopWeight !== "number") next(ErrEnum.InvalidStopWeight);
+        if(typeof req.body.startWeight !== "number") next(ErrEnum.NaNWeight);
+        if(typeof req.body.stopWeight !== "number") next(ErrEnum.NaNWeight);
 
         let start: number = req.body.startWeight;
         let stop: number = req.body.stopWeight;
-        if (start >= stop) {
+        if (start >= stop || start < 0) {
             var err = ErrEnum.InvalidWeights;
             next(err);
         }

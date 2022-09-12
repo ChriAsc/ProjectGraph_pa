@@ -12,4 +12,5 @@ export interface interfaceGraph {
     getCost(struct: any): Promise<number>;
     getNrNodes(struct: any): Promise<number>;
     getNrEdges(struct: any): Promise<number>;
+    getCreator(idModel: number): Promise<string>;
 }

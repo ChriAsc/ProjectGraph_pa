@@ -1,5 +1,6 @@
 import { ErrorMessage } from "./interface";
 
+/* Ogni classe che implementa il Product rappresenta un Concrete Creator */
 export enum ErrEnum {
     Generic,
     Forbidden,
@@ -12,127 +13,188 @@ export enum ErrEnum {
     UserNotFound,
     AdminNotFound,
     MailNotFound,
+    InvalidNode,
     EmptyNode,
-    InvalidStartWeight,
-    InvalidStopWeight,
+    NaNWeight,
     InvalidWeights,
     NaNStep,
     NegativeStep,
     InvalidStep
 }
 
+/* Internale Server Error */
 class GenericError implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Errore Generico!"};
+    getErrorMessage(): string {
+        return "Errore Generico!";
+    }
+    getStatusCode(): number {
+        return 500;
     }
 }
 
 class Forbidden implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Forbidden!"};
+    getErrorMessage(): string {
+        return "Forbidden!";
+    }
+    getStatusCode(): number {
+        return 403;
     }
 }
 
 class BadRequest implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Bad Request!"};
+    getErrorMessage(): string {
+        return "Bad Request!";
+    }
+    getStatusCode(): number {
+        return 400;
     }
 }
 
 class Unauthorized implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Unauthorized!"};
+    getErrorMessage(): string {
+        return "Unauthorized!";
+    }
+    getStatusCode(): number {
+        return 401;
     }
 }
 
 class MissingHeader implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Header Mancante!"};
+    getErrorMessage(): string {
+        return "Header Mancante!";
+    }
+    getStatusCode(): number {
+        return 400;
     }
 }
 
 class MissingToken implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Token Mancante!"};
+    getErrorMessage(): string {
+        return "Token Mancante!";
+    }
+    getStatusCode(): number {
+        return 400;
     }
 }
 
 class InvalidToken implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Token non valido!"};
+    getErrorMessage(): string {
+        return "Token non valido!";
+    }
+    getStatusCode(): number {
+        return 403;
     }
 }
 
 class MalformedPayload implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Malformed payload!"};
+    getErrorMessage(): string {
+        return "Malformed payload!";
+    }
+    getStatusCode(): number {
+        return 400;
     }
 }
 
 class UserNotFound implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Utente non trovato!"};
+    getErrorMessage(): string {
+        return "Utente non trovato!";
+    }
+    getStatusCode(): number {
+        return 404;
     }
 }
 
 class AdminNotFound implements ErrorMessage {
-    getErrorMessage(): object {
-        return {error: "Admin non trovato!"};
+    getErrorMessage(): string {
+        return "Admin non trovato!";
+    }
+    getStatusCode(): number {
+        return 404;
     }
 }
 
 class MailNotFound implements ErrorMessage {
-    getErrorMessage() {
-        return {error: "Mail non trovata!"};
+    getErrorMessage(): string {
+        return "Mail non trovata!";
     }
+    getStatusCode(): number {
+        return 404;
+    }
+}
+
+class InvalidNode implements ErrorMessage {
+    getErrorMessage(): string {
+        return "I nodi devono essere identificati dal tipo stringa!"
+    }
+    getStatusCode(): number {
+        return 400;
+    }
+
 }
 
 class EmptyNode implements ErrorMessage {
-    getErrorMessage() {
-        return {error: "I nodi non possono essere vuoti!"};
+    getErrorMessage(): string {
+        return "I nodi non possono essere vuoti!";
+    }
+    getStatusCode(): number {
+        return 400;
     }
 }
 
-class InvalidStartWeight implements ErrorMessage {
-    getErrorMessage() {
-        return {error: "Il peso di partenza deve essere un numero!"};
+class NaNWeight implements ErrorMessage {
+    getErrorMessage(): string {
+        return "Il valore del peso deve essere un numero!";
+    }
+    getStatusCode(): number {
+        return 403;
     }
 }
-
-class InvalidStopWeight implements ErrorMessage {
-    getErrorMessage() {
-        return {error: "Il peso di arrivo deve essere un numero!"};
-    }
-}
-
 class InvalidWeights implements ErrorMessage {
-    getErrorMessage() {
-        return {error: "Il peso di arrivo deve essere maggiore del peso di partenza!"};
+    getErrorMessage(): string {
+        return "Il peso di arrivo deve essere maggiore del peso di partenza!";
+    }
+    getStatusCode(): number {
+        return 403;
     }
 }
 
 class NaNStep implements ErrorMessage {
-    getErrorMessage() {
-        return {error: "Il valore del passo deve essere un numero!"};
+    getErrorMessage(): string {
+        return "Il valore del passo deve essere un numero!";
+    }
+    getStatusCode(): number {
+        return 400;
     }
 }
 
 class NegativeStep implements ErrorMessage {
-    getErrorMessage() {
-        return {error: "Il valore del passo deve essere positivo!"};
+    getErrorMessage(): string {
+        return "Il valore del passo deve essere positivo!";
+    }
+    getStatusCode(): number {
+        return 403;
     }
 }
 
 class InvalidStep implements ErrorMessage {
-    getErrorMessage() {
-        return {error: "Il valore del passo non è ammissibile"};
+    getErrorMessage(): string {
+        return "Il valore del passo non è ammissibile";
+    }
+    getStatusCode(): number {
+        return 403;
     }
 }
 
+/**
+ * Classe che rappresenta effettivamente la Factory e che permette di gestire
+ * le possibili eccezioni sollevate negli strati middleware
+ */
 export class ErrorFactory {
     constructor() {
     }
 
+    /* Funzione invocata dagli strati middleware che restituisce il messaggio
+    di errore e lo status code in base al parametro passato */
     public getError(errType: ErrEnum): ErrorMessage {
         let valErr: ErrorMessage;
         switch(errType) {
@@ -169,14 +231,14 @@ export class ErrorFactory {
             case ErrEnum.MailNotFound:
                 valErr = new MailNotFound();
                 break;
+            case ErrEnum.InvalidNode:
+                valErr = new InvalidNode();
+                break;
             case ErrEnum.EmptyNode:
                 valErr = new EmptyNode();
                 break;
-            case ErrEnum.InvalidStartWeight:
-                valErr = new InvalidStartWeight();
-                break;
-            case ErrEnum.InvalidStopWeight:
-                valErr = new InvalidStopWeight();
+            case ErrEnum.NaNWeight:
+                valErr = new NaNWeight();
                 break;
             case ErrEnum.InvalidWeights:
                 valErr = new InvalidWeights();
@@ -190,7 +252,6 @@ export class ErrorFactory {
             case ErrEnum.InvalidStep:
                 valErr = new InvalidStep();
                 break;
-
             default:
                 console.log("Non previsto");
                 valErr = new GenericError()
