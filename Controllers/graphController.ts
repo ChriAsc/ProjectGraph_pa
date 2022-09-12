@@ -159,14 +159,14 @@ export class graphController {
     public startSimulation = async (req, res, next) => {
         const graphModel = new GraphModel();
         try {
-            // prima si memorizzano tutte le variabili del body, dato che sono varie
-            let node_1: string = req.body.startNode;
-            let node_2: string = req.body.goalNode;
-            let start_weight: number = req.body.startWeight;
-            let stop_weight: number = req.body.stopWeight;
-            let step: number = req.body.step;
-            let start_node: string = req.body.startNode;
-            let goal_node: string = req.body.goalNode;
+            // variabili del body
+            let node_1: string = req.body.fNode;                // estremo dell'arco da cambiare
+            let node_2: string = req.body.sNode;                // l'altro estremo dell'arco da cambiare
+            let start_weight: number = req.body.startWeight;    // peso iniziale
+            let stop_weight: number = req.body.stopWeight;      // peso finale
+            let step: number = req.body.step;                   // passo
+            let start_node: string = req.body.startNode;        // nodo di partenza
+            let goal_node: string = req.body.goalNode;          // nodo di arrivo
             let result: string[] = [];
             let best: any;
             let best_struct: any;
