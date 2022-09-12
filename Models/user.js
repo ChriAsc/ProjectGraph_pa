@@ -89,10 +89,13 @@ var User = /** @class */ (function () {
         }); };
         /* Metodo necessario per aggiornare il credito dell'utente, passando anche il nuovo credito */
         this.updateBudget = function (name, credit) { return __awaiter(_this, void 0, void 0, function () {
+            var new_budget;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.user.update({ budget: credit }, { where: { username: name } })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1:
+                        new_budget = _a.sent();
+                        return [2 /*return*/, new_budget];
                 }
             });
         }); };
