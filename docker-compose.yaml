@@ -19,7 +19,7 @@ services:
         environment:
           - PORT=${PORT}
           - EXTERNAL_PORT=${EXTERNAL_PORT}
-          - HOST=${MYSQL_HOST}
+          - HOST=${HOST}
           - USERNAME=${MYSQL_USER}
           - PASSWORD=${MYSQL_PASSWORD}
           - MYSQL_PORT=${MYSQL_PORT}
