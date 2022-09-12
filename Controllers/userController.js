@@ -47,7 +47,7 @@ var userController = /** @class */ (function () {
         var _this = this;
         /* Metodo che consente ad un admin di effettuare la ricarica per un utente */
         this.rechargeUser = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var Us, specific_user, old, new_budget, err_1;
+            var Us, specific_user, old, new_budget, fooo, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -64,7 +64,7 @@ var userController = /** @class */ (function () {
                         new_budget = old + parseFloat(req.user.budget);
                         return [4 /*yield*/, specific_user.updateBudget(specific_user.username, new_budget)];
                     case 4:
-                        _a.sent(); // ricarica effettiva
+                        fooo = _a.sent();
                         res.status(200).send("La ricarica a " + specific_user.username + " è avvenuta con successo!");
                         next();
                         return [3 /*break*/, 6];

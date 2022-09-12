@@ -66,7 +66,7 @@ export class User implements interfaceUser {
 
     /* Metodo necessario per aggiornare il credito dell'utente, passando anche il nuovo credito */
     public updateBudget = async (name: string, credit: number) => {
-        await this.user.update({ budget: credit }, { where: { username: name} });
+        return await this.user.update({ budget: credit }, { where: { username: name} });
     }
 
 }
