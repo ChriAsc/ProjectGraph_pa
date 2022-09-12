@@ -62,6 +62,7 @@ export class Execution implements interfaceExec {
         await this.execution.create({ exec_time: ex_time, model: idModel, start_node: start, goal_node: goal, cost_path: pathCost, opt_path: path, exec_cost: total_cost});
         let obj = {Optimal_path: path, Start_node: start, Goal_node: goal, Path_cost: pathCost, Execution_time: ex_time, Execution_cost: total_cost};
         let jsonExec: string = JSON.stringify(obj);
+        // si restituisce l'esecuzione appena aggiunta in JSON
         return jsonExec;
     }
 

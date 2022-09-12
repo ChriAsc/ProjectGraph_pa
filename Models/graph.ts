@@ -43,8 +43,9 @@ export class GraphModel implements interfaceGraph {
     public addGraphModel = async (username: string, objGraph: any, version?: number) => {
         const jsonGraph = JSON.stringify(objGraph);
         if((typeof version) === "number") {
-        let model = await this.graph.create({ creator: username, graph_struct: jsonGraph, model_version: version });
-        return model;
+            // se specificato, viene aggiunto anche il numero della versione al momento della creazione
+            let model = await this.graph.create({ creator: username, graph_struct: jsonGraph, model_version: version });
+            return model;
         } else {
             let model = await this.graph.create({ creator: username, graph_struct: jsonGraph });
             return model;
@@ -53,9 +54,11 @@ export class GraphModel implements interfaceGraph {
     
     /* Metodo utile ad ottenere i modelli associati all'utente, specificando anche il numero di nodi e di archi */
     public getGraphModels = async (username: string, nr_nodes: number, nr_edges: number) => {
-        
         let graphs: any = await this.graph.findAll({ attributes: ['graph_struct'], where: { creator: username } });
-        let filteredGraphs: any = await graphs.filter(async (element) => { (await this.getNrNodes(element) === nr_nodes && await this.getNrEdges(element) === nr_edges) }).map(async (item) => { await this.graph.findAll({ where: { graph_struct: item } }) });
+        // si scelgono solamente i grafi che hanno il numero di nodi e di archi specificato
+        let filteredGraphs: any = await graphs.filter(async (element) => {
+            (await this.getNrNodes(element) === nr_nodes && await this.getNrEdges(element) === nr_edges) })
+            .map(async (item) => { await this.graph.findAll({ where: { graph_struct: item } }) });
         return filteredGraphs;
     }
 
@@ -79,20 +82,22 @@ export class GraphModel implements interfaceGraph {
     
     /* Metodo utile a cambiare il peso di un particolare arco, specificando l'id, entrambi gli estremi e il nuovo peso da assegnare, ritornando il nuovo grafo */
     public changeWeight = async (idModel: number, firstNode: string, secondNode: string, new_weight: number) => {
+        // prima un check aggiuntivo sul tipo dei nodi
         if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
             throw new TypeError('I nodi inseriti non sono di tipo stringa!')
         } else {        
             let graph: any = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
             let objGraph: object = JSON.parse(graph);
-
+            // è più facile accedere ai valori e controllare se l'arco esiste
             if(objGraph[firstNode][secondNode] === undefined) throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!");
             else {
                 objGraph[firstNode][secondNode] = new_weight;
-
-                if(objGraph[firstNode][secondNode] !== undefined) {
+                /*
+                if(objGraph[secondNode][firstNode] !== undefined) {
+                    // se esiste anche l'arco inverso, viene cambiato anche il suo peso (non necessariamente)
                     objGraph[secondNode][firstNode] = new_weight;
                 }
-
+                */
                 return objGraph;
             }
         }
@@ -105,6 +110,7 @@ export class GraphModel implements interfaceGraph {
         } else {
         let graph: string = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
         let objGraph: object = JSON.parse(graph);
+        // è più facile accedere ai valori e controllare se l'arco esiste
         if(objGraph[firstNode][secondNode] === undefined) throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!")
         else {
             let edgeWeight: number = objGraph[firstNode][secondNode];
@@ -119,9 +125,10 @@ export class GraphModel implements interfaceGraph {
         let node_cost: number = 0.25;
         let edge_cost = 0.01;
 
-        var node_number: number = await this.getNrNodes(objGraph);
-        var edge_number: number = await this.getNrEdges(objGraph);
+        var node_number: number = await this.getNrNodes(objGraph);  //numero di nodi
+        var edge_number: number = await this.getNrEdges(objGraph);  // numero di archi
 
+        // calcolo del costo totale in base ai valori settati
         total_cost = (node_number * node_cost) + (edge_number * edge_cost);
 
         return total_cost;
@@ -129,6 +136,7 @@ export class GraphModel implements interfaceGraph {
 
     /* Metodo necessario per conoscere il numero di nodi di un grafo */
     public getNrNodes = async (objGraph: any) => {
+        // i nodi sono identificati dalle chiavi "esterne"
         const node_number: number = Object.keys(objGraph).length;
         return node_number;
     }
@@ -138,7 +146,8 @@ export class GraphModel implements interfaceGraph {
         let edges: number = 0;
         for (const x in objGraph) {
             let actual_node = objGraph[x];
-            let edge_number: number = Object.keys(actual_node).length;
+            // gli archi sono identificati dalle chiavi "interne" (cioè il numero dei nodi vicini al nodo)
+            let edge_number: number = Object.keys(actual_node).length;  
             edges += edge_number;
         }
         return edges;

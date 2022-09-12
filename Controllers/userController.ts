@@ -10,11 +10,11 @@ export class userController {
     public rechargeUser = async (req, res, next) => {
         const Us: any = new User();
         try {
-            let usr: any = await Us.findByEmail(req.user.mail);
-            let old: number = await Us.getBudget(usr.username);
-            let new_budget: number = old + parseFloat(req.user.budget);
-            await usr.updateBudget(usr.username, new_budget);
-            res.status(200).send("La ricarica a " + usr.username + " è avvenuta con successo!");
+            let specific_user: any = await Us.findByEmail(req.user.mail); // si cerca prima lo user tramite mail
+            let old: number = await Us.getBudget(specific_user.username); // si ottiene il budget tramite il nome
+            let new_budget: number = old + parseFloat(req.user.budget); // si calcola il nuovo budget, aggiungendo quello vecchio
+            await specific_user.updateBudget(specific_user.username, new_budget);   // ricarica effettiva
+            res.status(200).send("La ricarica a " + specific_user.username + " è avvenuta con successo!");
             next();
         } catch (err) {
             next(ErrEnum.BadRequest);
