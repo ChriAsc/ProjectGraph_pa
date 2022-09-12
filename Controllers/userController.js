@@ -61,7 +61,7 @@ var userController = /** @class */ (function () {
                         return [4 /*yield*/, Us.getBudget(specific_user.username)];
                     case 3:
                         old = _a.sent();
-                        new_budget = old + req.user.budget;
+                        new_budget = old + parseFloat(req.user.budget);
                         return [4 /*yield*/, specific_user.updateBudget(specific_user.username, new_budget)];
                     case 4:
                         _a.sent(); // ricarica effettiva
