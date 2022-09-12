@@ -1,4 +1,5 @@
 import { User } from "../Models/user";
+import { ErrEnum } from "../Factory/errorFactory"
 
 const jwt = require('jsonwebtoken');
 
@@ -11,7 +12,7 @@ export const checkHeader = (req, res, next) => {
     if (authHeader) {
         next();
     } else {
-        var err = new Error('Header mancante!');
+        var err = ErrEnum.MissingHeader;
         next(err);
     }
 }
@@ -24,12 +25,9 @@ export const checkToken = (req, res, next) => {
             const bearerToken = bearerHeader.split(' ')[1];
             req.token = bearerToken;
             next();
-        } else {
-            var err = new Error ('Token non corretto!');
-            next(err);
         }
     } catch (err) {
-        next(err);
+        next(ErrEnum.MissingToken);
     }
 }
 
@@ -41,12 +39,8 @@ export const verifyAndAuthenticate = (req, res, next) => {
             req.user = decodedPayload;
             next();
         }
-        else {
-            var err = new Error('Autenticazione fallita!')
-            next(err);
-        }
     } catch (err) {
-        next(err);
+        next(ErrEnum.InvalidToken);
     }
 }
 
@@ -54,14 +48,14 @@ export const verifyAndAuthenticate = (req, res, next) => {
 export const checkUser = async (req, res, next) => {
     try {
         if(req.user.main_role !== 1) {
-            var err = new Error('Ammesso solo ruolo user!');
+            var err = ErrEnum.Unauthorized;
             next(err);
         } else {
             const usr: any = new User();
-            await usr.findByName(req.user.username).catch(err => new Error('User non trovato!'));
+            await usr.findByName(req.user.username);
             next();
     }
     } catch(err) {
-        next(err);
+        next(ErrEnum.UserNotFound);
     }
 }

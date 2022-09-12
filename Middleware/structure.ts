@@ -1,49 +1,52 @@
+import { ErrEnum } from "../Factory/errorFactory";
+
 const Graph = require('node-dijkstra');
 
 export const checkStructure = (req, res, next) => {
     try {
         let obj: object = req.body.graph;
         if(typeof obj === 'undefined') {
-            res.sendStatus(400);
+            next(ErrEnum.BadRequest)
         } else {
             let nodeCheck = Object.keys(obj).filter(element => element === '');
             let foo = Object.values(obj);
             let edgeCheck = foo.filter(element => element['']);
             if (nodeCheck.length != 0 || edgeCheck.length != 0) {
-                res.status(400).send({"Errore": "I nodi non possono essere vuoti!"});
+                next(ErrEnum.EmptyNode)
             } else {
                 let check = new Graph(obj);
                 next();
             }
         }
     } catch (err) {
-        next(err);
+        next(ErrEnum.MalformedPayload);
     }
 }
 
 export const checkWeight = (req, res, next) => {
     try {
 
-        if(typeof req.body.startWeight !== "number") res.status(400).send("Il peso di partenza deve essere un numero!")
-        if(typeof req.body.stopWeight !== "number") res.status(400).send("Il peso di arrivo deve essere un numero!")
+        if(typeof req.body.startWeight !== "number") next(ErrEnum.InvalidStartWeight);
+        if(typeof req.body.stopWeight !== "number") next(ErrEnum.InvalidStopWeight);
 
         let start: number = req.body.startWeight;
         let stop: number = req.body.stopWeight;
         if (start >= stop) {
-            res.status(400).send({"Errore": "Il peso di arrivo deve essere maggiore del peso di partenza!"});
+            var err = ErrEnum.InvalidWeights;
+            next(err);
         }
-        if(typeof req.body.step !== "number") res.status(400).send("Il valore del passo deve essere un numero!")
+        if(typeof req.body.step !== "number") next(ErrEnum.NaNStep);
         
         let step: number = req.body.step;
         if (step <= 0) {
-            res.status(400).send({"Errore": "Il valore del passo deve essere positivo!"})
+            var err = ErrEnum.NegativeStep;
+            next(err);
         }
 
-        if(step >= (stop-start)) {
-            res.status(400).send({"Errore": "Il valore del passo non è ammissibile"})
+        if(step < (stop-start)) {
+            next();
         }
-        next();
     } catch(err) {
-        next(err);
+        next(ErrEnum.InvalidStep);
     }
 }
