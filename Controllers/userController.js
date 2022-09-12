@@ -58,11 +58,10 @@ var userController = /** @class */ (function () {
                         return [4 /*yield*/, Us.findByEmail(req.user.mail)];
                     case 2:
                         specific_user = _a.sent();
-                        return [4 /*yield*/, Us.getBudget(specific_user.username)];
+                        return [4 /*yield*/, Us.getBudgetByEmail(req.user.mail)];
                     case 3:
                         old = _a.sent();
                         new_budget = old + parseFloat(req.user.budget);
-                        console.log(new_budget);
                         return [4 /*yield*/, specific_user.updateBudget(specific_user.username, new_budget)];
                     case 4:
                         fooo = _a.sent();

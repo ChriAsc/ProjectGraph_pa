@@ -64,6 +64,11 @@ export class User implements interfaceUser {
         return budget;
     }
 
+    public getBudgetByEmail = async (email: string) => {
+        let budget: number = await this.user.findOne({ attributes: ['budget'], where: { mail: email}});
+        return budget;
+    }
+
     /* Metodo necessario per aggiornare il credito dell'utente, passando anche il nuovo credito */
     public updateBudget = async (name: string, credit: number) => {
         let new_budget = await this.user.update({ budget: credit }, { where: { username: name} });
