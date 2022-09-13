@@ -122,9 +122,9 @@ export class graphController {
             let filteredGraphs: any = await models.filter(async (element) => {
                 (await graphModel.getNrNodes(element.graph_struct) === nr_nodes && await graphModel.getNrEdges(element.graph_struct) === nr_edges) })
                 .map(e => e.graph_struct = JSON.parse(e.graph_struct));
+            
             // per riportarla in JSON correttamente
             let result = JSON.stringify(filteredGraphs)
-            console.log(result);
 
             res.status(201).send("Modelli disponibili con " + nr_nodes + " nodi e " + nr_edges + " archi:\n" + result);
             next();
