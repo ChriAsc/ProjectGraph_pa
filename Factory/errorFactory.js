@@ -161,7 +161,7 @@ var InvalidNode = /** @class */ (function () {
     function InvalidNode() {
     }
     InvalidNode.prototype.getErrorMessage = function () {
-        return "I nodi devono essere identificati dal tipo stringa!";
+        return "I nodi devono essere estremi di un arco esistente!";
     };
     InvalidNode.prototype.getStatusCode = function () {
         return 400;
@@ -227,7 +227,7 @@ var InvalidStep = /** @class */ (function () {
     function InvalidStep() {
     }
     InvalidStep.prototype.getErrorMessage = function () {
-        return "Il valore del passo non è ammissibile";
+        return "Il valore del passo deve essere in un range ammissabile!";
     };
     InvalidStep.prototype.getStatusCode = function () {
         return 403;

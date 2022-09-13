@@ -85,8 +85,9 @@ export class GraphModel implements interfaceGraph {
             throw new TypeError('I nodi inseriti non sono di tipo stringa!')
         } else {        
             let objGraph: any = await this.getGraphStruct(idModel);
+            console.log(JSON.stringify(objGraph))
             // è più facile accedere ai valori e controllare se l'arco esiste
-            if(objGraph[firstNode][secondNode] === undefined) throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!");
+            if (objGraph[firstNode][secondNode] === undefined) throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!");
             else {
                 objGraph[firstNode][secondNode] = new_weight;
                 /*

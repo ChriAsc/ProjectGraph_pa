@@ -64,11 +64,14 @@ var Execution = /** @class */ (function () {
         }); };
         /* Metodo utile ad ottenere tutte le esecuzioni */
         this.getAllExec = function () { return __awaiter(_this, void 0, void 0, function () {
-            var execs;
+            var model, execs;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.execution.findAll({ exclude: ['opt_path'] })];
+                    case 0: return [4 /*yield*/, this.execution.findAll({ raw: true })];
                     case 1:
+                        model = _a.sent();
+                        return [4 /*yield*/, model.map(function (e) { return e = { exec_id: e.exec_id, exec_time: e.exec_time, exec_cost: e.exec_cost, model: e.model, cost_path: e.cost_path, start_node: e.start_node, goal_node: e.goal_node }; })];
+                    case 2:
                         execs = _a.sent();
                         return [2 /*return*/, execs];
                 }

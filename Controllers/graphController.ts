@@ -121,7 +121,7 @@ export class graphController {
             // si scelgono solamente i grafi che hanno il numero di nodi e di archi specificato
             let filteredGraphs: any = await models.filter(async (element) => {
                 (await graphModel.getNrNodes(element.graph_struct) === nr_nodes && await graphModel.getNrEdges(element.graph_struct) === nr_edges) })
-                .map(e => e.graph_struct = JSON.parse(e.graph_struct));
+                .map(e => e = { model_id: e.model_id, graph_struct: JSON.parse(e.graph_struct), model_version: e.model_version});
             
             // per riportarla in JSON correttamente
             let result = JSON.stringify(filteredGraphs)
@@ -185,33 +185,42 @@ export class graphController {
             let step: number = req.body.step;                   // passo
             let start_node: string = req.body.startNode;        // nodo di partenza
             let goal_node: string = req.body.goalNode;          // nodo di arrivo
+
+            if(step > (stop_weight - start_weight)) next(ErrEnum.InvalidStep);
             let result: string[] = [];
             let best: any;
             let best_struct: any;
 
-            for(let i = start_weight; i <= stop_weight; i+step) {
+            let tmp: number = start_weight;
+            let limit: number = (stop_weight - start_weight)/step;
+
+            for(let i = 0; i <= limit; i++) {
                 // per ogni passo, si effettua un cambio di peso
-                var graph_struct = await graphModel.changeWeight(req.body.id, node_1, node_2, i).catch(e => next(ErrEnum.InvalidNode));
+                var graph_struct = await graphModel.changeWeight(req.body.id, node_1, node_2, tmp).catch(e => next(ErrEnum.InvalidNode));
+                
                 var route = new Graph(graph_struct);
                 var resultObj: any = await route.path(start_node, goal_node, { cost: true });
 
+                result.push(resultObj);
                 // alla prima iterazione il best sarà sicuramente il valore attuale
-                if(i==start_weight) {
+                if(tmp==start_weight) {
                     best = resultObj;
                     best_struct = graph_struct;
                 }
-
+                
                 // si confronta il best con quello attuale
                 if (resultObj.cost < best.cost) {
                     best = resultObj;
                     best_struct = graph_struct;
                 }
                 // per ogni iterazione si aggiunge il risultato sottoforma di JSON
-                var resultJson = JSON.stringify(resultObj);
-                result.push(resultJson);
+               
+                //console.log(result);
+                tmp += step;
             }
 
-            res.status(200).send("Risultati della simulazione\n" + result + "\nConfigurazione migliore e percorso ottimo: " + best_struct + "\n" + best);
+            var resultJson = JSON.stringify(result);    // JSON
+            res.status(200).send("Risultati della simulazione\n" + resultJson + "\nConfigurazione migliore e percorso ottimo: " + JSON.stringify(best_struct) + "\n" + JSON.stringify(best));
             
             next();
         } catch (err) {

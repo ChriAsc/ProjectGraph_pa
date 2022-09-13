@@ -230,11 +230,10 @@ var graphController = /** @class */ (function () {
                                     }
                                 });
                             }); })
-                                .map(function (e) { return e.graph_struct = JSON.parse(e.graph_struct); })];
+                                .map(function (e) { return e = { model_id: e.model_id, graph_struct: JSON.parse(e.graph_struct), model_version: e.model_version }; })];
                     case 3:
                         filteredGraphs = _a.sent();
                         result = JSON.stringify(filteredGraphs);
-                        console.log(result);
                         res.status(201).send("Modelli disponibili con " + nr_nodes_1 + " nodi e " + nr_edges_1 + " archi:\n" + result);
                         next();
                         return [3 /*break*/, 5];
@@ -321,7 +320,7 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che consente di effettuare una simulazione */
         this.startSimulation = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, node_1, node_2, start_weight, stop_weight, step, start_node, goal_node, result, best, best_struct, i, graph_struct, route, resultObj, resultJson, err_7;
+            var graphModel, node_1, node_2, start_weight, stop_weight, step, start_node, goal_node, result, best, best_struct, tmp, limit, i, graph_struct, route, resultObj, resultJson, err_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -336,22 +335,27 @@ var graphController = /** @class */ (function () {
                         step = req.body.step;
                         start_node = req.body.startNode;
                         goal_node = req.body.goalNode;
+                        if (step > (stop_weight - start_weight))
+                            next(errorFactory_1.ErrEnum.InvalidStep);
                         result = [];
                         best = void 0;
                         best_struct = void 0;
-                        i = start_weight;
+                        tmp = start_weight;
+                        limit = (stop_weight - start_weight) / step;
+                        i = 0;
                         _a.label = 2;
                     case 2:
-                        if (!(i <= stop_weight)) return [3 /*break*/, 6];
-                        return [4 /*yield*/, graphModel.changeWeight(req.body.id, node_1, node_2, i)["catch"](function (e) { return next(errorFactory_1.ErrEnum.InvalidNode); })];
+                        if (!(i <= limit)) return [3 /*break*/, 6];
+                        return [4 /*yield*/, graphModel.changeWeight(req.body.id, node_1, node_2, tmp)["catch"](function (e) { return next(errorFactory_1.ErrEnum.InvalidNode); })];
                     case 3:
                         graph_struct = _a.sent();
                         route = new Graph(graph_struct);
                         return [4 /*yield*/, route.path(start_node, goal_node, { cost: true })];
                     case 4:
                         resultObj = _a.sent();
+                        result.push(resultObj);
                         // alla prima iterazione il best sarà sicuramente il valore attuale
-                        if (i == start_weight) {
+                        if (tmp == start_weight) {
                             best = resultObj;
                             best_struct = graph_struct;
                         }
@@ -360,14 +364,16 @@ var graphController = /** @class */ (function () {
                             best = resultObj;
                             best_struct = graph_struct;
                         }
-                        resultJson = JSON.stringify(resultObj);
-                        result.push(resultJson);
+                        // per ogni iterazione si aggiunge il risultato sottoforma di JSON
+                        //console.log(result);
+                        tmp += step;
                         _a.label = 5;
                     case 5:
-                        i + step;
+                        i++;
                         return [3 /*break*/, 2];
                     case 6:
-                        res.status(200).send("Risultati della simulazione\n" + result + "\nConfigurazione migliore e percorso ottimo: " + best_struct + "\n" + best);
+                        resultJson = JSON.stringify(result);
+                        res.status(200).send("Risultati della simulazione\n" + resultJson + "\nConfigurazione migliore e percorso ottimo: " + JSON.stringify(best_struct) + "\n" + JSON.stringify(best));
                         next();
                         return [3 /*break*/, 8];
                     case 7:

@@ -35,6 +35,7 @@ var checkWeight = function (req, res, next) {
             next(errorFactory_1.ErrEnum.NaNWeight);
         var start = req.body.startWeight;
         var stop_1 = req.body.stopWeight;
+        var range = stop_1 - start;
         if (start >= stop_1 || start < 0) {
             var err = errorFactory_1.ErrEnum.InvalidWeights;
             next(err);
@@ -46,12 +47,13 @@ var checkWeight = function (req, res, next) {
             var err = errorFactory_1.ErrEnum.NegativeStep;
             next(err);
         }
-        if (step < (stop_1 - start)) {
-            next();
+        if (step > range) {
+            var err = errorFactory_1.ErrEnum.InvalidStep;
         }
+        next();
     }
     catch (err) {
-        next(errorFactory_1.ErrEnum.InvalidStep);
+        next(errorFactory_1.ErrEnum.Generic);
     }
 };
 exports.checkWeight = checkWeight;

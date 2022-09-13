@@ -31,6 +31,8 @@ export const checkWeight = (req, res, next) => {
 
         let start: number = req.body.startWeight;
         let stop: number = req.body.stopWeight;
+        let range: number = stop - start;
+
         if (start >= stop || start < 0) {
             var err = ErrEnum.InvalidWeights;
             next(err);
@@ -43,10 +45,11 @@ export const checkWeight = (req, res, next) => {
             next(err);
         }
 
-        if(step < (stop-start)) {
-            next();
+        if(step > range) {
+            var err = ErrEnum.InvalidStep;
         }
+        next();
     } catch(err) {
-        next(ErrEnum.InvalidStep);
+        next(ErrEnum.Generic);
     }
 }

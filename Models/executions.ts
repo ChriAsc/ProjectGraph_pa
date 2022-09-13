@@ -68,7 +68,8 @@ export class Execution implements interfaceExec {
 
     /* Metodo utile ad ottenere tutte le esecuzioni */
     public getAllExec = async () => {
-        let execs: any = await this.execution.findAll({ exclude: ['opt_path']});
+        let model: any = await this.execution.findAll({raw: true});
+        let execs = await model.map(e => e = { exec_id: e.exec_id, exec_time: e.exec_time, exec_cost: e.exec_cost, model: e.model, cost_path: e.cost_path, start_node: e.start_node, goal_node: e.goal_node });
         return execs;
     }
 

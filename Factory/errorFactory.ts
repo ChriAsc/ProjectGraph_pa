@@ -134,7 +134,7 @@ class InvalidBudget implements ErrorMessage {
 
 class InvalidNode implements ErrorMessage {
     getErrorMessage(): string {
-        return "I nodi devono essere identificati dal tipo stringa!"
+        return "I nodi devono essere estremi di un arco esistente!"
     }
     getStatusCode(): number {
         return 400;
@@ -188,7 +188,7 @@ class NegativeStep implements ErrorMessage {
 
 class InvalidStep implements ErrorMessage {
     getErrorMessage(): string {
-        return "Il valore del passo non è ammissibile";
+        return "Il valore del passo deve essere in un range ammissabile!";
     }
     getStatusCode(): number {
         return 403;
