@@ -6,13 +6,13 @@ CREATE TABLE IF NOT EXISTS users (
 username VARCHAR(255) NOT NULL PRIMARY KEY,
 main_role INT NOT NULL,
 mail  VARCHAR(255) NOT NULL UNIQUE,
-budget DECIMAL(5,2) NOT NULL
+budget DECIMAL(4,2) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS graphmodels (
 model_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 creator VARCHAR(50) NOT NULL,
-graph_struct JSON NOT NULL,
+graph_struct VARCHAR(10000) NOT NULL,
 model_version INT NOT NULL
 );
 
@@ -24,14 +24,14 @@ start_node VARCHAR(10) NOT NULL,
 goal_node VARCHAR(10) NOT NULL,
 cost_path DECIMAL(5,2) NOT NULL,
 opt_path VARCHAR(10000) NOT NULL,
-exec_cost DECIMAL(5,2) NOT NULL
+exec_cost DECIMAL(4,2) NOT NULL
 );
 
 USE optimization;
 
 INSERT INTO users(username,main_role,mail,budget) VALUES 
 ('mario_rossi',1,'mario@rossi.com',10.00),
-('giuseppe_verdi',1,'giuseppe@verdi.com',10.00),
+('giuseppe_verdi',1,'giuseppe@verdi.com',0.05),
 ('admin',2,'admin@admin.com',0);
   
 INSERT INTO graphmodels(creator,graph_struct,model_version) VALUES

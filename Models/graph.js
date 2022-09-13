@@ -65,55 +65,27 @@ var GraphModel = /** @class */ (function () {
             });
         }); };
         /* Metodo utile ad ottenere i modelli associati all'utente, specificando anche il numero di nodi e di archi */
-        this.getGraphModels = function (username, nr_nodes, nr_edges) { return __awaiter(_this, void 0, void 0, function () {
-            var graphs, filteredGraphs;
-            var _this = this;
+        this.getGraphModels = function (username) { return __awaiter(_this, void 0, void 0, function () {
+            var model;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.graph.findAll({ attributes: ['graph_struct'], where: { creator: username } })];
+                    case 0: return [4 /*yield*/, this.graph.findAll({ raw: true, where: { creator: username } })];
                     case 1:
-                        graphs = _a.sent();
-                        return [4 /*yield*/, graphs.filter(function (element) { return __awaiter(_this, void 0, void 0, function () {
-                                var _a;
-                                return __generator(this, function (_b) {
-                                    switch (_b.label) {
-                                        case 0: return [4 /*yield*/, this.getNrNodes(element)];
-                                        case 1:
-                                            _a = (_b.sent()) === nr_nodes;
-                                            if (!_a) return [3 /*break*/, 3];
-                                            return [4 /*yield*/, this.getNrEdges(element)];
-                                        case 2:
-                                            _a = (_b.sent()) === nr_edges;
-                                            _b.label = 3;
-                                        case 3:
-                                            (_a);
-                                            return [2 /*return*/];
-                                    }
-                                });
-                            }); })
-                                .map(function (item) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0: return [4 /*yield*/, this.graph.findAll({ where: { graph_struct: item } })];
-                                    case 1:
-                                        _a.sent();
-                                        return [2 /*return*/];
-                                }
-                            }); }); })];
-                    case 2:
-                        filteredGraphs = _a.sent();
-                        return [2 /*return*/, filteredGraphs];
+                        model = _a.sent();
+                        return [2 /*return*/, model];
                 }
             });
         }); };
         /* Metodo utile ad ottenere il grafo di un particolare modello, cercandolo tramite l'id */
         this.getGraphStruct = function (idModel) { return __awaiter(_this, void 0, void 0, function () {
-            var graphStruct;
+            var model, graphStruct;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.graph.findOne({ attributes: ['graph_struct'], where: { modelId: idModel } })];
+                    case 0: return [4 /*yield*/, this.graph.findByPk(idModel)];
                     case 1:
-                        graphStruct = _a.sent();
-                        return [2 /*return*/, JSON.parse(graphStruct)];
+                        model = _a.sent();
+                        graphStruct = JSON.parse(model.graph_struct);
+                        return [2 /*return*/, graphStruct];
                 }
             });
         }); };
@@ -134,28 +106,28 @@ var GraphModel = /** @class */ (function () {
         }); };
         /* Metodo necessario per conoscere la versione del modello indicato dall'id */
         this.getVersion = function (idModel) { return __awaiter(_this, void 0, void 0, function () {
-            var v;
+            var model, v;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.graph.findOne({ attributes: ['model_version'], where: { model_id: idModel } })];
+                    case 0: return [4 /*yield*/, this.graph.findByPk(idModel)];
                     case 1:
-                        v = _a.sent();
+                        model = _a.sent();
+                        v = model.model_version;
                         return [2 /*return*/, v];
                 }
             });
         }); };
         /* Metodo utile a cambiare il peso di un particolare arco, specificando l'id, entrambi gli estremi e il nuovo peso da assegnare, ritornando il nuovo grafo */
         this.changeWeight = function (idModel, firstNode, secondNode, new_weight) { return __awaiter(_this, void 0, void 0, function () {
-            var graph, objGraph;
+            var objGraph;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) return [3 /*break*/, 1];
                         throw new TypeError('I nodi inseriti non sono di tipo stringa!');
-                    case 1: return [4 /*yield*/, this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel } })];
+                    case 1: return [4 /*yield*/, this.getGraphStruct(idModel)];
                     case 2:
-                        graph = _a.sent();
-                        objGraph = JSON.parse(graph);
+                        objGraph = _a.sent();
                         // è più facile accedere ai valori e controllare se l'arco esiste
                         if (objGraph[firstNode][secondNode] === undefined)
                             throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!");
@@ -176,16 +148,15 @@ var GraphModel = /** @class */ (function () {
         }); };
         /* Metodo utile ad ottenere il peso di un arco di un certo modello, specificando id del modello e i due estremi */
         this.getWeight = function (idModel, firstNode, secondNode) { return __awaiter(_this, void 0, void 0, function () {
-            var graph, objGraph, edgeWeight;
+            var objGraph, edgeWeight;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) return [3 /*break*/, 1];
                         throw new TypeError('I nodi inseriti non sono di tipo stringa!');
-                    case 1: return [4 /*yield*/, this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel } })];
+                    case 1: return [4 /*yield*/, this.getGraphStruct(idModel)];
                     case 2:
-                        graph = _a.sent();
-                        objGraph = JSON.parse(graph);
+                        objGraph = _a.sent();
                         // è più facile accedere ai valori e controllare se l'arco esiste
                         if (objGraph[firstNode][secondNode] === undefined)
                             throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!");
@@ -241,13 +212,14 @@ var GraphModel = /** @class */ (function () {
             });
         }); };
         this.getCreator = function (idModel) { return __awaiter(_this, void 0, void 0, function () {
-            var username;
+            var user, username;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.graph.findOne({ attributes: ['creator'], where: { modelId: idModel } })];
+                    case 0: return [4 /*yield*/, this.graph.findOne({ attributes: ['creator'], raw: true, where: { model_id: idModel } })];
                     case 1:
-                        username = _a.sent();
-                        return [2 /*return*/, username];
+                        user = _a.sent();
+                        username = user.creator;
+                        return [2 /*return*/, (username)];
                 }
             });
         }); };
@@ -264,7 +236,7 @@ var GraphModel = /** @class */ (function () {
                 allowNull: false
             },
             graph_struct: {
-                type: sequelize_1.DataTypes.JSON,
+                type: sequelize_1.DataTypes.STRING,
                 allowNull: false
             },
             model_version: {

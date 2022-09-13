@@ -60,13 +60,9 @@ export class User implements interfaceUser {
 
     /* Metodo utile ad ottenere il credito dell'utente, identificato grazie al nome passato come argomento */
     public getBudget = async (name: string) => {
-        let budget: number = await this.user.findOne({ attributes: ['budget'], where: { username: name}});
-        return budget;
-    }
-
-    public getBudgetByEmail = async (email: string) => {
-        let budget: number = await this.user.findOne({ attributes: ['budget'], where: { mail: email}});
-        return budget;
+        let usr: any = await this.findByName(name);
+        let credit: number = parseFloat(usr.budget);
+        return credit;
     }
 
     /* Metodo necessario per aggiornare il credito dell'utente, passando anche il nuovo credito */

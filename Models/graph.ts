@@ -25,7 +25,7 @@ export class GraphModel implements interfaceGraph {
                 allowNull: false
             },
             graph_struct: {
-                type: DataTypes.JSON,
+                type: DataTypes.STRING,
                 allowNull: false
             },
             model_version: {
@@ -53,19 +53,16 @@ export class GraphModel implements interfaceGraph {
     }
     
     /* Metodo utile ad ottenere i modelli associati all'utente, specificando anche il numero di nodi e di archi */
-    public getGraphModels = async (username: string, nr_nodes: number, nr_edges: number) => {
-        let graphs: any = await this.graph.findAll({ attributes: ['graph_struct'], where: { creator: username } });
-        // si scelgono solamente i grafi che hanno il numero di nodi e di archi specificato
-        let filteredGraphs: any = await graphs.filter(async (element) => {
-            (await this.getNrNodes(element) === nr_nodes && await this.getNrEdges(element) === nr_edges) })
-            .map(async (item) => { await this.graph.findAll({ where: { graph_struct: item } }) });
-        return filteredGraphs;
+    public getGraphModels = async (username: string,) => {
+        let model: any = await this.graph.findAll({ raw: true, where: { creator: username } });
+        return model;
     }
 
     /* Metodo utile ad ottenere il grafo di un particolare modello, cercandolo tramite l'id */
     public getGraphStruct = async (idModel: number) => {
-        let graphStruct: any = await this.graph.findOne({ attributes: ['graph_struct'], where: { modelId: idModel } });
-        return JSON.parse(graphStruct);
+        let model: any = await this.graph.findByPk(idModel);
+        let graphStruct: any = JSON.parse(model.graph_struct);
+        return graphStruct;
     }
 
     /* Metodo utile ad eliminare un particolare modello, specificando l'id corrispondente */
@@ -76,7 +73,8 @@ export class GraphModel implements interfaceGraph {
 
     /* Metodo necessario per conoscere la versione del modello indicato dall'id */
     public getVersion = async (idModel: number) => {
-        let v: number =  await this.graph.findOne({ attributes: ['model_version'], where: { model_id: idModel }});
+        let model: any = await this.graph.findByPk(idModel);
+        let v: number =  model.model_version;
         return v;
     }
     
@@ -86,8 +84,7 @@ export class GraphModel implements interfaceGraph {
         if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
             throw new TypeError('I nodi inseriti non sono di tipo stringa!')
         } else {        
-            let graph: any = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
-            let objGraph: object = JSON.parse(graph);
+            let objGraph: any = await this.getGraphStruct(idModel);
             // è più facile accedere ai valori e controllare se l'arco esiste
             if(objGraph[firstNode][secondNode] === undefined) throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!");
             else {
@@ -108,8 +105,7 @@ export class GraphModel implements interfaceGraph {
         if (!(this.assertType(firstNode, String) && this.assertType(secondNode, String))) {
             throw new TypeError('I nodi inseriti non sono di tipo stringa!')
         } else {
-        let graph: string = await this.graph.findOne({ attributes: ['graph_struct'], where: { model_id: idModel }});
-        let objGraph: object = JSON.parse(graph);
+        let objGraph: string = await this.getGraphStruct(idModel);
         // è più facile accedere ai valori e controllare se l'arco esiste
         if(objGraph[firstNode][secondNode] === undefined) throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!")
         else {
@@ -154,8 +150,9 @@ export class GraphModel implements interfaceGraph {
     }
 
     public getCreator = async (idModel: number) => {
-        let username: string = await this.graph.findOne({ attributes: ['creator'], where: { modelId: idModel } });
-        return username;
+        let user: any = await this.graph.findOne({ attributes: ['creator'], raw: true, where: { model_id: idModel } });
+        let username: string = user.creator;
+        return (username);
     }
 
     /* Metodo necessario per capire senza ambiguità se due oggetti sono dello stesso tipo */

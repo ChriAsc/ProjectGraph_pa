@@ -9,11 +9,12 @@ export class userController {
     /* Metodo che consente ad un admin di effettuare la ricarica per un utente */
     public rechargeUser = async (req, res, next) => {
         const Us: any = new User();
+        if(req.user.budget < 0) next(ErrEnum.InvalidBudget);
         try {
             let specific_user: any = await Us.findByEmail(req.user.mail); // si cerca prima lo user tramite mail
-            let old: number = specific_user.budget; // si ottiene il budget tramite il nome
+            let old: number = parseFloat(specific_user.budget);// si ottiene il budget tramite il nome
             let new_budget: number = old + req.user.budget; // si calcola il nuovo budget, aggiungendo quello vecchio
-            let fooo = await Us.updateBudget(specific_user.username, new_budget);   // ricarica effettiva
+            await Us.updateBudget(specific_user.username, new_budget);   // ricarica effettiva
             res.status(200).send("La ricarica a " + specific_user.username + " (" + new_budget +") è avvenuta con successo!");
             next();
         } catch (err) {

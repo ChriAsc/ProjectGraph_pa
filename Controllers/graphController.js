@@ -53,7 +53,7 @@ var graphController = /** @class */ (function () {
         var _this = this;
         /* Metodo che consente di inserire un nuovo modello */
         this.newGraphModel = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, userModel, total_cost, budget, new_model, new_budget, err_1;
+            var graphModel, userModel, total_cost, budget, new_budget, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -71,9 +71,12 @@ var graphController = /** @class */ (function () {
                         if (!(total_cost > budget)) return [3 /*break*/, 4];
                         next(errorFactory_1.ErrEnum.Unauthorized);
                         return [3 /*break*/, 7];
-                    case 4: return [4 /*yield*/, graphModel.addGraphModel(req.user.username, req.body.graph)];
+                    case 4: 
+                    // se lo user ha credito sufficiente, si può procedere con la creazione
+                    return [4 /*yield*/, graphModel.addGraphModel(req.user.username, req.body.graph)];
                     case 5:
-                        new_model = _a.sent();
+                        // se lo user ha credito sufficiente, si può procedere con la creazione
+                        _a.sent();
                         new_budget = budget - total_cost;
                         return [4 /*yield*/, userModel.updateBudget(req.user.username, new_budget)];
                     case 6:
@@ -93,91 +96,100 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che consente di eseguire un modello da parte di un utente */
         this.execModel = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, userModel, execModel, graph_struct, total_cost, budget, start, goal, route, start_time, resultObj, elapsed, weightCost, optPath, result, err_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var graphModel, userModel, execModel, graph_struct, total_cost, budget, new_budget, start, goal, route, start_time, resultObj, elapsed, weightCost, optPath, result, _a, _b, err_2;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         graphModel = new graph_1.GraphModel();
                         userModel = new user_1.User();
                         execModel = new executions_1.Execution();
-                        _a.label = 1;
+                        _c.label = 1;
                     case 1:
-                        _a.trys.push([1, 9, , 10]);
+                        _c.trys.push([1, 11, , 12]);
                         return [4 /*yield*/, graphModel.getGraphStruct(req.body.id)];
                     case 2:
-                        graph_struct = _a.sent();
+                        graph_struct = _c.sent();
                         return [4 /*yield*/, graphModel.getCost(graph_struct)];
                     case 3:
-                        total_cost = _a.sent();
+                        total_cost = _c.sent();
                         return [4 /*yield*/, userModel.getBudget(req.user.username)];
                     case 4:
-                        budget = _a.sent();
+                        budget = _c.sent();
                         if (!(total_cost > budget)) return [3 /*break*/, 5];
                         next(errorFactory_1.ErrEnum.Unauthorized);
-                        return [3 /*break*/, 8];
+                        return [3 /*break*/, 10];
                     case 5:
+                        new_budget = budget - total_cost;
+                        return [4 /*yield*/, userModel.updateBudget(req.user.username, new_budget)];
+                    case 6:
+                        _c.sent();
                         start = req.body.start;
                         goal = req.body.goal;
                         route = new Graph(graph_struct);
                         start_time = new Date().getTime();
                         return [4 /*yield*/, route.path(start, goal, { cost: true })];
-                    case 6:
-                        resultObj = _a.sent();
+                    case 7:
+                        resultObj = _c.sent();
                         elapsed = new Date().getTime() - start_time;
                         weightCost = resultObj.cost;
                         optPath = resultObj.path;
                         return [4 /*yield*/, execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost)];
-                    case 7:
-                        result = _a.sent();
-                        res.status(200).send(result);
-                        _a.label = 8;
-                    case 8: return [3 /*break*/, 10];
+                    case 8:
+                        result = _c.sent();
+                        _b = (_a = console).log;
+                        return [4 /*yield*/, userModel.findByName(req.user.username)];
                     case 9:
-                        err_2 = _a.sent();
+                        _b.apply(_a, [_c.sent()]);
+                        res.status(200).send(result);
+                        _c.label = 10;
+                    case 10: return [3 /*break*/, 12];
+                    case 11:
+                        err_2 = _c.sent();
                         next(errorFactory_1.ErrEnum.BadRequest);
-                        return [3 /*break*/, 10];
-                    case 10: return [2 /*return*/];
+                        return [3 /*break*/, 12];
+                    case 12: return [2 /*return*/];
                 }
             });
         }); };
         /* Metodo che consente di gestire la richiesta di cambio peso da parte di un utente autenticato */
         this.changeEdgeWeight = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, alpha, node_1, node_2, proposedWeight, actual_weight, newWeight, newGraph, _a, _b, old_version, err_3;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var graphModel, alpha, node_1, node_2, proposedWeight, actual_weight, newWeight, newGraph, old_version, new_version, foo, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         graphModel = new graph_1.GraphModel();
                         alpha = __1.ALPHA;
                         // si controlla il valore di alpha
                         if (alpha < 0 || alpha > 1)
                             alpha = 0.9;
-                        _c.label = 1;
+                        // si controlla il valore del peso
+                        if (typeof req.body.weight !== "number")
+                            next(errorFactory_1.ErrEnum.NaNWeight);
+                        _a.label = 1;
                     case 1:
-                        _c.trys.push([1, 6, , 7]);
+                        _a.trys.push([1, 6, , 7]);
                         node_1 = req.body.first_node;
                         node_2 = req.body.second_node;
                         proposedWeight = req.body.weight;
                         return [4 /*yield*/, graphModel.getWeight(req.body.id, node_1, node_2)];
                     case 2:
-                        actual_weight = _c.sent();
+                        actual_weight = _a.sent();
                         newWeight = alpha * (actual_weight) + (1 - alpha) * (proposedWeight);
-                        _b = (_a = JSON).stringify;
                         return [4 /*yield*/, graphModel.changeWeight(req.body.id, node_1, node_2, newWeight)];
                     case 3:
-                        newGraph = _b.apply(_a, [_c.sent()]);
+                        newGraph = _a.sent();
                         return [4 /*yield*/, graphModel.getVersion(req.body.id)];
                     case 4:
-                        old_version = _c.sent();
-                        // si aggiorna il modello, creandone uno nuovo ma con una versione differente
-                        return [4 /*yield*/, graphModel.addGraphModel(req.user.username, newGraph, old_version + 1)];
+                        old_version = _a.sent();
+                        new_version = old_version + 1;
+                        return [4 /*yield*/, graphModel.addGraphModel(req.user.username, newGraph, new_version)];
                     case 5:
-                        // si aggiorna il modello, creandone uno nuovo ma con una versione differente
-                        _c.sent();
+                        foo = _a.sent();
                         res.status(201).send("Cambio peso dell'arco avvenuto con successo.");
                         next();
                         return [3 /*break*/, 7];
                     case 6:
-                        err_3 = _c.sent();
+                        err_3 = _a.sent();
                         next(errorFactory_1.ErrEnum.BadRequest);
                         return [3 /*break*/, 7];
                     case 7: return [2 /*return*/];
@@ -186,27 +198,51 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che restituisce l'elenco dei modelli associati all'utente filtrati per numeri di nodi e numero di archi */
         this.filterModels = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, nr_nodes, nr_edges, filteredModels, err_4;
+            var graphModel, nr_nodes_1, nr_edges_1, models, filteredGraphs, result, err_4;
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         graphModel = new graph_1.GraphModel();
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        nr_nodes = parseInt(req.params.nodes);
-                        nr_edges = parseInt(req.params.edges);
-                        return [4 /*yield*/, graphModel.getGraphModels(req.user.username, nr_nodes, nr_edges)];
+                        _a.trys.push([1, 4, , 5]);
+                        nr_nodes_1 = parseInt(req.params.nodes);
+                        nr_edges_1 = parseInt(req.params.edges);
+                        return [4 /*yield*/, graphModel.getGraphModels(req.user.username)];
                     case 2:
-                        filteredModels = _a.sent();
-                        res.status(201).send("Modelli disponibili: " + filteredModels);
-                        next();
-                        return [3 /*break*/, 4];
+                        models = _a.sent();
+                        return [4 /*yield*/, models.filter(function (element) { return __awaiter(_this, void 0, void 0, function () {
+                                var _a;
+                                return __generator(this, function (_b) {
+                                    switch (_b.label) {
+                                        case 0: return [4 /*yield*/, graphModel.getNrNodes(element.graph_struct)];
+                                        case 1:
+                                            _a = (_b.sent()) === nr_nodes_1;
+                                            if (!_a) return [3 /*break*/, 3];
+                                            return [4 /*yield*/, graphModel.getNrEdges(element.graph_struct)];
+                                        case 2:
+                                            _a = (_b.sent()) === nr_edges_1;
+                                            _b.label = 3;
+                                        case 3:
+                                            (_a);
+                                            return [2 /*return*/];
+                                    }
+                                });
+                            }); })
+                                .map(function (e) { return e.graph_struct = JSON.parse(e.graph_struct); })];
                     case 3:
+                        filteredGraphs = _a.sent();
+                        result = JSON.stringify(filteredGraphs);
+                        console.log(result);
+                        res.status(201).send("Modelli disponibili con " + nr_nodes_1 + " nodi e " + nr_edges_1 + " archi:\n" + result);
+                        next();
+                        return [3 /*break*/, 5];
+                    case 4:
                         err_4 = _a.sent();
                         next(errorFactory_1.ErrEnum.Forbidden);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         }); };

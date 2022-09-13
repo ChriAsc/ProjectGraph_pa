@@ -77,24 +77,14 @@ var User = /** @class */ (function () {
         }); };
         /* Metodo utile ad ottenere il credito dell'utente, identificato grazie al nome passato come argomento */
         this.getBudget = function (name) { return __awaiter(_this, void 0, void 0, function () {
-            var budget;
+            var usr, credit;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.user.findOne({ attributes: ['budget'], where: { username: name } })];
+                    case 0: return [4 /*yield*/, this.findByName(name)];
                     case 1:
-                        budget = _a.sent();
-                        return [2 /*return*/, budget];
-                }
-            });
-        }); };
-        this.getBudgetByEmail = function (email) { return __awaiter(_this, void 0, void 0, function () {
-            var budget;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.user.findOne({ attributes: ['budget'], where: { mail: email } })];
-                    case 1:
-                        budget = _a.sent();
-                        return [2 /*return*/, budget];
+                        usr = _a.sent();
+                        credit = parseFloat(usr.budget);
+                        return [2 /*return*/, credit];
                 }
             });
         }); };

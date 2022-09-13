@@ -22,12 +22,12 @@ export class graphController {
         try {
             // prima di creare il modello, si verifica che lo user abbia credito sufficiente
             let total_cost: number = await graphModel.getCost(req.body.graph);
-            let budget: any = await userModel.getBudget(req.user.username);
+            let budget: number = await userModel.getBudget(req.user.username);
             if(total_cost > budget) {
                 next(ErrEnum.Unauthorized);
             } else {
                 // se lo user ha credito sufficiente, si può procedere con la creazione
-                let new_model: any = await graphModel.addGraphModel(req.user.username, req.body.graph);
+                await graphModel.addGraphModel(req.user.username, req.body.graph);
                 // si aggiorna il credito dell'utente
                 let new_budget: number = budget - total_cost;
                 await userModel.updateBudget(req.user.username, new_budget);
@@ -53,6 +53,8 @@ export class graphController {
             if(total_cost > budget) {
                 next(ErrEnum.Unauthorized);
             } else {
+                let new_budget: number = budget - total_cost;
+                await userModel.updateBudget(req.user.username, new_budget);
                 // se lo user ha credito sufficiente, si può procedere
                 let start: string = req.body.start;
                 let goal: string = req.body.goal;
@@ -66,6 +68,7 @@ export class graphController {
                 let optPath: any = resultObj.path;
                 // creazione della nuova
                 let result: string = await execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost);
+                console.log(await userModel.findByName(req.user.username))
                 res.status(200).send(result);
             }
         } catch(err) {
@@ -77,21 +80,28 @@ export class graphController {
     public changeEdgeWeight = async (req, res, next) => {
         const graphModel = new GraphModel();
         let alpha: number = ALPHA;
-            // si controlla il valore di alpha
-            if(alpha < 0 || alpha > 1) alpha = 0.9;
+
+        // si controlla il valore di alpha
+        if(alpha < 0 || alpha > 1) alpha = 0.9;
+        // si controlla il valore del peso
+        if(typeof req.body.weight !== "number") next(ErrEnum.NaNWeight);
+
         try {
-            let node_1: any = req.body.first_node;
-            let node_2: any = req.body.second_node;
+            let node_1: string = req.body.first_node;
+            let node_2: string = req.body.second_node;
             let proposedWeight: number = req.body.weight;
             let actual_weight: number = await graphModel.getWeight(req.body.id, node_1, node_2);    // peso prima della modifica
 
             let newWeight: number = alpha*(actual_weight) + (1 - alpha)*(proposedWeight);   // nuovo peso          
 
             // nuovo grafo
-            let newGraph: any = JSON.stringify(await graphModel.changeWeight(req.body.id, node_1, node_2, newWeight));
+            let newGraph: any = await graphModel.changeWeight(req.body.id, node_1, node_2, newWeight);
             let old_version: number = await graphModel.getVersion(req.body.id); // si considera la versione del modello di provenienza
+
+            let new_version: number = old_version + 1;
             // si aggiorna il modello, creandone uno nuovo ma con una versione differente
-            await graphModel.addGraphModel(req.user.username, newGraph, old_version+1);
+            let foo = await graphModel.addGraphModel(req.user.username, newGraph, new_version);
+
             res.status(201).send("Cambio peso dell'arco avvenuto con successo.");
             next();
         } catch(err) {
@@ -107,8 +117,16 @@ export class graphController {
             let nr_edges: number = parseInt(req.params.edges);
 
             // si filtrano i modelli in base a chi richiede, al numero di nodi e al numero di archi
-            let filteredModels = await graphModel.getGraphModels(req.user.username, nr_nodes, nr_edges);
-            res.status(201).send("Modelli disponibili: " + filteredModels);
+            let models = await graphModel.getGraphModels(req.user.username);
+            // si scelgono solamente i grafi che hanno il numero di nodi e di archi specificato
+            let filteredGraphs: any = await models.filter(async (element) => {
+                (await graphModel.getNrNodes(element.graph_struct) === nr_nodes && await graphModel.getNrEdges(element.graph_struct) === nr_edges) })
+                .map(e => e.graph_struct = JSON.parse(e.graph_struct));
+            // per riportarla in JSON correttamente
+            let result = JSON.stringify(filteredGraphs)
+            console.log(result);
+
+            res.status(201).send("Modelli disponibili con " + nr_nodes + " nodi e " + nr_edges + " archi:\n" + result);
             next();
         } catch (err) {
             next(ErrEnum.Forbidden);

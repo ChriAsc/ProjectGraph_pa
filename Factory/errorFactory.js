@@ -15,13 +15,14 @@ var ErrEnum;
     ErrEnum[ErrEnum["UserNotFound"] = 8] = "UserNotFound";
     ErrEnum[ErrEnum["AdminNotFound"] = 9] = "AdminNotFound";
     ErrEnum[ErrEnum["MailNotFound"] = 10] = "MailNotFound";
-    ErrEnum[ErrEnum["InvalidNode"] = 11] = "InvalidNode";
-    ErrEnum[ErrEnum["EmptyNode"] = 12] = "EmptyNode";
-    ErrEnum[ErrEnum["NaNWeight"] = 13] = "NaNWeight";
-    ErrEnum[ErrEnum["InvalidWeights"] = 14] = "InvalidWeights";
-    ErrEnum[ErrEnum["NaNStep"] = 15] = "NaNStep";
-    ErrEnum[ErrEnum["NegativeStep"] = 16] = "NegativeStep";
-    ErrEnum[ErrEnum["InvalidStep"] = 17] = "InvalidStep";
+    ErrEnum[ErrEnum["InvalidBudget"] = 11] = "InvalidBudget";
+    ErrEnum[ErrEnum["InvalidNode"] = 12] = "InvalidNode";
+    ErrEnum[ErrEnum["EmptyNode"] = 13] = "EmptyNode";
+    ErrEnum[ErrEnum["NaNWeight"] = 14] = "NaNWeight";
+    ErrEnum[ErrEnum["InvalidWeights"] = 15] = "InvalidWeights";
+    ErrEnum[ErrEnum["NaNStep"] = 16] = "NaNStep";
+    ErrEnum[ErrEnum["NegativeStep"] = 17] = "NegativeStep";
+    ErrEnum[ErrEnum["InvalidStep"] = 18] = "InvalidStep";
 })(ErrEnum = exports.ErrEnum || (exports.ErrEnum = {}));
 /* Internale Server Error */
 var GenericError = /** @class */ (function () {
@@ -145,6 +146,17 @@ var MailNotFound = /** @class */ (function () {
     };
     return MailNotFound;
 }());
+var InvalidBudget = /** @class */ (function () {
+    function InvalidBudget() {
+    }
+    InvalidBudget.prototype.getErrorMessage = function () {
+        return "Il budget deve essere positivo!";
+    };
+    InvalidBudget.prototype.getStatusCode = function () {
+        return 403;
+    };
+    return InvalidBudget;
+}());
 var InvalidNode = /** @class */ (function () {
     function InvalidNode() {
     }
@@ -266,6 +278,9 @@ var ErrorFactory = /** @class */ (function () {
                 break;
             case ErrEnum.MailNotFound:
                 valErr = new MailNotFound();
+                break;
+            case ErrEnum.InvalidBudget:
+                valErr = new InvalidBudget();
                 break;
             case ErrEnum.InvalidNode:
                 valErr = new InvalidNode();

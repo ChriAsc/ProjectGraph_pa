@@ -3,7 +3,7 @@
  */
 export interface interfaceGraph {
     addGraphModel(username: string, struct: any, version?: number): Promise<any>;
-    getGraphModels(username: string, nr_nodes: number, nr_edges: number): Promise<any>;
+    getGraphModels(username: string,): Promise<any>;
     getGraphStruct(idModel: number): Promise<any>;
     deleteGraphModel(idModel: number, ...otherId: number[]): Promise<any>;
     getVersion(idModel: number): Promise<number>;

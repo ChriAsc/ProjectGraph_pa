@@ -13,6 +13,7 @@ export enum ErrEnum {
     UserNotFound,
     AdminNotFound,
     MailNotFound,
+    InvalidBudget,
     InvalidNode,
     EmptyNode,
     NaNWeight,
@@ -119,6 +120,15 @@ class MailNotFound implements ErrorMessage {
     }
     getStatusCode(): number {
         return 404;
+    }
+}
+
+class InvalidBudget implements ErrorMessage {
+    getErrorMessage(): string {
+        return "Il budget deve essere positivo!";
+    }
+    getStatusCode(): number {
+        return 403;
     }
 }
 
@@ -230,6 +240,9 @@ export class ErrorFactory {
                 break;
             case ErrEnum.MailNotFound:
                 valErr = new MailNotFound();
+                break;
+            case ErrEnum.InvalidBudget:
+                valErr = new InvalidBudget();
                 break;
             case ErrEnum.InvalidNode:
                 valErr = new InvalidNode();
