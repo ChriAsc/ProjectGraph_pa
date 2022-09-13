@@ -54,25 +54,23 @@ var userController = /** @class */ (function () {
                         Us = new user_1.User();
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 5, , 6]);
+                        _a.trys.push([1, 4, , 5]);
                         return [4 /*yield*/, Us.findByEmail(req.user.mail)];
                     case 2:
                         specific_user = _a.sent();
-                        return [4 /*yield*/, Us.getBudgetByEmail(req.user.mail)];
+                        old = specific_user.budget;
+                        new_budget = old + req.user.budget;
+                        return [4 /*yield*/, Us.updateBudget(specific_user.username, new_budget)];
                     case 3:
-                        old = _a.sent();
-                        new_budget = old + parseFloat(req.user.budget);
-                        return [4 /*yield*/, specific_user.updateBudget(specific_user.username, new_budget)];
-                    case 4:
                         fooo = _a.sent();
-                        res.status(200).send("La ricarica a " + specific_user.username + " è avvenuta con successo!");
+                        res.status(200).send("La ricarica a " + specific_user.username + " (" + new_budget + ") è avvenuta con successo!");
                         next();
-                        return [3 /*break*/, 6];
-                    case 5:
+                        return [3 /*break*/, 5];
+                    case 4:
                         err_1 = _a.sent();
                         next(errorFactory_1.ErrEnum.BadRequest);
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         }); };

@@ -11,10 +11,10 @@ export class userController {
         const Us: any = new User();
         try {
             let specific_user: any = await Us.findByEmail(req.user.mail); // si cerca prima lo user tramite mail
-            let old: number = await Us.getBudgetByEmail(req.user.mail); // si ottiene il budget tramite il nome
-            let new_budget: number = old + parseFloat(req.user.budget as unknown as string); // si calcola il nuovo budget, aggiungendo quello vecchio
-            let fooo = await specific_user.updateBudget(specific_user.username, new_budget);   // ricarica effettiva
-            res.status(200).send("La ricarica a " + specific_user.username + " è avvenuta con successo!");
+            let old: number = specific_user.budget; // si ottiene il budget tramite il nome
+            let new_budget: number = old + req.user.budget; // si calcola il nuovo budget, aggiungendo quello vecchio
+            let fooo = await Us.updateBudget(specific_user.username, new_budget);   // ricarica effettiva
+            res.status(200).send("La ricarica a " + specific_user.username + " (" + new_budget +") è avvenuta con successo!");
             next();
         } catch (err) {
             next(ErrEnum.BadRequest);
