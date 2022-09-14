@@ -32,7 +32,7 @@ export class userController {
             if(req.user.mail == '') next(ErrEnum.InvalidMail);
             else {
                 try {
-                    let new_user: any = await Us.addUser(req.user.name, req.user.mail, req.user.budget);
+                    let new_user: any = await Us.addUser(req.body.name, req.user.mail, req.user.budget);
                     res.status(201).send("Utente creato!");
                     next();
                 } catch (err) {

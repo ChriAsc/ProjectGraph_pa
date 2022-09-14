@@ -91,7 +91,7 @@ var userController = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 2:
                         _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, Us.addUser(req.user.name, req.user.mail, req.user.budget)];
+                        return [4 /*yield*/, Us.addUser(req.body.name, req.user.mail, req.user.budget)];
                     case 3:
                         new_user = _a.sent();
                         res.status(201).send("Utente creato!");
