@@ -49,7 +49,7 @@ Esempio di payload associato al token dell'utente:
 ~~~
 {
     "username": "username",
-    "main_role": 2
+    "main_role": 1
 }
 ~~~
 
