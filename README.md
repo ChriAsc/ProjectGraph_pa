@@ -157,6 +157,6 @@ Prima di procedere con la creazione viene fatto un controllo del privilegio e de
 Un esempio di body valido:
 ~~~
 {
-	"name": "user@name.com"
+	"name": "user_name"
 }
 ~~~
