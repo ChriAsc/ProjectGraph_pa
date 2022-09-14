@@ -128,17 +128,21 @@ export class graphController {
         try {
             let nr_nodes: number = parseInt(req.params.nodes);
             let nr_edges: number = parseInt(req.params.edges);
+            let result: any = [];
 
             // si filtrano i modelli in base a chi richiede, al numero di nodi e al numero di archi
             let models = await graphModel.getGraphModels(req.user.username);
             // si scelgono solamente i grafi che hanno il numero di nodi e di archi specificato
-            let filteredGraphs: any = await models.filter(async (element) => {
-                (await graphModel.getNrNodes(element.graph_struct) === nr_nodes && await graphModel.getNrEdges(element.graph_struct) === nr_edges) })
-                .map(e => e = { model_id: e.model_id, graph_struct: JSON.parse(e.graph_struct), model_version: e.model_version});
-            
-            // per riportarla in JSON correttamente
-            let result = JSON.stringify(filteredGraphs)
-
+            for(let x in models) {
+                var nnodes: number = await graphModel.getNrNodes(JSON.parse(models[x].graph_struct));
+                var nedges: number = await graphModel.getNrEdges(JSON.parse(models[x].graph_struct));
+                if( nnodes === nr_nodes &&  nedges === nr_edges) {
+                    let filteredGraph: any = { model_id: models[x].model_id, graph_struct: JSON.parse(models[x].graph_struct), model_version: models[x].model_version};
+                    
+                    let partialR = JSON.stringify(filteredGraph);
+                    result.push(partialR);
+                }
+            }
             res.status(201).send("Modelli disponibili con " + nr_nodes + " nodi e " + nr_edges + " archi:\n" + result);
             next();
         } catch (err) {

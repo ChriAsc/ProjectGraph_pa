@@ -207,50 +207,52 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che restituisce l'elenco dei modelli associati all'utente filtrati per numeri di nodi e numero di archi */
         this.filterModels = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, nr_nodes_1, nr_edges_1, models, filteredGraphs, result, err_4;
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var graphModel, nr_nodes, nr_edges, result, models, _a, _b, _i, x, nnodes, nedges, filteredGraph, partialR, err_4;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         graphModel = new graph_1.GraphModel();
-                        _a.label = 1;
+                        _c.label = 1;
                     case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        nr_nodes_1 = parseInt(req.params.nodes);
-                        nr_edges_1 = parseInt(req.params.edges);
+                        _c.trys.push([1, 8, , 9]);
+                        nr_nodes = parseInt(req.params.nodes);
+                        nr_edges = parseInt(req.params.edges);
+                        result = [];
                         return [4 /*yield*/, graphModel.getGraphModels(req.user.username)];
                     case 2:
-                        models = _a.sent();
-                        return [4 /*yield*/, models.filter(function (element) { return __awaiter(_this, void 0, void 0, function () {
-                                var _a;
-                                return __generator(this, function (_b) {
-                                    switch (_b.label) {
-                                        case 0: return [4 /*yield*/, graphModel.getNrNodes(element.graph_struct)];
-                                        case 1:
-                                            _a = (_b.sent()) === nr_nodes_1;
-                                            if (!_a) return [3 /*break*/, 3];
-                                            return [4 /*yield*/, graphModel.getNrEdges(element.graph_struct)];
-                                        case 2:
-                                            _a = (_b.sent()) === nr_edges_1;
-                                            _b.label = 3;
-                                        case 3:
-                                            (_a);
-                                            return [2 /*return*/];
-                                    }
-                                });
-                            }); })
-                                .map(function (e) { return e = { model_id: e.model_id, graph_struct: JSON.parse(e.graph_struct), model_version: e.model_version }; })];
+                        models = _c.sent();
+                        _a = [];
+                        for (_b in models)
+                            _a.push(_b);
+                        _i = 0;
+                        _c.label = 3;
                     case 3:
-                        filteredGraphs = _a.sent();
-                        result = JSON.stringify(filteredGraphs);
-                        res.status(201).send("Modelli disponibili con " + nr_nodes_1 + " nodi e " + nr_edges_1 + " archi:\n" + result);
-                        next();
-                        return [3 /*break*/, 5];
+                        if (!(_i < _a.length)) return [3 /*break*/, 7];
+                        x = _a[_i];
+                        return [4 /*yield*/, graphModel.getNrNodes(JSON.parse(models[x].graph_struct))];
                     case 4:
-                        err_4 = _a.sent();
+                        nnodes = _c.sent();
+                        return [4 /*yield*/, graphModel.getNrEdges(JSON.parse(models[x].graph_struct))];
+                    case 5:
+                        nedges = _c.sent();
+                        if (nnodes === nr_nodes && nedges === nr_edges) {
+                            filteredGraph = { model_id: models[x].model_id, graph_struct: JSON.parse(models[x].graph_struct), model_version: models[x].model_version };
+                            partialR = JSON.stringify(filteredGraph);
+                            result.push(partialR);
+                        }
+                        _c.label = 6;
+                    case 6:
+                        _i++;
+                        return [3 /*break*/, 3];
+                    case 7:
+                        res.status(201).send("Modelli disponibili con " + nr_nodes + " nodi e " + nr_edges + " archi:\n" + result);
+                        next();
+                        return [3 /*break*/, 9];
+                    case 8:
+                        err_4 = _c.sent();
                         next(errorFactory_1.ErrEnum.Forbidden);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 9];
+                    case 9: return [2 /*return*/];
                 }
             });
         }); };
