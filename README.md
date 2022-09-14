@@ -243,7 +243,7 @@ L'applicazione e il database sono gestiti tramite container Docker, per cui è r
 - posizionarsi nella cartella root del progetto, in cui si trovano il Dockerfile e docker-compose.yml
 - modificare il file .env già presente al fine di inserire le variabili d'ambiente, le quali sono
 	- MYSQL_DATABASE: il nome del database da utilizzare
-	- MYSQL_USER: il nome dell’utente (diverso da root) che si connetterà al DB che viene creato con la costruzione dell'immagine di mysql
+	- MYSQL_USER: il nome dell’utente (diverso da root) che si connetterà al DB, creato con la costruzione dell'immagine di mysql
 	- MYSQL_PASSWORD: la password dell’utente per accedere al DB
 	- MYSQL_PORT: la porta interna al container su cui si espone il DB
 	- HOST: l'host su cui si contatterà il server
