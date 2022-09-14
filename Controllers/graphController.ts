@@ -129,17 +129,17 @@ export class graphController {
             let nr_nodes: number = parseInt(req.params.nodes);
             let nr_edges: number = parseInt(req.params.edges);
             let result: any = [];
-
-            // si filtrano i modelli in base a chi richiede, al numero di nodi e al numero di archi
-            let models = await graphModel.getGraphModels(req.user.username);
-            // si scelgono solamente i grafi che hanno il numero di nodi e di archi specificato
+            // si ricavano tutti i modelli associati all'utente autenticato
+            let models = await graphModel.getGraphModels(req.user.username); 
+            
             for(let x in models) {
                 var nnodes: number = await graphModel.getNrNodes(JSON.parse(models[x].graph_struct));
                 var nedges: number = await graphModel.getNrEdges(JSON.parse(models[x].graph_struct));
                 if( nnodes === nr_nodes &&  nedges === nr_edges) {
+                    // si scelgono solamente i grafi che hanno il numero di nodi e di archi specificato
                     let filteredGraph: any = { model_id: models[x].model_id, graph_struct: JSON.parse(models[x].graph_struct), model_version: models[x].model_version};
-                    
                     let partialR = JSON.stringify(filteredGraph);
+                    
                     result.push(partialR);
                 }
             }
