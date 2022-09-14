@@ -213,15 +213,22 @@ Un esempio di body valido:
 ### Pattern implementati
 
 #### Model - View - Controller
-
+L'MVC è un pattern architetturale formato da tre componenti:
+- Model, che è vicino ai dati e che aggiorna la vista;
+- Controller, che consiste nella gestione delle azioni (API), manipolando il modello;
+- View, che è responsabile della visualizzazione grafica.
+Generalmente, l'utente utilizza il controller per manipolare lo stato degli oggetti, poi il modello va ad aggiornare la vista; perciò ci potrebbero essere problemi dovuti al forte accoppiamento tra vista (monolitica) e modello. Tuttavia, nel caso in questione non è presente una View vera e propria, in quanto viene utilizzato Postman per eseguire chiamate GET o POST, il quale è un client al pari di un utente (che usa una UI) o di un altro back-end.
 <img src = "/Images/MVC.PNG">
 
 #### Singleton
 
+Il Singleton è un design pattern creazionale ed è utile nel momento in cui serve un'istanza singola, evitando la replicazione delle risorse. Perciò, il Singleton è stato implementato per creare una connessione al database, in modo da evitare connessioni multiple.
 <img src = "/Images/Singleton.PNG">
 
 #### Factory
 
+La Factory è un design pattern creazionale che permette di creare oggetti in diversi modi, poiché le varie classi concrete implementano la stessa interfaccia. Infatti, tale pattern è stato implementato per descrivere i diversi errori e le diverse eccezioni possibili (ognuna con un proprio messaggio e un proprio status code). 
 <img src = "/Images/Factory.PNG">
 
 #### Chain Of Responsability
+<img src = "/Images/COR.PNG">
