@@ -245,6 +245,7 @@ L'applicazione e il database sono gestiti tramite container Docker, per cui è r
 	- MYSQL_DATABASE: il nome del database da utilizzare
 	- MYSQL_USER: il nome dell’utente (diverso da root) che si connetterà al DB, creato con la costruzione dell'immagine di mysql
 	- MYSQL_PASSWORD: la password dell’utente per accedere al DB
+	- MYSQL_HOST: l'host su cui si contatta il database
 	- MYSQL_PORT: la porta interna al container su cui si espone il DB
 	- HOST: l'host su cui si contatterà il server
 	- PORT: la porta interna al container
@@ -253,8 +254,10 @@ L'applicazione e il database sono gestiti tramite container Docker, per cui è r
 	- ALPHA: parametro "peso" nella media esponenziale
 - avviare Docker mediante il comando ``docker-compose up``
 
-Il servizio sarà disponibile su: ``http://HOST:EXTERNAL_PORT``
+Il servizio sarà disponibile su: ``http://HOST:EXTERNAL_PORT/``
 
 Per terminare e rimuovere i container, digitare ``docker-compose down``.
+
+
 
 ## Test
