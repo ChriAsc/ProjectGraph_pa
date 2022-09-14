@@ -31,6 +31,7 @@ Invece, le operazione ammesse per l'Admin sono:
 ## Rotte
 
 |Tipo|Rotta|Ruolo|
+|:---:|:---:|:---:|
 |POST|/addModel|User|
 |POST|/executeModel|User|
 |POST|/changeWeight|User|
