@@ -237,4 +237,22 @@ Il CoR è un design pattern comportamentale che permette di passare la richiesta
 
 <img src = "/Images/COR.PNG">
 
-## Avvio
+## Avvio del servizio tramite Docker
+L'applicazione e il database sono gestiti tramite container Docker, per cui è richiesta l'installazione del Docker Engine e di Docker Compose. Perciò, si devono eseguire i seguenti passi:
+- clonare la repository con ``git clone https://github.com/ChriAsc/ProjectGraph_pa``;
+- posizionarsi nella cartella root del progetto, in cui si trovano il Dockerfile e docker-compose.yml
+- modificare il file .env già presente al fine di inserire le variabili d'ambiente, le quali sono
+	- MYSQL_DATABASE: il nome del database da utilizzare
+	- MYSQL_USER: il nome dell’utente (diverso da root) che si connetterà al DB che viene creato con la costruzione dell'immagine di mysql
+	- MYSQL_PASSWORD: la password dell’utente per accedere al DB
+	- MYSQL_PORT: la porta interna al container su cui si espone il DB
+	- HOST: l'host su cui si contatterà il server
+	- PORT: la porta interna al container
+	- EXTERNAL_PORT: la porta del sistema host su cui si mappa la porta interna al container
+	- SECRET_KEY: la chiave usata per la firma del JWT
+	- ALPHA: parametro "peso" nella media esponenziale
+- avviare Docker mediante il comando ``docker-compose up``
+
+Per terminare e rimuovere i container, digitare ``docker-compose down``.
+
+## Test
