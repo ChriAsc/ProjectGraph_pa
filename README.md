@@ -211,3 +211,17 @@ Un esempio di body valido:
 <img src = "/Images/Sequence_nuovo_utente.png">
 
 ### Pattern implementati
+
+#### Model - View - Controller
+
+<img src = "/Images/MVC.PNG">
+
+#### Singleton
+
+<img src = "/Images/Singleton.PNG">
+
+#### Factory
+
+<img src = "/Images/Factory.PNG">
+
+#### Chain Of Responsability
