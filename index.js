@@ -99,6 +99,6 @@ app.use(error_1.errorLogger);
 app.use(error_1.errorHandler);
 /*
 app.listen(PORT, HOST,);
-console.log(`Server in ascolto su http://${HOST}:${PORT}`);
+console.log(`Server in ascolto su http://${HOST}:${PORT}/`);
 */
 app.listen(PORT, HOST, function () { return console.log("Server in ascolto su http://".concat(HOST, ":").concat(PORT, "/")); });
