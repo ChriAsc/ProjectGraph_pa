@@ -97,6 +97,8 @@ app.post('/addUser', admin_1.checkAdmin, function (req, res, next) { return __aw
 /* middleware di gestione dell'errore */
 app.use(error_1.errorLogger);
 app.use(error_1.errorHandler);
-app.listen(PORT, HOST);
-console.log("Server in ascolto su http://".concat(HOST, ":").concat(PORT, "/"));
-//app.listen(PORT, HOST, () => console.log(`Server in ascolto su http://${HOST}:${PORT}/`));
+/*
+app.listen(PORT, HOST,);
+console.log(`Server in ascolto su http://${HOST}:${PORT}`);
+*/
+app.listen(PORT, HOST, function () { return console.log("Server in ascolto su http://".concat(HOST, ":").concat(PORT, "/")); });

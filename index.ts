@@ -42,8 +42,9 @@ app.post('/addUser', checkAdmin, async (req, res, next) => {controllerUser.creat
 app.use(errorLogger);
 app.use(errorHandler);
 
-
+/*
 app.listen(PORT, HOST,);
-console.log(`Server in ascolto su http://${HOST}:${PORT}/`);
+console.log(`Server in ascolto su http://${HOST}:${PORT}`);
+*/
 
-//app.listen(PORT, HOST, () => console.log(`Server in ascolto su http://${HOST}:${PORT}/`));
+app.listen(PORT, HOST, () => console.log(`Server in ascolto su http://${HOST}:${PORT}/`));
