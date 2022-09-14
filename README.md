@@ -209,3 +209,5 @@ Un esempio di body valido:
 
 > POST /addUser
 <img src = "/UML/Sequence_nuovo_utente.png">
+
+### Pattern implementati
