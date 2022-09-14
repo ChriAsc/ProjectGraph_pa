@@ -167,47 +167,47 @@ Un esempio di body valido:
 ### Use Case Diagram
 
 - User
-<img src = "/UML/Use_Case_User.png">
+<img src = "/Images/Use_Case_User.png">
 
 - Admin
-<img src = "/UML/Use_Case_Admin.png">
+<img src = "/Images/Use_Case_Admin.png">
 
 ### Sequence Diagram
 
 - Middleware User
-<img src = "/UML/Sequence_Middleware_User.png">
+<img src = "/Images/Sequence_Middleware_User.png">
 
 - Middleware Admin
-<img src = "/UML/Sequence_Middleware_Admin.png">
+<img src = "/Images/Sequence_Middleware_Admin.png">
 
 - Middleware Errore
-<img src = "/UML/Sequence_Middleware_Err.png">
+<img src = "/Images/Sequence_Middleware_Err.png">
 
 >  POST /addModel
-<img src = "/UML/Sequence_nuovo_modello.png">
+<img src = "/Images/Sequence_nuovo_modello.png">
 
 > POST /executeModel
-<img src = "/UML/Sequence_esecuzione_modello.png">
+<img src = "/Images/Sequence_esecuzione_modello.png">
 
 > POST /changeWeight
-<img src = "/UML/Sequence_cambio_peso.png">
+<img src = "/Images/Sequence_cambio_peso.png">
 
 > GET /models/:nodes/:edges
-<img src = "/UML/Sequence_filtro.png">
+<img src = "/Images/Sequence_filtro.png">
 
 > GET /delete/:ids
-<img src = "/UML/Sequence_cancellazione.png">
+<img src = "/Images/Sequence_cancellazione.png">
 
 > GET /executions
-<img src = "/UML/Sequence_esecuzioni.png">
+<img src = "/Images/Sequence_esecuzioni.png">
 
 > POST /simulation
-<img src = "/UML/Sequence_simulazione.png">
+<img src = "/Images/Sequence_simulazione.png">
 
 > POST /recharge
-<img src = "/UML/Sequence_admin_ricarica.png">
+<img src = "/Images/Sequence_admin_ricarica.png">
 
 > POST /addUser
-<img src = "/UML/Sequence_nuovo_utente.png">
+<img src = "/Images/Sequence_nuovo_utente.png">
 
 ### Pattern implementati
