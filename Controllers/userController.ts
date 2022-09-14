@@ -33,7 +33,7 @@ export class userController {
             else {
                 try {
                     let new_user: any = await Us.addUser(req.body.name, req.user.mail, req.user.budget);
-                    res.status(201).send("Utente creato!");
+                    res.status(201).send("Utente (" + new_user.username + ") creato!");
                     next();
                 } catch (err) {
                     next(ErrEnum.ExistingUser);

@@ -96,58 +96,54 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che consente di eseguire un modello da parte di un utente */
         this.execModel = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, userModel, execModel, graph_struct, total_cost, budget, new_budget, start, goal, route, start_time, resultObj, elapsed, weightCost, optPath, result, _a, _b, err_2;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var graphModel, userModel, execModel, graph_struct, total_cost, budget, new_budget, start, goal, route, start_time, resultObj, elapsed, weightCost, optPath, result, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         graphModel = new graph_1.GraphModel();
                         userModel = new user_1.User();
                         execModel = new executions_1.Execution();
-                        _c.label = 1;
+                        _a.label = 1;
                     case 1:
-                        _c.trys.push([1, 11, , 12]);
+                        _a.trys.push([1, 10, , 11]);
                         return [4 /*yield*/, graphModel.getGraphStruct(req.body.id)];
                     case 2:
-                        graph_struct = _c.sent();
+                        graph_struct = _a.sent();
                         return [4 /*yield*/, graphModel.getCost(graph_struct)];
                     case 3:
-                        total_cost = _c.sent();
+                        total_cost = _a.sent();
                         return [4 /*yield*/, userModel.getBudget(req.user.username)];
                     case 4:
-                        budget = _c.sent();
+                        budget = _a.sent();
                         if (!(total_cost > budget)) return [3 /*break*/, 5];
                         next(errorFactory_1.ErrEnum.Unauthorized);
-                        return [3 /*break*/, 10];
+                        return [3 /*break*/, 9];
                     case 5:
                         new_budget = budget - total_cost;
                         return [4 /*yield*/, userModel.updateBudget(req.user.username, new_budget)];
                     case 6:
-                        _c.sent();
+                        _a.sent();
                         start = req.body.start;
                         goal = req.body.goal;
                         route = new Graph(graph_struct);
                         start_time = new Date().getTime();
                         return [4 /*yield*/, route.path(start, goal, { cost: true })];
                     case 7:
-                        resultObj = _c.sent();
+                        resultObj = _a.sent();
                         elapsed = new Date().getTime() - start_time;
                         weightCost = resultObj.cost;
                         optPath = resultObj.path;
                         return [4 /*yield*/, execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost)];
                     case 8:
-                        result = _c.sent();
-                        _b = (_a = console).log;
-                        return [4 /*yield*/, userModel.findByName(req.user.username)];
-                    case 9:
-                        _b.apply(_a, [_c.sent()]);
+                        result = _a.sent();
                         res.status(200).send(result);
-                        _c.label = 10;
-                    case 10: return [3 /*break*/, 12];
-                    case 11:
-                        err_2 = _c.sent();
+                        _a.label = 9;
+                    case 9: return [3 /*break*/, 11];
+                    case 10:
+                        err_2 = _a.sent();
                         next(errorFactory_1.ErrEnum.BadRequest);
-                        return [3 /*break*/, 12];
-                    case 12: return [2 /*return*/];
+                        return [3 /*break*/, 11];
+                    case 11: return [2 /*return*/];
                 }
             });
         }); };
@@ -333,7 +329,7 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che consente di effettuare una simulazione */
         this.startSimulation = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, node_1, node_2, start_weight, stop_weight, step, start_node, goal_node, result, best, best_struct, tmp, limit, i, graph_struct, route, resultObj, resultJson, err_7;
+            var graphModel, node_1, node_2, start_weight, stop_weight, step, start_node, goal_node, result, best, best_struct, tmp, limit, i, graph_struct, border, route, resultObj, full_obj, resultJson, err_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -360,23 +356,24 @@ var graphController = /** @class */ (function () {
                         return [4 /*yield*/, graphModel.changeWeight(req.body.id, node_1, node_2, tmp)["catch"](function (e) { return next(errorFactory_1.ErrEnum.InvalidNode); })];
                     case 3:
                         graph_struct = _a.sent();
+                        border = node_1 + node_2;
                         route = new Graph(graph_struct);
                         return [4 /*yield*/, route.path(start_node, goal_node, { cost: true })];
                     case 4:
                         resultObj = _a.sent();
-                        result.push(resultObj);
+                        full_obj = { path: resultObj.path, cost: resultObj.cost, edge: border, weight: tmp };
+                        result.push(full_obj);
                         // alla prima iterazione il best sarà sicuramente il valore attuale
                         if (tmp == start_weight) {
-                            best = resultObj;
+                            best = full_obj;
                             best_struct = graph_struct;
                         }
                         // si confronta il best con quello attuale
-                        if (resultObj.cost < best.cost) {
-                            best = resultObj;
+                        if (full_obj.cost < best.cost) {
+                            best = full_obj;
                             best_struct = graph_struct;
                         }
                         // per ogni iterazione si aggiunge il risultato sottoforma di JSON
-                        //console.log(result);
                         tmp += step;
                         _a.label = 5;
                     case 5:
@@ -384,7 +381,7 @@ var graphController = /** @class */ (function () {
                         return [3 /*break*/, 2];
                     case 6:
                         resultJson = JSON.stringify(result);
-                        res.status(200).send("Risultati della simulazione\n" + resultJson + "\nConfigurazione migliore e percorso ottimo: " + JSON.stringify(best_struct) + "\n" + JSON.stringify(best));
+                        res.status(200).send("Risultati della simulazione\n" + resultJson + "\n\nConfigurazione migliore e percorso ottimo: " + JSON.stringify(best_struct) + "\n" + JSON.stringify(best));
                         next();
                         return [3 /*break*/, 8];
                     case 7:

@@ -68,7 +68,7 @@ export class graphController {
                 let optPath: any = resultObj.path;
                 // creazione della nuova
                 let result: string = await execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost);
-                console.log(await userModel.findByName(req.user.username))
+                
                 res.status(200).send(result);
             }
         } catch(err) {
@@ -210,29 +210,29 @@ export class graphController {
                 // per ogni passo, si effettua un cambio di peso
                 var graph_struct = await graphModel.changeWeight(req.body.id, node_1, node_2, tmp).catch(e => next(ErrEnum.InvalidNode));
                 
+                var border: string = node_1 + node_2;
                 var route = new Graph(graph_struct);
                 var resultObj: any = await route.path(start_node, goal_node, { cost: true });
-
-                result.push(resultObj);
+                var full_obj: any = { path: resultObj.path, cost: resultObj.cost, edge: border, weight: tmp };
+                result.push(full_obj);
                 // alla prima iterazione il best sarà sicuramente il valore attuale
                 if(tmp==start_weight) {
-                    best = resultObj;
+                    best = full_obj;
                     best_struct = graph_struct;
                 }
                 
                 // si confronta il best con quello attuale
-                if (resultObj.cost < best.cost) {
-                    best = resultObj;
+                if (full_obj.cost < best.cost) {
+                    best = full_obj;
                     best_struct = graph_struct;
                 }
                 // per ogni iterazione si aggiunge il risultato sottoforma di JSON
-               
-                //console.log(result);
+          
                 tmp += step;
             }
 
             var resultJson = JSON.stringify(result);    // JSON
-            res.status(200).send("Risultati della simulazione\n" + resultJson + "\nConfigurazione migliore e percorso ottimo: " + JSON.stringify(best_struct) + "\n" + JSON.stringify(best));
+            res.status(200).send("Risultati della simulazione\n" + resultJson + "\n\nConfigurazione migliore e percorso ottimo: " + JSON.stringify(best_struct) + "\n" + JSON.stringify(best));
             
             next();
         } catch (err) {

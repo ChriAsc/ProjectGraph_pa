@@ -128,7 +128,6 @@ var GraphModel = /** @class */ (function () {
                     case 1: return [4 /*yield*/, this.getGraphStruct(idModel)];
                     case 2:
                         objGraph = _a.sent();
-                        console.log(JSON.stringify(objGraph));
                         // è più facile accedere ai valori e controllare se l'arco esiste
                         if (objGraph[firstNode][secondNode] === undefined)
                             throw new RangeError("L\'arco " + firstNode + secondNode + " non esiste!");
