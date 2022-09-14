@@ -239,7 +239,7 @@ Il CoR è un design pattern comportamentale che permette di passare la richiesta
 
 ## Avvio del servizio tramite Docker
 L'applicazione e il database sono gestiti tramite container Docker, per cui è richiesta l'installazione del Docker Engine e di Docker Compose. Perciò, si devono eseguire i seguenti passi:
-- clonare la repository con ``git clone https://github.com/ChriAsc/ProjectGraph_pa``;
+- clonare la repository con ``git clone https://github.com/ChriAsc/ProjectGraph_pa``
 - posizionarsi nella cartella root del progetto, in cui si trovano il Dockerfile e docker-compose.yml
 - modificare il file .env già presente al fine di inserire le variabili d'ambiente, le quali sono
 	- MYSQL_DATABASE: il nome del database da utilizzare
