@@ -56,6 +56,9 @@ Esempio di payload associato al token dell'admin:
 {
     "username": "admin",
     "main_role": 2
+    "name": "name_user"
+    "mail": "user@name.com",
+    "budget": 10
 }
 ~~~
 
@@ -144,4 +147,10 @@ Un esempio di body valido:
 ~~~
 
 ### 8) /recharge
-Questa rotta POST consente di effettuare la ricarica per un utente.
+Questa rotta POST consente di effettuare la ricarica per un utente da parte di un admin.
+Prima di procedere con la ricarica viene fatto un controllo del privilegio e della mail; se l'esito è positivo, si restituisce il nome dell'utente con il credito aggiornato.
+
+### 9) /addUser
+Questa rotta POST consente di creare un nuovo utente da parte di un admin.
+Prima di procedere con la creazione viene fatto un controllo del privilegio e dell'eventuale presenza di un utente con lo stesso nome.
+Successivamente avviene la creazione.
