@@ -5,7 +5,7 @@ var errorFactory_1 = require("../Factory/errorFactory");
 var Graph = require('node-dijkstra');
 var checkStructure = function (req, res, next) {
     try {
-        var obj = req.body.graph;
+        var obj = req.body;
         if (typeof obj === 'undefined') {
             next(errorFactory_1.ErrEnum.BadRequest);
         }

@@ -62,7 +62,7 @@ var graphController = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 8, , 9]);
-                        return [4 /*yield*/, graphModel.getCost(req.body.graph)];
+                        return [4 /*yield*/, graphModel.getCost(req.body)];
                     case 2:
                         total_cost = _a.sent();
                         return [4 /*yield*/, userModel.getBudget(req.user.username)];
@@ -73,7 +73,7 @@ var graphController = /** @class */ (function () {
                         return [3 /*break*/, 7];
                     case 4: 
                     // se lo user ha credito sufficiente, si può procedere con la creazione
-                    return [4 /*yield*/, graphModel.addGraphModel(req.user.username, req.body.graph)];
+                    return [4 /*yield*/, graphModel.addGraphModel(req.user.username, req.body)];
                     case 5:
                         // se lo user ha credito sufficiente, si può procedere con la creazione
                         _a.sent();

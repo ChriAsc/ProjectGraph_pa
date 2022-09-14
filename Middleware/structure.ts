@@ -4,7 +4,7 @@ const Graph = require('node-dijkstra');
 
 export const checkStructure = (req, res, next) => {
     try {
-        let obj: object = req.body.graph;
+        let obj: object = req.body;
         if(typeof obj === 'undefined') {
             next(ErrEnum.BadRequest)
         } else {

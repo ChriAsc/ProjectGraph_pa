@@ -21,13 +21,13 @@ export class graphController {
         const userModel = new User();
         try {
             // prima di creare il modello, si verifica che lo user abbia credito sufficiente
-            let total_cost: number = await graphModel.getCost(req.body.graph);
+            let total_cost: number = await graphModel.getCost(req.body);
             let budget: number = await userModel.getBudget(req.user.username);
             if(total_cost > budget) {
                 next(ErrEnum.Unauthorized);
             } else {
                 // se lo user ha credito sufficiente, si può procedere con la creazione
-                await graphModel.addGraphModel(req.user.username, req.body.graph);
+                await graphModel.addGraphModel(req.user.username, req.body);
                 // si aggiorna il credito dell'utente
                 let new_budget: number = budget - total_cost;
                 await userModel.updateBudget(req.user.username, new_budget);
