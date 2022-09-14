@@ -39,12 +39,11 @@ export class User implements interfaceUser {
 
     }
     
-    /*
-    public addUser = async (username: string, role: number, email: string, budget: number) => {
-        let modelUsr = await this.user.create({ username: username, main_role: role, mail: email, budget: budget });
+    /* Metodo utile per creare un nuovo utente */
+    public addUser = async (username: string, email: string, budget: number) => {
+        let modelUsr = await this.user.create({ username: username, main_role: 1, mail: email, budget: budget });
         return modelUsr;
     }
-    */
 
     /* Metodo utile a trovare un particolare user in base al nome passato come argomento */
     public findByName = async (name: string) => {

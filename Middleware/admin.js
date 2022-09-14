@@ -77,10 +77,10 @@ var checkEmail = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 Us = new user_1.User();
-                return [4 /*yield*/, Us.findByEmail(req.user.mail)];
+                return [4 /*yield*/, Us.findByEmail(req.body.mail)];
             case 1:
                 usr = _a.sent();
-                if (usr.mail == req.user.mail) {
+                if (usr.mail == req.body.mail) {
                     next();
                 }
                 return [3 /*break*/, 3];

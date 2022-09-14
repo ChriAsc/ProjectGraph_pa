@@ -45,12 +45,18 @@ var singleton_1 = require("../Singleton/singleton");
 var User = /** @class */ (function () {
     function User() {
         var _this = this;
-        /*
-        public addUser = async (username: string, role: number, email: string, budget: number) => {
-            let modelUsr = await this.user.create({ username: username, main_role: role, mail: email, budget: budget });
-            return modelUsr;
-        }
-        */
+        /* Metodo utile per creare un nuovo utente */
+        this.addUser = function (username, email, budget) { return __awaiter(_this, void 0, void 0, function () {
+            var modelUsr;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.user.create({ username: username, main_role: 1, mail: email, budget: budget })];
+                    case 1:
+                        modelUsr = _a.sent();
+                        return [2 /*return*/, modelUsr];
+                }
+            });
+        }); };
         /* Metodo utile a trovare un particolare user in base al nome passato come argomento */
         this.findByName = function (name) { return __awaiter(_this, void 0, void 0, function () {
             var usr;

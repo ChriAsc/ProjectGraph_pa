@@ -52,16 +52,16 @@ var userController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         Us = new user_1.User();
-                        if (req.user.budget < 0)
-                            next(errorFactory_1.ErrEnum.InvalidBudget);
-                        _a.label = 1;
+                        if (!(req.body.budget < 0)) return [3 /*break*/, 1];
+                        next(errorFactory_1.ErrEnum.InvalidBudget);
+                        return [3 /*break*/, 5];
                     case 1:
                         _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, Us.findByEmail(req.user.mail)];
+                        return [4 /*yield*/, Us.findByEmail(req.body.mail)];
                     case 2:
                         specific_user = _a.sent();
                         old = parseFloat(specific_user.budget);
-                        new_budget = old + req.user.budget;
+                        new_budget = old + req.body.budget;
                         return [4 /*yield*/, Us.updateBudget(specific_user.username, new_budget)];
                     case 3:
                         _a.sent(); // ricarica effettiva
@@ -71,6 +71,35 @@ var userController = /** @class */ (function () {
                     case 4:
                         err_1 = _a.sent();
                         next(errorFactory_1.ErrEnum.BadRequest);
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        }); };
+        this.createUser = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
+            var Us, new_user, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        Us = new user_1.User();
+                        if (!(req.body.budget < 0)) return [3 /*break*/, 1];
+                        next(errorFactory_1.ErrEnum.InvalidBudget);
+                        return [3 /*break*/, 5];
+                    case 1:
+                        if (!(req.body.mail == '')) return [3 /*break*/, 2];
+                        next(errorFactory_1.ErrEnum.InvalidMail);
+                        return [3 /*break*/, 5];
+                    case 2:
+                        _a.trys.push([2, 4, , 5]);
+                        return [4 /*yield*/, Us.addUser(req.body.username, req.body.mail, req.body.budget)];
+                    case 3:
+                        new_user = _a.sent();
+                        res.status(201).send("Utente creato!");
+                        next();
+                        return [3 /*break*/, 5];
+                    case 4:
+                        err_2 = _a.sent();
+                        next(errorFactory_1.ErrEnum.ExistingUser);
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

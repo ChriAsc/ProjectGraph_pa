@@ -12,17 +12,19 @@ var ErrEnum;
     ErrEnum[ErrEnum["MissingToken"] = 5] = "MissingToken";
     ErrEnum[ErrEnum["InvalidToken"] = 6] = "InvalidToken";
     ErrEnum[ErrEnum["MalformedPayload"] = 7] = "MalformedPayload";
-    ErrEnum[ErrEnum["UserNotFound"] = 8] = "UserNotFound";
-    ErrEnum[ErrEnum["AdminNotFound"] = 9] = "AdminNotFound";
-    ErrEnum[ErrEnum["MailNotFound"] = 10] = "MailNotFound";
-    ErrEnum[ErrEnum["InvalidBudget"] = 11] = "InvalidBudget";
-    ErrEnum[ErrEnum["InvalidNode"] = 12] = "InvalidNode";
-    ErrEnum[ErrEnum["EmptyNode"] = 13] = "EmptyNode";
-    ErrEnum[ErrEnum["NaNWeight"] = 14] = "NaNWeight";
-    ErrEnum[ErrEnum["InvalidWeights"] = 15] = "InvalidWeights";
-    ErrEnum[ErrEnum["NaNStep"] = 16] = "NaNStep";
-    ErrEnum[ErrEnum["NegativeStep"] = 17] = "NegativeStep";
-    ErrEnum[ErrEnum["InvalidStep"] = 18] = "InvalidStep";
+    ErrEnum[ErrEnum["ExistingUser"] = 8] = "ExistingUser";
+    ErrEnum[ErrEnum["InvalidMail"] = 9] = "InvalidMail";
+    ErrEnum[ErrEnum["UserNotFound"] = 10] = "UserNotFound";
+    ErrEnum[ErrEnum["AdminNotFound"] = 11] = "AdminNotFound";
+    ErrEnum[ErrEnum["MailNotFound"] = 12] = "MailNotFound";
+    ErrEnum[ErrEnum["InvalidBudget"] = 13] = "InvalidBudget";
+    ErrEnum[ErrEnum["InvalidNode"] = 14] = "InvalidNode";
+    ErrEnum[ErrEnum["EmptyNode"] = 15] = "EmptyNode";
+    ErrEnum[ErrEnum["NaNWeight"] = 16] = "NaNWeight";
+    ErrEnum[ErrEnum["InvalidWeights"] = 17] = "InvalidWeights";
+    ErrEnum[ErrEnum["NaNStep"] = 18] = "NaNStep";
+    ErrEnum[ErrEnum["NegativeStep"] = 19] = "NegativeStep";
+    ErrEnum[ErrEnum["InvalidStep"] = 20] = "InvalidStep";
 })(ErrEnum = exports.ErrEnum || (exports.ErrEnum = {}));
 /* Internale Server Error */
 var GenericError = /** @class */ (function () {
@@ -112,6 +114,28 @@ var MalformedPayload = /** @class */ (function () {
         return 400;
     };
     return MalformedPayload;
+}());
+var ExistingUser = /** @class */ (function () {
+    function ExistingUser() {
+    }
+    ExistingUser.prototype.getErrorMessage = function () {
+        return "Username già utilizzato!";
+    };
+    ExistingUser.prototype.getStatusCode = function () {
+        return 403;
+    };
+    return ExistingUser;
+}());
+var InvalidMail = /** @class */ (function () {
+    function InvalidMail() {
+    }
+    InvalidMail.prototype.getErrorMessage = function () {
+        return "Mail invalida!";
+    };
+    InvalidMail.prototype.getStatusCode = function () {
+        return 400;
+    };
+    return InvalidMail;
 }());
 var UserNotFound = /** @class */ (function () {
     function UserNotFound() {
@@ -269,6 +293,12 @@ var ErrorFactory = /** @class */ (function () {
                 break;
             case ErrEnum.MalformedPayload:
                 valErr = new MalformedPayload();
+                break;
+            case ErrEnum.ExistingUser:
+                valErr = new ExistingUser();
+                break;
+            case ErrEnum.InvalidMail:
+                valErr = new InvalidMail();
                 break;
             case ErrEnum.UserNotFound:
                 valErr = new UserNotFound();

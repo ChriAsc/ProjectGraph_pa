@@ -23,8 +23,8 @@ export const checkAdmin = async (req, res, next) => {
 export const checkEmail = async (req, res, next) => {
     try {
         const Us: any = new User();
-        let usr: any = await Us.findByEmail(req.user.mail);
-        if (usr.mail == req.user.mail) {
+        let usr: any = await Us.findByEmail(req.body.mail);
+        if (usr.mail == req.body.mail) {
         next();
         }
     } catch (err) {

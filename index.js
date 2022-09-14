@@ -90,6 +90,10 @@ app.post('/simulation', [auth_1.checkUser, structure_1.checkWeight], function (r
     controllerGraphModel.startSimulation(req, res, next);
     return [2 /*return*/];
 }); }); });
+app.post('/addUser', admin_1.checkAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    controllerUser.createUser(req, res, next);
+    return [2 /*return*/];
+}); }); });
 /* middleware di gestione dell'errore */
 app.use(error_1.errorLogger);
 app.use(error_1.errorHandler);

@@ -10,6 +10,8 @@ export enum ErrEnum {
     MissingToken,
     InvalidToken,
     MalformedPayload,
+    ExistingUser,
+    InvalidMail,
     UserNotFound,
     AdminNotFound,
     MailNotFound,
@@ -90,6 +92,24 @@ class InvalidToken implements ErrorMessage {
 class MalformedPayload implements ErrorMessage {
     getErrorMessage(): string {
         return "Malformed payload!";
+    }
+    getStatusCode(): number {
+        return 400;
+    }
+}
+
+class ExistingUser implements ErrorMessage {
+    getErrorMessage(): string {
+        return "Username già utilizzato!";
+    }
+    getStatusCode(): number {
+        return 403;
+    }
+}
+
+class InvalidMail implements ErrorMessage {
+    getErrorMessage(): string {
+        return "Mail invalida!"
     }
     getStatusCode(): number {
         return 400;
@@ -231,6 +251,12 @@ export class ErrorFactory {
                 break;
             case ErrEnum.MalformedPayload:
                 valErr = new MalformedPayload();
+                break;
+            case ErrEnum.ExistingUser:
+                valErr = new ExistingUser();
+                break;
+            case ErrEnum.InvalidMail:
+                valErr = new InvalidMail();
                 break;
             case ErrEnum.UserNotFound:
                 valErr = new UserNotFound();
