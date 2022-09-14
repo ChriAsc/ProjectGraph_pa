@@ -82,12 +82,12 @@ app.get('/executions', auth_1.checkUser, function (req, res, next) { return __aw
     controllerGraphModel.getExecutions(req, res, next);
     return [2 /*return*/];
 }); }); });
-app.post('/admin', [admin_1.checkAdmin, admin_1.checkEmail], function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-    controllerUser.rechargeUser(req, res, next);
-    return [2 /*return*/];
-}); }); });
 app.post('/simulation', [auth_1.checkUser, structure_1.checkWeight], function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
     controllerGraphModel.startSimulation(req, res, next);
+    return [2 /*return*/];
+}); }); });
+app.post('/recharge', [admin_1.checkAdmin, admin_1.checkEmail], function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    controllerUser.rechargeUser(req, res, next);
     return [2 /*return*/];
 }); }); });
 app.post('/addUser', admin_1.checkAdmin, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {

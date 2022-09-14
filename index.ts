@@ -34,8 +34,8 @@ app.post('/changeWeight', checkUser, async (req, res, next) => {controllerGraphM
 app.get('/models/:nodes/:edges', checkUser, async (req, res, next) => {controllerGraphModel.filterModels(req, res, next)});
 app.get('/delete/:ids', checkUser, async (req, res, next) => {controllerGraphModel.deleteModel(req, res, next)});
 app.get('/executions', checkUser, async (req, res, next) => {controllerGraphModel.getExecutions(req, res, next)});
-app.post('/admin', [checkAdmin, checkEmail], async (req, res, next) => {controllerUser.rechargeUser(req, res, next)});
 app.post('/simulation', [checkUser, checkWeight], async (req, res, next) => {controllerGraphModel.startSimulation(req, res, next)});
+app.post('/recharge', [checkAdmin, checkEmail], async (req, res, next) => {controllerUser.rechargeUser(req, res, next)});
 app.post('/addUser', checkAdmin, async (req, res, next) => {controllerUser.createUser(req, res, next)});
 
 /* middleware di gestione dell'errore */
