@@ -252,6 +252,7 @@ L'applicazione e il database sono gestiti tramite container Docker, per cui è r
 	- SECRET_KEY: la chiave usata per la firma del JWT
 	- ALPHA: parametro "peso" nella media esponenziale
 - avviare Docker mediante il comando ``docker-compose up``
+
 Il servizio sarà disponibile su: ``http://HOST:EXTERNAL_PORT``
 
 Per terminare e rimuovere i container, digitare ``docker-compose down``.
