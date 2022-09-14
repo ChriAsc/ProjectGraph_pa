@@ -28,26 +28,26 @@ export const checkWeight = (req, res, next) => {
 
         if(typeof req.body.startWeight !== "number") next(ErrEnum.NaNWeight);
         if(typeof req.body.stopWeight !== "number") next(ErrEnum.NaNWeight);
+        if(typeof req.body.step !== "number") {
+            var err = ErrEnum.NaNStep;
+            next(err);
+        }
 
         let start: number = req.body.startWeight;
         let stop: number = req.body.stopWeight;
         let range: number = stop - start;
+        let step: number = req.body.step;
 
         if (start >= stop || start < 0) {
             var err = ErrEnum.InvalidWeights;
             next(err);
-        }
-        if(typeof req.body.step !== "number") next(ErrEnum.NaNStep);
-        
-        let step: number = req.body.step;
-        if (step <= 0) {
+        } else if (step <= 0) {
             var err = ErrEnum.NegativeStep;
             next(err);
-        }
-
-        if(step > range) {
+        } else if(step > range) {
             var err = ErrEnum.InvalidStep;
-        }
+        } else
+        
         next();
     } catch(err) {
         next(ErrEnum.Generic);

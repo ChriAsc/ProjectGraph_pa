@@ -348,8 +348,6 @@ var graphController = /** @class */ (function () {
                         step = req.body.step;
                         start_node = req.body.startNode;
                         goal_node = req.body.goalNode;
-                        if (step > (stop_weight - start_weight))
-                            next(errorFactory_1.ErrEnum.InvalidStep);
                         result = [];
                         best = void 0;
                         best_struct = void 0;

@@ -199,7 +199,6 @@ export class graphController {
             let start_node: string = req.body.startNode;        // nodo di partenza
             let goal_node: string = req.body.goalNode;          // nodo di arrivo
 
-            if(step > (stop_weight - start_weight)) next(ErrEnum.InvalidStep);
             let result: string[] = [];
             let best: any;
             let best_struct: any;
