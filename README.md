@@ -218,17 +218,23 @@ L'MVC è un pattern architetturale formato da tre componenti:
 - Controller, che consiste nella gestione delle azioni (API), manipolando il modello;
 - View, che è responsabile della visualizzazione grafica.
 Generalmente, l'utente utilizza il controller per manipolare lo stato degli oggetti, poi il modello va ad aggiornare la vista; perciò ci potrebbero essere problemi dovuti al forte accoppiamento tra vista (monolitica) e modello. Tuttavia, nel caso in questione non è presente una View vera e propria, in quanto viene utilizzato Postman per eseguire chiamate GET o POST, il quale è un client al pari di un utente (che usa una UI) o di un altro back-end.
+
 <img src = "/Images/MVC.PNG">
 
 #### Singleton
-
 Il Singleton è un design pattern creazionale ed è utile nel momento in cui serve un'istanza singola, evitando la replicazione delle risorse. Perciò, il Singleton è stato implementato per creare una connessione al database, in modo da evitare connessioni multiple.
+
 <img src = "/Images/Singleton.PNG">
 
 #### Factory
+La Factory è un design pattern creazionale che permette di creare oggetti in diversi modi, poiché le varie classi concrete implementano la stessa interfaccia. Infatti, tale pattern è stato implementato per descrivere i diversi errori e le diverse eccezioni possibili (ognuna con un proprio messaggio e un proprio status code).
 
-La Factory è un design pattern creazionale che permette di creare oggetti in diversi modi, poiché le varie classi concrete implementano la stessa interfaccia. Infatti, tale pattern è stato implementato per descrivere i diversi errori e le diverse eccezioni possibili (ognuna con un proprio messaggio e un proprio status code). 
 <img src = "/Images/Factory.PNG">
 
 #### Chain Of Responsability
+Il CoR è un design pattern comportamentale che permette di passare la richiesta lungo la catena (fin tanto che ci sono gli handler da interrogare) e ad ogni punto di controllo si verifica se non ci sono errori. In particolare, gli handlers hanno lo scopo di verificare che un criterio sia soddisfatto e - se ciò è rispettato - di passare la responsabilità a quello successivo. Nel caso in questione, tale pattern è implementato tramite i middleware, cioè una funzione che ha l'accesso alla richiesta, alla risposta e all'handler successivo, permettendo di fare richieste stratificate; per cui, i middleware error-handling servono per gestire l'errore eventuale.
+
+
 <img src = "/Images/COR.PNG">
+
+## Avvio
