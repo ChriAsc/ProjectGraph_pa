@@ -258,6 +258,19 @@ Il servizio sarà disponibile su: ``http://HOST:EXTERNAL_PORT/``
 
 Per terminare e rimuovere i container, digitare ``docker-compose down``.
 
+#### Note
+Si consiglia di impostare l'.env nel seguente modo, scegliendo a piacere il valore della chiave per la firma JWT.
 
+* MYSQL_DATABASE=optimization
+* MYSQL_USER=mysql
+* MYSQL_PASSWORD=pa22
+* MYSQL_HOST=mysqldb
+* MYSQL_PORT=3306
+* PORT=8080
+* EXTERNAL_PORT=8080
+* SECRET_KEY=
+* ALPHA=0.5
+
+In tal caso il servizio sarà disponibile su: http://localhost:8080/
 
 ## Test
