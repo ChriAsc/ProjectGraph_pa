@@ -83,26 +83,39 @@ export class graphController {
 
         // si controlla il valore di alpha
         if(alpha < 0 || alpha > 1) alpha = 0.9;
-        // si controlla il valore del peso
-        if(typeof req.body.weight !== "number") next(ErrEnum.NaNWeight);
 
         try {
-            let node_1: string = req.body.first_node;
-            let node_2: string = req.body.second_node;
-            let proposedWeight: number = req.body.weight;
-            let actual_weight: number = await graphModel.getWeight(req.body.id, node_1, node_2);    // peso prima della modifica
+            // la lunghezza dell'array è necessaria per capire quanti archi devono essere modificati
+            let arr_length: number = req.body.graphs.length;
 
-            let newWeight: number = alpha*(actual_weight) + (1 - alpha)*(proposedWeight);   // nuovo peso          
+            for (let i = 0; i < arr_length; i++) {
+                // si seleziona il grafo attuale
+                var actual_g: any = req.body.graphs[i];
 
-            // nuovo grafo
-            let newGraph: any = await graphModel.changeWeight(req.body.id, node_1, node_2, newWeight);
-            let old_version: number = await graphModel.getVersion(req.body.id); // si considera la versione del modello di provenienza
+                // si controlla il valore del peso
+                if(typeof actual_g.weight !== "number") next(ErrEnum.NaNWeight);
+                // variabili dell'attuale arco
+                var node_1: string = actual_g.first_node;
+                var node_2: string = actual_g.second_node;
+                var proposedWeight: number = actual_g.weight;
+                var id: number = actual_g.id;
 
-            let new_version: number = old_version + 1;
-            // si aggiorna il modello, creandone uno nuovo ma con una versione differente
-            let foo = await graphModel.addGraphModel(req.user.username, newGraph, new_version);
+                var actual_weight: number = await graphModel.getWeight(id, node_1, node_2);    // peso prima della modifica
 
-            res.status(201).send("Cambio peso dell'arco avvenuto con successo.");
+                var newWeight: number = alpha*(actual_weight) + (1 - alpha)*(proposedWeight);   // nuovo peso          
+
+                // nuovo grafo
+                var newGraph: any = await graphModel.changeWeight(id, node_1, node_2, newWeight);
+                var old_version: number = await graphModel.getVersion(id); // si considera la versione del modello di provenienza
+
+                var new_version: number = old_version + 1;
+                // si aggiorna il modello, creandone uno nuovo ma con una versione differente
+                var foo = await graphModel.addGraphModel(req.user.username, newGraph, new_version);
+
+                console.log("Cambio peso dell'arco " + node_1 + node_2 + " avvenuto con successo.");
+            }
+
+            res.status(201).send("Cambio peso avvenuto correttamente!");            
             next();
         } catch(err) {
             next(ErrEnum.BadRequest);
@@ -142,7 +155,7 @@ export class graphController {
             const params = str.split('&');
 
             for(const x in params) {
-                // si considera un modello per volta in base all'id
+                // si considera un modello per volta e si verifica l'utente
                 var actual_id: number = parseInt(params[x]);
                 if(await graphModel.getCreator(actual_id) == req.user.username) {
                     await graphModel.deleteGraphModel(actual_id);

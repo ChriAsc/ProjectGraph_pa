@@ -153,7 +153,7 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che consente di gestire la richiesta di cambio peso da parte di un utente autenticato */
         this.changeEdgeWeight = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, alpha, node_1, node_2, proposedWeight, actual_weight, newWeight, newGraph, old_version, new_version, foo, err_3;
+            var graphModel, alpha, arr_length, i, actual_g, node_1, node_2, proposedWeight, id, actual_weight, newWeight, newGraph, old_version, new_version, foo, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -162,37 +162,50 @@ var graphController = /** @class */ (function () {
                         // si controlla il valore di alpha
                         if (alpha < 0 || alpha > 1)
                             alpha = 0.9;
-                        // si controlla il valore del peso
-                        if (typeof req.body.weight !== "number")
-                            next(errorFactory_1.ErrEnum.NaNWeight);
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 6, , 7]);
-                        node_1 = req.body.first_node;
-                        node_2 = req.body.second_node;
-                        proposedWeight = req.body.weight;
-                        return [4 /*yield*/, graphModel.getWeight(req.body.id, node_1, node_2)];
+                        _a.trys.push([1, 9, , 10]);
+                        arr_length = req.body.graphs.length;
+                        i = 0;
+                        _a.label = 2;
                     case 2:
+                        if (!(i < arr_length)) return [3 /*break*/, 8];
+                        actual_g = req.body.graphs[i];
+                        // si controlla il valore del peso
+                        if (typeof actual_g.weight !== "number")
+                            next(errorFactory_1.ErrEnum.NaNWeight);
+                        node_1 = actual_g.first_node;
+                        node_2 = actual_g.second_node;
+                        proposedWeight = actual_g.weight;
+                        id = actual_g.id;
+                        return [4 /*yield*/, graphModel.getWeight(id, node_1, node_2)];
+                    case 3:
                         actual_weight = _a.sent();
                         newWeight = alpha * (actual_weight) + (1 - alpha) * (proposedWeight);
-                        return [4 /*yield*/, graphModel.changeWeight(req.body.id, node_1, node_2, newWeight)];
-                    case 3:
-                        newGraph = _a.sent();
-                        return [4 /*yield*/, graphModel.getVersion(req.body.id)];
+                        return [4 /*yield*/, graphModel.changeWeight(id, node_1, node_2, newWeight)];
                     case 4:
+                        newGraph = _a.sent();
+                        return [4 /*yield*/, graphModel.getVersion(id)];
+                    case 5:
                         old_version = _a.sent();
                         new_version = old_version + 1;
                         return [4 /*yield*/, graphModel.addGraphModel(req.user.username, newGraph, new_version)];
-                    case 5:
-                        foo = _a.sent();
-                        res.status(201).send("Cambio peso dell'arco avvenuto con successo.");
-                        next();
-                        return [3 /*break*/, 7];
                     case 6:
+                        foo = _a.sent();
+                        console.log("Cambio peso dell'arco " + node_1 + node_2 + " avvenuto con successo.");
+                        _a.label = 7;
+                    case 7:
+                        i++;
+                        return [3 /*break*/, 2];
+                    case 8:
+                        res.status(201).send("Cambio peso avvenuto correttamente!");
+                        next();
+                        return [3 /*break*/, 10];
+                    case 9:
                         err_3 = _a.sent();
                         next(errorFactory_1.ErrEnum.BadRequest);
-                        return [3 /*break*/, 7];
-                    case 7: return [2 /*return*/];
+                        return [3 /*break*/, 10];
+                    case 10: return [2 /*return*/];
                 }
             });
         }); };
