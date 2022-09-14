@@ -16,7 +16,8 @@ Riguardo al servizio, le operazioni ammesse per lo User sono:
 - Cancellare uno o più modelli associati all'utente;
 - Ottenere l'elenco delle esecuzioni;
 - Effettuare una simulazione che consenta di variare il peso relativo ad un arco, specificando il valore di inizio, fine ed il passo di incremento.
-Invece, le operazione ammesse per 'Admin sono:
+
+Invece, le operazione ammesse per l'Admin sono:
 - Effettuare la ricarica per un utente fornendo la mail ed il “credito” da aggiungere,
 - Creare un nuovo User
 
@@ -56,7 +57,6 @@ Esempio di payload associato al token dell'admin:
 {
     "username": "admin",
     "main_role": 2
-    "name": "name_user"
     "mail": "user@name.com",
     "budget": 10
 }
@@ -152,5 +152,11 @@ Prima di procedere con la ricarica viene fatto un controllo del privilegio e del
 
 ### 9) /addUser
 Questa rotta POST consente di creare un nuovo utente da parte di un admin.
-Prima di procedere con la creazione viene fatto un controllo del privilegio e dell'eventuale presenza di un utente con lo stesso nome.
-Successivamente avviene la creazione.
+Affinchè la richiesta sia valida, nel body bisogna specificare il nome scelto per l'utente.
+Prima di procedere con la creazione viene fatto un controllo del privilegio e dell'eventuale presenza di un utente con lo stesso nome. Successivamente avviene la creazione.
+Un esempio di body valido:
+~~~
+{
+	"name": "user@name.com"
+}
+~~~
