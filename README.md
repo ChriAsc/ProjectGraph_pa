@@ -260,6 +260,7 @@ Si consiglia di impostare l'.env nel seguente modo, scegliendo a piacere il valo
 * MYSQL_PASSWORD=pa22
 * MYSQL_HOST=mysqldb
 * MYSQL_PORT=3306
+* HOST=0.0.0.0
 * PORT=8080
 * EXTERNAL_PORT=8080
 * SECRET_KEY=
