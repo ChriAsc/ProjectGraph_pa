@@ -1,7 +1,7 @@
 # Progetto di Programmazione Avanzata 2022 - ProjectGraph_pa 
 
 ## Obiettivo del progetto
-Il servizio realizzato permette di gestire la creazione e la valutazione di modelli di ottimizzazione su grafo. In particolare, il sistema deve prevedere la possibilità di gestire l’aggiornamento di pesi effettuato da utenti autenticati. Il progetto simula il concetto del crowd-sourcing dove gli utenti possono contribuire in maniera attiva. Un'applicazione potrebbe essere - per esempio - tenere traccia dei minuti che sono necessari per percorre un determinato tratto di strada.
+Il servizio realizzato permette di gestire la creazione e la valutazione di modelli di ottimizzazione su grafo. In particolare, il sistema prevede la possibilità di gestire l’aggiornamento di pesi effettuato da utenti autenticati. Il progetto simula il concetto del crowd-sourcing dove gli utenti possono contribuire in maniera attiva. Un'applicazione potrebbe essere - per esempio - tenere traccia dei minuti che sono necessari per percorre un determinato tratto di strada.
 
 In primo luogo, si individuano due tipologie di utenti che possono accedere al sistema, ovvero lo User e l'Admin, autenticati mediante JWT. 
 Riguardo al servizio, le operazioni ammesse per lo User sono:
