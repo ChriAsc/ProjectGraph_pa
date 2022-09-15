@@ -45,6 +45,7 @@ Invece, le operazione ammesse per l'Admin sono:
 
 ### Autenticazione mediante JWT
 Tutte le rotte implementate richiedono che nella richiesta l'utente specifichi un token JWT valido, il quale conterrà i dati essenziali e permetterà l'autenticazione. Il payload del JWT deve contenere i campi "username" e "main_role". Questi valori vengono confrontati e validati se corrispondono a quelli presenti nel Database.
+
 Esempio di payload associato al token dell'utente:
 ~~~
 {
@@ -65,8 +66,8 @@ Esempio di payload associato al token dell'admin:
 
 #####  1) /addModel
 Questa rotta POST permette di creare un nuovo modello valido.
-Il modello viene passato nel body della richiesta.
-Prima di poter creare il modello, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente ha credito sufficiente e se il grafo è formattato correttamente. Successivamente, si procede ad inserire nel database il nuovo modello.
+
+Il modello viene passato nel body della richiesta. Prima di poter creare il modello, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente ha credito sufficiente e se il grafo è formattato correttamente. Successivamente, si procede ad inserire nel database il nuovo modello.
 Un esempio di body valido:
 ~~~
 {
@@ -83,6 +84,7 @@ Un esempio di body valido:
 
 ##### 2) /executeModel
 Questa rotta POST permette di eseguire uno dei modelli.
+
 Nel body della richiesta si devono specificare: id del modello, il nodo di partenza e il nodo di destinazione.
 Prima di poter eseguire il modello, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente ha credito sufficiente e se il modello esiste. Successivamente, si procede con l'esecuzione del modello al fine di ottenere il percorso migliore e il costo associato (in termini di pesi).
 Un esempio di body valido:
@@ -96,6 +98,7 @@ Un esempio di body valido:
 
 #### 3) /changeWeight
 Questa rotta POST permette di cambiare peso ad uno o più archi.
+
 Nel body della richiesta si devono specificare il/i grafo/i; internamente si devono specificare: id del modello, l'arco e il peso suggerito dall'utente.
 Prima di poter cambiare il peso, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente esiste e se i parametri sono validi; succesivamente, qualora l'arco esista, si procede con l'aggiornamento del peso dell’arco mediante una media esponenziale $p(i,j) = α * p(i,j) + (1 – α) * p_{new}(i,j)$ dove $p(i,j)$ è il precedente costo associato all’arco che collega i nodi $(i,j)$ e $p_{new}$ è il nuovo costo suggerito dall’utente. L'aggiornamento consiste nella creazione di un modello con una nuova versione.
 Un esempio di body valido:
@@ -114,11 +117,13 @@ Un esempio di body valido:
 
 #### 4) /models/:nodes/:edges
 Questa rotta GET permette di fitrare i modelli associati all'utente in base al numero di nodi (:nodes) e di archi (:edges) specificati.
+
 Prima di poter creare il modello, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente esiste.
 In seguito, verranno restituiti i modelli.
 
 #### 5) /delete/:ids
 Questa rotta GET permette di cancellare uno o più modelli (id1&id2...) associati all'utente.
+
 Prima dell'eliminazione, si esegue un controllo riguardo all'esistenza dell'utente richiedente e della corrispondenza con il modello corrente, successivamente si procede.
 
 #### 6) /executions
@@ -126,6 +131,7 @@ Questa rotta GET restituisce l'elenco delle esecuzioni, riportando i dati come i
 
 #### 7) /simulation
 Questa rotta POST consente di effettuare una simulazione.
+
 Nel body della richiesta si devono specificare: id del modello, l'arco, il peso iniziale, il peso finale, il passo di incremento, il nodo di partenza e il nodo di arrivo.
 Prima di poter avviare la simulazione, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente esiste e se i parametri passati sono validi. In seguito, si procede con la simulazione e si ottiene l'elenco di tutti i risultati, il best result e relativa configurazione dei pesi.
 Un esempio di body valido:
@@ -143,11 +149,13 @@ Un esempio di body valido:
 
 #### 8) /recharge
 Questa rotta POST consente di effettuare la ricarica per un utente da parte di un admin.
+
 Prima di procedere con la ricarica viene fatto un controllo del privilegio e della mail; se l'esito è positivo, si restituisce il nome dell'utente con il credito aggiornato.
 
 #### 9) /addUser
 Questa rotta POST consente di creare un nuovo utente da parte di un admin.
 Affinchè la richiesta sia valida, nel body bisogna specificare il nome scelto per l'utente.
+
 Prima di procedere con la creazione viene fatto un controllo del privilegio e dell'eventuale presenza di un utente con lo stesso nome. Successivamente avviene la creazione.
 Un esempio di body valido:
 ~~~
@@ -211,6 +219,7 @@ L'MVC è un pattern architetturale formato da tre componenti:
 - Model, che è vicino ai dati e che aggiorna la vista;
 - Controller, che consiste nella gestione delle azioni (API), manipolando il modello;
 - View, che è responsabile della visualizzazione grafica.
+- 
 Generalmente, l'utente utilizza il controller per manipolare lo stato degli oggetti, poi il modello va ad aggiornare la vista; perciò ci potrebbero essere problemi dovuti al forte accoppiamento tra vista (monolitica) e modello. Tuttavia, nel caso in questione non è presente una View vera e propria, in quanto viene utilizzato Postman per eseguire chiamate GET o POST, il quale è un client al pari di un utente (che usa una UI) o di un altro back-end.
 
 <img src = "/Images/MVC.PNG">
@@ -232,7 +241,9 @@ Il CoR è un design pattern comportamentale che permette di passare la richiesta
 <img src = "/Images/COR.PNG">
 
 ## Avvio del servizio tramite Docker
-L'applicazione e il database sono gestiti tramite container Docker, per cui è richiesta l'installazione del Docker Engine e di Docker Compose. Perciò, si devono eseguire i seguenti passi:
+L'applicazione e il database sono gestiti tramite container Docker, per cui è richiesta l'installazione del Docker Engine e di Docker Compose. 
+
+Perciò, si devono eseguire i seguenti passi:
 - clonare la repository con ``git clone https://github.com/ChriAsc/ProjectGraph_pa``
 - posizionarsi nella cartella root del progetto, in cui si trovano il Dockerfile e docker-compose.yml
 - modificare il file .env già presente al fine di inserire le variabili d'ambiente, le quali sono
@@ -248,9 +259,12 @@ L'applicazione e il database sono gestiti tramite container Docker, per cui è r
 	- ALPHA: parametro "peso" nella media esponenziale
 - avviare Docker mediante il comando ``docker-compose up``
 
+
 Il servizio sarà disponibile su: ``http://HOST:EXTERNAL_PORT/``
 
+
 Per terminare e rimuovere i container, digitare ``docker-compose down``.
+
 
 #### Note
 Si consiglia di impostare l'.env nel seguente modo, scegliendo a piacere il valore della chiave per la firma JWT.
