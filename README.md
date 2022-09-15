@@ -219,7 +219,7 @@ L'MVC è un pattern architetturale formato da tre componenti:
 - Model, che è vicino ai dati e che aggiorna la vista;
 - Controller, che consiste nella gestione delle azioni (API), manipolando il modello;
 - View, che è responsabile della visualizzazione grafica.
-- 
+
 Generalmente, l'utente utilizza il controller per manipolare lo stato degli oggetti, poi il modello va ad aggiornare la vista; perciò ci potrebbero essere problemi dovuti al forte accoppiamento tra vista (monolitica) e modello. Tuttavia, nel caso in questione non è presente una View vera e propria, in quanto viene utilizzato Postman per eseguire chiamate GET o POST, il quale è un client al pari di un utente (che usa una UI) o di un altro back-end.
 
 <img src = "/Images/MVC.PNG">
