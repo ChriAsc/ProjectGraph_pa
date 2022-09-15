@@ -149,7 +149,7 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che consente di gestire la richiesta di cambio peso da parte di un utente autenticato */
         this.changeEdgeWeight = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, alpha, arr_length, i, actual_g, node_1, node_2, proposedWeight, id, actual_weight, newWeight, newGraph, old_version, new_version, foo, err_3;
+            var graphModel, alpha, modelId, arr_length, i, actual_g, node_1, node_2, proposedWeight, actual_weight, newWeight, newGraph, old_version, new_version, foo, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -158,33 +158,35 @@ var graphController = /** @class */ (function () {
                         // si controlla il valore di alpha
                         if (alpha < 0 || alpha > 1)
                             alpha = 0.9;
+                        modelId = req.body.id;
+                        if (typeof modelId !== 'number')
+                            next(errorFactory_1.ErrEnum.MalformedPayload);
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 9, , 10]);
-                        arr_length = req.body.graphs.length;
+                        arr_length = req.body.toChange.length;
                         i = 0;
                         _a.label = 2;
                     case 2:
                         if (!(i < arr_length)) return [3 /*break*/, 8];
-                        actual_g = req.body.graphs[i];
+                        actual_g = req.body.toChange[i];
                         // si controlla il valore del peso
                         if (typeof actual_g.weight !== "number")
                             next(errorFactory_1.ErrEnum.NaNWeight);
-                        node_1 = actual_g.first_node;
-                        node_2 = actual_g.second_node;
+                        node_1 = actual_g.edge[0];
+                        node_2 = actual_g.edge[1];
                         proposedWeight = actual_g.weight;
-                        id = actual_g.id;
-                        return [4 /*yield*/, graphModel.getWeight(id, node_1, node_2)];
+                        return [4 /*yield*/, graphModel.getWeight(modelId, node_1, node_2)];
                     case 3:
                         actual_weight = _a.sent();
                         newWeight = alpha * (actual_weight) + (1 - alpha) * (proposedWeight);
-                        return [4 /*yield*/, graphModel.changeWeight(id, node_1, node_2, newWeight)];
+                        return [4 /*yield*/, graphModel.changeWeight(modelId, node_1, node_2, newWeight)];
                     case 4:
                         newGraph = _a.sent();
-                        return [4 /*yield*/, graphModel.getVersion(id)];
+                        return [4 /*yield*/, graphModel.getVersion(modelId)];
                     case 5:
                         old_version = _a.sent();
-                        new_version = old_version + 1;
+                        new_version = (old_version + i + 1);
                         return [4 /*yield*/, graphModel.addGraphModel(req.user.username, newGraph, new_version)];
                     case 6:
                         foo = _a.sent();
@@ -339,8 +341,8 @@ var graphController = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 7, , 8]);
-                        node_1 = req.body.fNode;
-                        node_2 = req.body.sNode;
+                        node_1 = req.body.edge[0];
+                        node_2 = req.body.edge[1];
                         start_weight = req.body.startWeight;
                         stop_weight = req.body.stopWeight;
                         step = req.body.step;
