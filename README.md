@@ -234,7 +234,7 @@ La Factory è un design pattern creazionale che permette di creare oggetti in di
 
 <img src = "/Images/Factory.PNG">
 
-#### Chain Of Responsability
+#### Chain Of Responsibility
 Il CoR è un design pattern comportamentale che permette di passare la richiesta lungo la catena (fin tanto che ci sono gli handler da interrogare) e ad ogni punto di controllo si verifica se non ci sono errori. In particolare, gli handlers hanno lo scopo di verificare che un criterio sia soddisfatto e - se ciò è rispettato - di passare la responsabilità a quello successivo. Nel caso in questione, tale pattern è implementato tramite i middleware, cioè una funzione che ha l'accesso alla richiesta, alla risposta e all'handler successivo, permettendo di fare richieste stratificate; per cui, i middleware error-handling servono per gestire l'errore eventuale.
 
 
