@@ -1,0 +1,511 @@
+{
+	"info": {
+		"_postman_id": "76e91ce7-f6f7-45f9-a869-3713da5aeab4",
+		"name": "Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10595760"
+	},
+	"item": [
+		{
+			"name": "Creazione del modello (RW)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvZ2VyX3dhdGVycyIsIm1haW5fcm9sZSI6MX0.01mjXaSFk8MnqEbyKy-sEbZIO97r43VBGRUsa3GqPtg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"A\": {\n\t\t\"B\": 1,\n\t\t\"C\": 2,\n\t\t\"D\": 3\n\t},\n\t\"B\": {\n\t\t\"A\": 1,\n\t\t\"D\": 4,\n\t\t\"E\": 5\n\t},\n\t\"C\": {\n\t\t\"B\": 2,\n\t\t\"D\": 1\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/addModel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addModel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Esecuzione del modello (RW)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvZ2VyX3dhdGVycyIsIm1haW5fcm9sZSI6MX0.01mjXaSFk8MnqEbyKy-sEbZIO97r43VBGRUsa3GqPtg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"start\": \"A\",\n    \"goal\": \"F\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/executeModel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"executeModel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cambio pesi (RW)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvZ2VyX3dhdGVycyIsIm1haW5fcm9sZSI6MX0.01mjXaSFk8MnqEbyKy-sEbZIO97r43VBGRUsa3GqPtg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 3,\n    \"toChange\": [{\n        \"edge\": \"AB\",\n        \"weight\": 10\n    }]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/changeWeight",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"changeWeight"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtraggio dei modelli (RW)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvZ2VyX3dhdGVycyIsIm1haW5fcm9sZSI6MX0.01mjXaSFk8MnqEbyKy-sEbZIO97r43VBGRUsa3GqPtg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/models/8/27",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"models",
+						"8",
+						"27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminazione dei modelli (RW)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvZ2VyX3dhdGVycyIsIm1haW5fcm9sZSI6MX0.01mjXaSFk8MnqEbyKy-sEbZIO97r43VBGRUsa3GqPtg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/delete/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"delete",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Esecuzioni",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvZ2VyX3dhdGVycyIsIm1haW5fcm9sZSI6MX0.01mjXaSFk8MnqEbyKy-sEbZIO97r43VBGRUsa3GqPtg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/executions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"executions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Simulazione (RW)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvZ2VyX3dhdGVycyIsIm1haW5fcm9sZSI6MX0.01mjXaSFk8MnqEbyKy-sEbZIO97r43VBGRUsa3GqPtg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"id\":6,\n   \"edge\":\"BC\",\n   \"startWeight\":1,\n   \"stopWeight\":5,\n   \"step\":0.5,\n   \"startNode\":\"A\",\n   \"goalNode\":\"D\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/simulation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"simulation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ricarica (RW)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwibWFpbCI6InJvZ2VyQHdhdGVycy5jb20iLCJtYWluX3JvbGUiOjIsImJ1ZGdldCI6MTB9.DkCj9pcCGE-ATxCLQQXCOvCldlFqBS7Xc2VzfEbA4X8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/recharge",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recharge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Creazione dell'utente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwibWFpbl9yb2xlIjoyLCJtYWlsIjoiZnJlZGRpZUBtZXJjdXJ5LmNvbSIsImJ1ZGdldCI6MTB9.zTOBQJenaKGEQOLWqqU-vXlkDVJnc3bAb_Forpt3fLo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"freddie_mercury\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/addUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Creazione del modello (RP)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYmVydF9wbGFudCIsIm1haW5fcm9sZSI6MX0.KXBrkrWTt-LThj4xsxy0mlzivN1vubpocaEhqYVPNE4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"A\": {\n\t\t\"B\": 3,\n\t\t\"C\": 2,\n\t\t\"D\": 6,\n        \"F\": 10\n\t},\n\t\"B\": {\n\t\t\"A\": 3,\n\t\t\"C\": 1,\n\t\t\"D\": 5,\n\t\t\"E\": 4\n\t},\n\t\"C\": {\n\t\t\"B\": 1,\n\t\t\"D\": 2,\n\t\t\"H\": 1\n\t},\n\t\"D\": {\n\t\t\"B\": 5,\n\t\t\"C\": 2,\n\t\t\"E\": 3,\n\t\t\"G\": 7\n\t},\n\t\"E\": {\n\t\t\"B\": 4,\n\t\t\"D\": 3,\n\t\t\"F\": 1\n\t},\n\t\"F\": {\n        \"A\": 10,\n\t\t\"E\": 1,\n\t\t\"G\": 4,\n\t\t\"H\": 9\n\t},\n\t\"G\": {\n\t\t\"D\": 7,\n\t\t\"F\": 4,\n\t\t\"H\": 6\n\t},\n\t\"H\": {\n\t\t\"F\": 9,\n\t\t\"G\": 6\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/addModel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addModel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Esecuzione del modello (RP)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYmVydF9wbGFudCIsIm1haW5fcm9sZSI6MX0.KXBrkrWTt-LThj4xsxy0mlzivN1vubpocaEhqYVPNE4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 2,\n    \"start\": \"A\",\n    \"goal\": \"C\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/executeModel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"executeModel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cambio pesi (RP)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYmVydF9wbGFudCIsIm1haW5fcm9sZSI6MX0.KXBrkrWTt-LThj4xsxy0mlzivN1vubpocaEhqYVPNE4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 4,\n    \"toChange\": [{\n        \"edge\": \"AB\",\n        \"weight\": 20\n    },\n    {\n        \"edge\": \"BC\",\n        \"weight\": 50\n    }]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/changeWeight",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"changeWeight"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Filtraggio dei modelli (RP)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYmVydF9wbGFudCIsIm1haW5fcm9sZSI6MX0.KXBrkrWTt-LThj4xsxy0mlzivN1vubpocaEhqYVPNE4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/models/10/20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"models",
+						"10",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Creazione del modello (FM)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZyZWRkaWVfbWVyY3VyeSIsIm1haW5fcm9sZSI6MX0.eZadexj8xEfCkPneENA-ADwgjL0sut6slydhoo78X4k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"A\": {\n\t\t\"B\": 3,\n\t\t\"C\": 2,\n\t\t\"D\": 6,\n        \"F\": 10\n\t},\n\t\"B\": {\n\t\t\"A\": 3,\n\t\t\"C\": 1,\n\t\t\"D\": 5,\n\t\t\"E\": 4\n\t},\n\t\"C\": {\n\t\t\"B\": 1,\n\t\t\"D\": 2,\n\t\t\"H\": 1\n\t},\n\t\"D\": {\n\t\t\"B\": 5,\n\t\t\"C\": 2,\n\t\t\"E\": 3,\n\t\t\"G\": 7\n\t},\n\t\"E\": {\n\t\t\"B\": 4,\n\t\t\"D\": 3,\n\t\t\"F\": 1\n\t},\n\t\"F\": {\n        \"A\": 10,\n\t\t\"E\": 1,\n\t\t\"G\": 4,\n\t\t\"H\": 9\n\t},\n\t\"G\": {\n\t\t\"D\": 7,\n\t\t\"F\": 4,\n\t\t\"H\": 6\n\t},\n\t\"H\": {\n\t\t\"F\": 9,\n\t\t\"G\": 6\n\t}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/addModel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addModel"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
