@@ -268,3 +268,5 @@ Si consiglia di impostare l'.env nel seguente modo, scegliendo a piacere il valo
 In tal caso il servizio sarà disponibile su: http://localhost:8080/
 
 ## Test
+Nella repository GitHub è presente un file .json per l'esecuzione dei test su Postman.
+Dato che all'interno del database sono presenti solamente due utenti (il primo con sufficiente credito, il secondo con solamente 0.5 token per sollevare l'eccezione) e un admin, si consiglia di mantenere gli stessi parametri (come username, mai).
