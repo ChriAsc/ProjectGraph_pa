@@ -101,12 +101,11 @@ Prima di poter cambiare il peso, la richiesta deve superare i controlli del midd
 Un esempio di body valido:
 ~~~
 {
-	"graphs": [{
-		"id": 1,
+	"id": 1,
+	"toChange": [{
 		"edge": "AB",
 		"weight": 2
 	}, {
-		"id": 2,
 		"edge": "CD",
 		"weight": 6
 	}]
