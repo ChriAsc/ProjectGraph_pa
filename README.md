@@ -90,7 +90,7 @@ Un esempio di body valido:
 {
 	"id": 1,
 	"start": "A",
-	"stop": "B"
+	"goal": "B"
 }
 ~~~
 
@@ -101,15 +101,12 @@ Prima di poter cambiare il peso, la richiesta deve superare i controlli del midd
 Un esempio di body valido:
 ~~~
 {
-	"graphs": [{
-		"id": 1,
-		"first_node": "A",
-		"second_node": "B",
+	"id": 1,
+	"toChange": [{
+		"edge": "AB",
 		"weight": 2
 	}, {
-		"id": 2,
-		"first_node": "B",
-		"second_node": "C",
+		"edge": "CD",
 		"weight": 6
 	}]
 }
@@ -135,8 +132,7 @@ Un esempio di body valido:
 ~~~
 {
 	"id": 1,
-	"fNode": "A",
-	"sNode": "B",
+	"edge": "AB"
 	"startWeight": 2,
 	"stopWeight": 4,
 	"step": 0.5,
