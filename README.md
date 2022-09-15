@@ -8,19 +8,19 @@ Riguardo al servizio, le operazioni ammesse per lo User sono:
 - Creare un nuovo modello e in particolare specificare il grafo con i relativi pesi
   - Per ogni modello valido viene addebitato un numero di token, con il seguente costo
     - 0.25 per ogni nodo,
-    - 0.01 per ogni arco
+    - 0.01 per ogni arco,
 - Eseguire il modello
-  - Per ogni esecuzione viene applicato un costo pari a quello addebitato in fase di creazione
--	Cambiare il peso di uno o più archi
-  - Il peso dell’arco viene gestito mediante una media esponenziale
+  - Per ogni esecuzione viene applicato un costo pari a quello addebitato in fase di creazione;
+- Cambiare il peso di uno o più archi
+  - Il peso dell’arco viene gestito mediante una media esponenziale;
 - Filtrare i propri modelli in base al numero di archi e di nodi;
 - Cancellare uno o più modelli associati all'utente;
 - Ottenere l'elenco delle esecuzioni;
 - Effettuare una simulazione che consenta di variare il peso relativo ad un arco, specificando il valore di inizio, fine ed il passo di incremento.
 
 Invece, le operazione ammesse per l'Admin sono:
-- Effettuare la ricarica per un utente fornendo la mail ed il “credito” da aggiungere,
-- Creare un nuovo User
+- Effettuare la ricarica per un utente fornendo la mail ed il “credito” da aggiungere;
+- Creare un nuovo User.
 
 ### Framework e librerie
 - [Node.js](https://nodejs.org/it/)
