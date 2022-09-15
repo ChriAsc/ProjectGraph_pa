@@ -70,15 +70,13 @@ Prima di poter creare il modello, la richiesta deve superare i controlli del mid
 Un esempio di body valido:
 ~~~
 {
-	"graph": {
-		"A": {
-			"B": 1
-		},
-		"B": {
-			"A": 1,
-			"C": 2,
-			"D": 4
-		}
+	"A": {
+		"B": 1
+	},
+	"B": {
+		"A": 1,
+		"C": 2,
+		"D": 4
 	}
 }
 ~~~
