@@ -83,20 +83,20 @@ Un esempio di body valido:
 
 ##### 2) /executeModel
 Questa rotta POST permette di eseguire uno dei modelli.
-Nel body della richiesta si devono specificare: id del modello, il nordo di partenza e il nodo di destinazione.
+Nel body della richiesta si devono specificare: id del modello, il nodo di partenza e il nodo di destinazione.
 Prima di poter eseguire il modello, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente ha credito sufficiente e se il modello esiste. Successivamente, si procede con l'esecuzione del modello al fine di ottenere il percorso migliore e il costo associato (in termini di pesi).
 Un esempio di body valido:
 ~~~
 {
 	"id": 1,
 	"start": "A",
-	"goal": "B"
+	"goal": "C"
 }
 ~~~
 
 #### 3) /changeWeight
 Questa rotta POST permette di cambiare peso ad uno o più archi.
-Nel body della richiesta si devono specificare il/i grafo/i; internamente si devono specificare: id del modello, il primo estremo dell'arco, il secondo estremo dell'arco, il peso suggerito dall'utente.
+Nel body della richiesta si devono specificare il/i grafo/i; internamente si devono specificare: id del modello, l'arco e il peso suggerito dall'utente.
 Prima di poter cambiare il peso, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente esiste e se i parametri sono validi; succesivamente, qualora l'arco esista, si procede con l'aggiornamento del peso dell’arco mediante una media esponenziale $p(i,j) = α * p(i,j) + (1 – α) * p_{new}(i,j)$ dove $p(i,j)$ è il precedente costo associato all’arco che collega i nodi $(i,j)$ e $p_{new}$ è il nuovo costo suggerito dall’utente. L'aggiornamento consiste nella creazione di un modello con una nuova versione.
 Un esempio di body valido:
 ~~~
@@ -113,20 +113,20 @@ Un esempio di body valido:
 ~~~
 
 #### 4) /models/:nodes/:edges
-Questa rotta GET permette di fitrare i modelli associati all'utente in base al numero di nodi e di archi specificati.
+Questa rotta GET permette di fitrare i modelli associati all'utente in base al numero di nodi (:nodes) e di archi (:edges) specificati.
 Prima di poter creare il modello, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente esiste.
 In seguito, verranno restituiti i modelli.
 
 #### 5) /delete/:ids
-Questa rotta GET permette di cancellare uno o più modelli associati all'utente.
-Prima dell'eliminazione, si esegue un controllo riguardo all'esistenza dell'utente richiedente e successivamente si procede.
+Questa rotta GET permette di cancellare uno o più modelli (id1&id2...) associati all'utente.
+Prima dell'eliminazione, si esegue un controllo riguardo all'esistenza dell'utente richiedente e della corrispondenza con il modello corrente, successivamente si procede.
 
 #### 6) /executions
 Questa rotta GET restituisce l'elenco delle esecuzioni, riportando i dati come id dell'esecuzione, tempo di esecuzione, costo di esecuzione, id del modello, costo relativo alla soluzione ottima, nodo di partenza e nodo di arrivo.
 
 #### 7) /simulation
 Questa rotta POST consente di effettuare una simulazione.
-Nel body della richiesta si devono specificare: id del modello, il primo estremo dell'arco, il secondo estremo dell'arco, il peso iniziale, il peso finale, il passo di incremento, il nodo di partenza e il nodo di arrivo.
+Nel body della richiesta si devono specificare: id del modello, l'arco, il peso iniziale, il peso finale, il passo di incremento, il nodo di partenza e il nodo di arrivo.
 Prima di poter avviare la simulazione, la richiesta deve superare i controlli del middleware, in modo da capire se l'utente esiste e se i parametri passati sono validi. In seguito, si procede con la simulazione e si ottiene l'elenco di tutti i risultati, il best result e relativa configurazione dei pesi.
 Un esempio di body valido:
 ~~~
