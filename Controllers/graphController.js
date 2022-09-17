@@ -81,7 +81,7 @@ var graphController = /** @class */ (function () {
                         return [4 /*yield*/, userModel.updateBudget(req.user.username, new_budget)];
                     case 6:
                         _a.sent();
-                        res.status(201).send({ message: "Inserimento avvenuto con successo." });
+                        res.status(201).send({ Message: "Inserimento avvenuto con successo." });
                         _a.label = 7;
                     case 7:
                         next();
@@ -136,7 +136,7 @@ var graphController = /** @class */ (function () {
                         return [4 /*yield*/, execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost)];
                     case 8:
                         result = _a.sent();
-                        res.status(200).send({ execution: result });
+                        res.status(200).send({ Result: result });
                         _a.label = 9;
                     case 9: return [3 /*break*/, 11];
                     case 10:
@@ -192,7 +192,7 @@ var graphController = /** @class */ (function () {
                         i++;
                         return [3 /*break*/, 2];
                     case 8:
-                        res.status(201).send({ message: "Cambio peso avvenuto correttamente!" });
+                        res.status(201).send({ Message: "Cambio peso avvenuto correttamente!" });
                         next();
                         return [3 /*break*/, 10];
                     case 9:
@@ -205,7 +205,7 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che restituisce l'elenco dei modelli associati all'utente filtrati per numeri di nodi e numero di archi */
         this.filterModels = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, nr_nodes, nr_edges, result, models, _a, _b, _i, x, nnodes, nedges, filteredGraph, partialR, err_4;
+            var graphModel, nr_nodes, nr_edges, result, models, _a, _b, _i, x, nnodes, nedges, filteredGraph, err_4;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -235,15 +235,14 @@ var graphController = /** @class */ (function () {
                         nedges = _c.sent();
                         if (nnodes === nr_nodes && nedges === nr_edges) {
                             filteredGraph = { model_id: models[x].model_id, graph_struct: JSON.parse(models[x].graph_struct), model_version: models[x].model_version };
-                            partialR = JSON.stringify(filteredGraph);
-                            result.push(partialR);
+                            result.push(filteredGraph);
                         }
                         _c.label = 6;
                     case 6:
                         _i++;
                         return [3 /*break*/, 3];
                     case 7:
-                        res.status(201).send({ message: "Modelli disponibili con ".concat(nr_nodes, " nodi e ").concat(nr_edges, " archi"), models: result });
+                        res.status(201).send({ Message: "Modelli disponibili con ".concat(nr_nodes, " nodi e ").concat(nr_edges, " archi"), Models: result });
                         next();
                         return [3 /*break*/, 9];
                     case 8:
@@ -290,7 +289,7 @@ var graphController = /** @class */ (function () {
                         _i++;
                         return [3 /*break*/, 2];
                     case 7:
-                        res.status(201).send({ message: "Eliminazione completata con successo." });
+                        res.status(201).send({ Message: "Eliminazione completata con successo." });
                         next();
                         return [3 /*break*/, 9];
                     case 8:
@@ -303,7 +302,7 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che restituisce l'elenco delle esecuzioni */
         this.getExecutions = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var execModel, raw, executions, err_6;
+            var execModel, executions, err_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -313,10 +312,9 @@ var graphController = /** @class */ (function () {
                         _a.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, execModel.getAllExec()];
                     case 2:
-                        raw = _a.sent();
-                        executions = JSON.stringify(raw);
+                        executions = _a.sent();
                         // si ottengono tutte le esecuzioni sottoforma di JSON
-                        res.status(201).send({ message: "Esecuzioni", execution: executions });
+                        res.status(201).send({ Message: "Esecuzioni", Executions: executions });
                         next();
                         return [3 /*break*/, 4];
                     case 3:
@@ -380,7 +378,7 @@ var graphController = /** @class */ (function () {
                         return [3 /*break*/, 2];
                     case 6:
                         optPath = best.path;
-                        res.status(200).send({ message: "Risultati della simulazione", simulations: result, message_best: "Configurazione migliore e percorso ottimo.", best: best_struct, optimal_path: optPath });
+                        res.status(200).send({ Message: "Risultati della simulazione", Simulations: result, Message_best: "Configurazione migliore e percorso ottimo", "Best": best_struct, "Optimal Path": optPath });
                         next();
                         return [3 /*break*/, 8];
                     case 7:

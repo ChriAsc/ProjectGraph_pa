@@ -31,7 +31,7 @@ export class graphController {
                 // si aggiorna il credito dell'utente
                 let new_budget: number = budget - total_cost;
                 await userModel.updateBudget(req.user.username, new_budget);
-                res.status(201).send({ message: "Inserimento avvenuto con successo." });
+                res.status(201).send({ Message: "Inserimento avvenuto con successo." });
             } 
             next();
         } catch (err) {
@@ -67,9 +67,9 @@ export class graphController {
                 let weightCost: number = resultObj.cost;
                 let optPath: any = resultObj.path;
                 // creazione della nuova
-                let result: string = await execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost);
+                let result: any = await execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost);
                 
-                res.status(200).send({ execution: result });
+                res.status(200).send({ Result: result });
             }
         } catch(err) {
             next(ErrEnum.BadRequest);
@@ -114,7 +114,7 @@ export class graphController {
                 console.log(`Cambio peso dell'arco ${node_1}${node_2} avvenuto con successo.`);
             }
 
-            res.status(201).send({ message: "Cambio peso avvenuto correttamente!" });            
+            res.status(201).send({ Message: "Cambio peso avvenuto correttamente!" });            
             next();
         } catch(err) {
             next(ErrEnum.BadRequest);
@@ -137,12 +137,11 @@ export class graphController {
                 if( nnodes === nr_nodes &&  nedges === nr_edges) {
                     // si scelgono solamente i grafi che hanno il numero di nodi e di archi specificato
                     let filteredGraph: any = { model_id: models[x].model_id, graph_struct: JSON.parse(models[x].graph_struct), model_version: models[x].model_version};
-                    let partialR = JSON.stringify(filteredGraph);
-                    
-                    result.push(partialR);
+
+                    result.push(filteredGraph);
                 }
             }
-            res.status(201).send({ message: `Modelli disponibili con ${nr_nodes} nodi e ${nr_edges} archi`, models: result });
+            res.status(201).send({ Message: `Modelli disponibili con ${nr_nodes} nodi e ${nr_edges} archi`, Models: result });
             next();
         } catch (err) {
             next(ErrEnum.Forbidden);
@@ -168,7 +167,7 @@ export class graphController {
                 }
             }
 
-            res.status(201).send({ message: "Eliminazione completata con successo."});
+            res.status(201).send({ Message: "Eliminazione completata con successo."});
             next();
         } catch (err) {
             next(ErrEnum.Forbidden);
@@ -179,10 +178,9 @@ export class graphController {
     public getExecutions = async (req, res, next) => {
         const execModel = new Execution();
         try {
-            let raw: any = await execModel.getAllExec();
-            let executions: any = JSON.stringify(raw);
+            let executions: any = await execModel.getAllExec();
             // si ottengono tutte le esecuzioni sottoforma di JSON
-            res.status(201).send({ message: "Esecuzioni", execution: executions });
+            res.status(201).send({ Message: "Esecuzioni", Executions: executions });
             next();
         } catch (err) {
             next(ErrEnum.Generic);
@@ -234,7 +232,7 @@ export class graphController {
             }
 
             let optPath: any = best.path;
-            res.status(200).send({ message: "Risultati della simulazione", simulations: result, message_best: "Configurazione migliore e percorso ottimo.", best: best_struct, optimal_path: optPath });
+            res.status(200).send({ Message: "Risultati della simulazione", Simulations: result, Message_best: "Configurazione migliore e percorso ottimo", "Best": best_struct, "Optimal Path": optPath });
             
             next();
         } catch (err) {

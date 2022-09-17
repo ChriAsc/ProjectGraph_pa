@@ -59,11 +59,10 @@ export class Execution implements interfaceExec {
     associato, il nordo di partenza, il nodo di arrivo, il costo (in termini di peso) del percorso,
     il percorso e il costo (in termini di credito) dell'esecuzione */
     public addExec = async (ex_time: number, idModel: number, start: string, goal: string, pathCost: number, path: any, total_cost: number) => {
-        await this.execution.create({ exec_time: ex_time, model: idModel, start_node: start, goal_node: goal, cost_path: pathCost, opt_path: path, exec_cost: total_cost});
+        await this.execution.create({ exec_time: ex_time, model: idModel, start_node: start, goal_node: goal, cost_path: pathCost, opt_path: path, exec_cost: total_cost });
         let obj = {Optimal_path: path, Start_node: start, Goal_node: goal, Path_cost: pathCost, Execution_time: ex_time, Execution_cost: total_cost};
-        let jsonExec: string = JSON.stringify(obj);
-        // si restituisce l'esecuzione appena aggiunta in JSON
-        return jsonExec;
+        
+        return obj;
     }
 
     /* Metodo utile ad ottenere tutte le esecuzioni */

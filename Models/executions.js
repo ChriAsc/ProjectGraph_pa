@@ -49,16 +49,14 @@ var Execution = /** @class */ (function () {
         associato, il nordo di partenza, il nodo di arrivo, il costo (in termini di peso) del percorso,
         il percorso e il costo (in termini di credito) dell'esecuzione */
         this.addExec = function (ex_time, idModel, start, goal, pathCost, path, total_cost) { return __awaiter(_this, void 0, void 0, function () {
-            var obj, jsonExec;
+            var obj;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.execution.create({ exec_time: ex_time, model: idModel, start_node: start, goal_node: goal, cost_path: pathCost, opt_path: path, exec_cost: total_cost })];
                     case 1:
                         _a.sent();
                         obj = { Optimal_path: path, Start_node: start, Goal_node: goal, Path_cost: pathCost, Execution_time: ex_time, Execution_cost: total_cost };
-                        jsonExec = JSON.stringify(obj);
-                        // si restituisce l'esecuzione appena aggiunta in JSON
-                        return [2 /*return*/, jsonExec];
+                        return [2 /*return*/, obj];
                 }
             });
         }); };

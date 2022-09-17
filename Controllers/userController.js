@@ -65,7 +65,7 @@ var userController = /** @class */ (function () {
                         return [4 /*yield*/, Us.updateBudget(specific_user.username, new_budget)];
                     case 3:
                         _a.sent(); // ricarica effettiva
-                        res.status(200).send("La ricarica a " + specific_user.username + " (" + new_budget + ") è avvenuta con successo!");
+                        res.status(200).send({ Message: "La ricarica a ".concat(specific_user.username, " (").concat(new_budget, ") \u00E8 avvenuta con successo!") });
                         next();
                         return [3 /*break*/, 5];
                     case 4:
@@ -94,7 +94,7 @@ var userController = /** @class */ (function () {
                         return [4 /*yield*/, Us.addUser(req.body.name, req.user.mail, req.user.budget)];
                     case 3:
                         new_user = _a.sent();
-                        res.status(201).send("Utente (" + new_user.username + ") creato!");
+                        res.status(201).send({ Message: "Utente (".concat(new_user.username, ") creato!") });
                         next();
                         return [3 /*break*/, 5];
                     case 4:

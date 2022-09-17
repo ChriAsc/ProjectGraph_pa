@@ -17,7 +17,7 @@ export class userController {
                 let old: number = parseFloat(specific_user.budget);// si ottiene il budget tramite il nome
                 let new_budget: number = old + req.user.budget; // si calcola il nuovo budget, aggiungendo quello vecchio
                 await Us.updateBudget(specific_user.username, new_budget);   // ricarica effettiva
-                res.status(200).send("La ricarica a " + specific_user.username + " (" + new_budget +") è avvenuta con successo!");
+                res.status(200).send({ Message: `La ricarica a ${specific_user.username} (${new_budget}) è avvenuta con successo!` });
                 next();
             } catch (err) {
                 next(ErrEnum.BadRequest);
@@ -33,7 +33,7 @@ export class userController {
             else {
                 try {
                     let new_user: any = await Us.addUser(req.body.name, req.user.mail, req.user.budget);
-                    res.status(201).send("Utente (" + new_user.username + ") creato!");
+                    res.status(201).send({ Message: `Utente (${new_user.username}) creato!` });
                     next();
                 } catch (err) {
                     next(ErrEnum.ExistingUser);
