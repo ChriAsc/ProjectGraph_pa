@@ -21,6 +21,7 @@ export let alpha: number;
 // si controlla il valore di alpha
 if(ALPHA < 0 || ALPHA > 1) {
     alpha = 0.9;
+    console.log("Alpha impostata: 0.9")
 } else alpha = ALPHA;
 
 
