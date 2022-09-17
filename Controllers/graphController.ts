@@ -1,4 +1,4 @@
-import { ALPHA } from '..';
+import { alpha } from '..';
 import { ErrEnum } from '../Factory/errorFactory';
 import { Execution } from '../Models/executions';
 import { GraphModel } from '../Models/graph';
@@ -31,7 +31,7 @@ export class graphController {
                 // si aggiorna il credito dell'utente
                 let new_budget: number = budget - total_cost;
                 await userModel.updateBudget(req.user.username, new_budget);
-                res.status(201).send("Inserimento avvenuto con successo.");
+                res.status(201).send({ message: "Inserimento avvenuto con successo." });
             } 
             next();
         } catch (err) {
@@ -69,7 +69,7 @@ export class graphController {
                 // creazione della nuova
                 let result: string = await execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost);
                 
-                res.status(200).send(result);
+                res.status(200).send({ execution: result });
             }
         } catch(err) {
             next(ErrEnum.BadRequest);
@@ -79,10 +79,6 @@ export class graphController {
     /* Metodo che consente di gestire la richiesta di cambio peso da parte di un utente autenticato */
     public changeEdgeWeight = async (req, res, next) => {
         const graphModel = new GraphModel();
-        let alpha: number = ALPHA;
-
-        // si controlla il valore di alpha
-        if(alpha < 0 || alpha > 1) alpha = 0.9;
 
         let modelId: number = req.body.id;
         if (typeof modelId !== 'number') next(ErrEnum.MalformedPayload);
@@ -115,10 +111,10 @@ export class graphController {
                 // si aggiorna il modello, creandone uno nuovo ma con una versione differente
                 var foo = await graphModel.addGraphModel(req.user.username, newGraph, new_version);
 
-                console.log("Cambio peso dell'arco " + node_1 + node_2 + " avvenuto con successo.");
+                console.log(`Cambio peso dell'arco ${node_1}${node_2} avvenuto con successo.`);
             }
 
-            res.status(201).send("Cambio peso avvenuto correttamente!");            
+            res.status(201).send({ message: "Cambio peso avvenuto correttamente!" });            
             next();
         } catch(err) {
             next(ErrEnum.BadRequest);
@@ -146,7 +142,7 @@ export class graphController {
                     result.push(partialR);
                 }
             }
-            res.status(201).send("Modelli disponibili con " + nr_nodes + " nodi e " + nr_edges + " archi:\n" + result);
+            res.status(201).send({ message: `Modelli disponibili con ${nr_nodes} nodi e ${nr_edges} archi`, models: result });
             next();
         } catch (err) {
             next(ErrEnum.Forbidden);
@@ -166,13 +162,13 @@ export class graphController {
                 var actual_id: number = parseInt(params[x]);
                 if(await graphModel.getCreator(actual_id) == req.user.username) {
                     await graphModel.deleteGraphModel(actual_id);
-                    console.log("Eliminazione del modello " + actual_id + " avvenuta!" )
+                    console.log(`Eliminazione del modello ${actual_id} avvenuta!` )
                 } else {
                     next(ErrEnum.Unauthorized);
                 }
             }
 
-            res.status(201).send("Eliminazione completata con successo.");
+            res.status(201).send({ message: "Eliminazione completata con successo."});
             next();
         } catch (err) {
             next(ErrEnum.Forbidden);
@@ -186,7 +182,7 @@ export class graphController {
             let raw: any = await execModel.getAllExec();
             let executions: any = JSON.stringify(raw);
             // si ottengono tutte le esecuzioni sottoforma di JSON
-            res.status(201).send("Esecuzioni:\n" + executions);
+            res.status(201).send({ message: "Esecuzioni", execution: executions });
             next();
         } catch (err) {
             next(ErrEnum.Generic);
@@ -233,13 +229,12 @@ export class graphController {
                     best = full_obj;
                     best_struct = graph_struct;
                 }
-                // per ogni iterazione si aggiunge il risultato sottoforma di JSON
           
                 tmp += step;
             }
 
-            var resultJson = JSON.stringify(result);    // JSON
-            res.status(200).send("Risultati della simulazione\n" + resultJson + "\n\nConfigurazione migliore e percorso ottimo: " + JSON.stringify(best_struct) + "\n" + JSON.stringify(best));
+            let optPath: any = best.path;
+            res.status(200).send({ message: "Risultati della simulazione", simulations: result, message_best: "Configurazione migliore e percorso ottimo.", best: best_struct, optimal_path: optPath });
             
             next();
         } catch (err) {

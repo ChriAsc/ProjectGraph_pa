@@ -15,7 +15,14 @@ const PORT = process.env.EXTERNAL_PORT || 8080;
 const HOST = process.env.HOST || '0.0.0.0';
 
 /* Il valore di alpha viene verificato nel controller */
-export const ALPHA = parseFloat(process.env.ALPHA as string);
+const ALPHA = parseFloat(process.env.ALPHA as string);
+export let alpha: number;
+
+// si controlla il valore di alpha
+if(ALPHA < 0 || ALPHA > 1) {
+    alpha = 0.9;
+} else alpha = ALPHA;
+
 
 let app = express();
 

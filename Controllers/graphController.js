@@ -81,7 +81,7 @@ var graphController = /** @class */ (function () {
                         return [4 /*yield*/, userModel.updateBudget(req.user.username, new_budget)];
                     case 6:
                         _a.sent();
-                        res.status(201).send("Inserimento avvenuto con successo.");
+                        res.status(201).send({ message: "Inserimento avvenuto con successo." });
                         _a.label = 7;
                     case 7:
                         next();
@@ -136,7 +136,7 @@ var graphController = /** @class */ (function () {
                         return [4 /*yield*/, execModel.addExec(elapsed, req.body.id, start, goal, weightCost, optPath, total_cost)];
                     case 8:
                         result = _a.sent();
-                        res.status(200).send(result);
+                        res.status(200).send({ execution: result });
                         _a.label = 9;
                     case 9: return [3 /*break*/, 11];
                     case 10:
@@ -149,15 +149,11 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che consente di gestire la richiesta di cambio peso da parte di un utente autenticato */
         this.changeEdgeWeight = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, alpha, modelId, arr_length, i, actual_g, node_1, node_2, proposedWeight, actual_weight, newWeight, newGraph, old_version, new_version, foo, err_3;
+            var graphModel, modelId, arr_length, i, actual_g, node_1, node_2, proposedWeight, actual_weight, newWeight, newGraph, old_version, new_version, foo, err_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         graphModel = new graph_1.GraphModel();
-                        alpha = __1.ALPHA;
-                        // si controlla il valore di alpha
-                        if (alpha < 0 || alpha > 1)
-                            alpha = 0.9;
                         modelId = req.body.id;
                         if (typeof modelId !== 'number')
                             next(errorFactory_1.ErrEnum.MalformedPayload);
@@ -179,7 +175,7 @@ var graphController = /** @class */ (function () {
                         return [4 /*yield*/, graphModel.getWeight(modelId, node_1, node_2)];
                     case 3:
                         actual_weight = _a.sent();
-                        newWeight = alpha * (actual_weight) + (1 - alpha) * (proposedWeight);
+                        newWeight = __1.alpha * (actual_weight) + (1 - __1.alpha) * (proposedWeight);
                         return [4 /*yield*/, graphModel.changeWeight(modelId, node_1, node_2, newWeight)];
                     case 4:
                         newGraph = _a.sent();
@@ -190,13 +186,13 @@ var graphController = /** @class */ (function () {
                         return [4 /*yield*/, graphModel.addGraphModel(req.user.username, newGraph, new_version)];
                     case 6:
                         foo = _a.sent();
-                        console.log("Cambio peso dell'arco " + node_1 + node_2 + " avvenuto con successo.");
+                        console.log("Cambio peso dell'arco ".concat(node_1).concat(node_2, " avvenuto con successo."));
                         _a.label = 7;
                     case 7:
                         i++;
                         return [3 /*break*/, 2];
                     case 8:
-                        res.status(201).send("Cambio peso avvenuto correttamente!");
+                        res.status(201).send({ message: "Cambio peso avvenuto correttamente!" });
                         next();
                         return [3 /*break*/, 10];
                     case 9:
@@ -247,7 +243,7 @@ var graphController = /** @class */ (function () {
                         _i++;
                         return [3 /*break*/, 3];
                     case 7:
-                        res.status(201).send("Modelli disponibili con " + nr_nodes + " nodi e " + nr_edges + " archi:\n" + result);
+                        res.status(201).send({ message: "Modelli disponibili con ".concat(nr_nodes, " nodi e ").concat(nr_edges, " archi"), models: result });
                         next();
                         return [3 /*break*/, 9];
                     case 8:
@@ -285,7 +281,7 @@ var graphController = /** @class */ (function () {
                         return [4 /*yield*/, graphModel.deleteGraphModel(actual_id)];
                     case 4:
                         _c.sent();
-                        console.log("Eliminazione del modello " + actual_id + " avvenuta!");
+                        console.log("Eliminazione del modello ".concat(actual_id, " avvenuta!"));
                         return [3 /*break*/, 6];
                     case 5:
                         next(errorFactory_1.ErrEnum.Unauthorized);
@@ -294,7 +290,7 @@ var graphController = /** @class */ (function () {
                         _i++;
                         return [3 /*break*/, 2];
                     case 7:
-                        res.status(201).send("Eliminazione completata con successo.");
+                        res.status(201).send({ message: "Eliminazione completata con successo." });
                         next();
                         return [3 /*break*/, 9];
                     case 8:
@@ -320,7 +316,7 @@ var graphController = /** @class */ (function () {
                         raw = _a.sent();
                         executions = JSON.stringify(raw);
                         // si ottengono tutte le esecuzioni sottoforma di JSON
-                        res.status(201).send("Esecuzioni:\n" + executions);
+                        res.status(201).send({ message: "Esecuzioni", execution: executions });
                         next();
                         return [3 /*break*/, 4];
                     case 3:
@@ -333,7 +329,7 @@ var graphController = /** @class */ (function () {
         }); };
         /* Metodo che consente di effettuare una simulazione */
         this.startSimulation = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var graphModel, node_1, node_2, start_weight, stop_weight, step, start_node, goal_node, result, best, best_struct, tmp, limit, i, graph_struct, border, route, resultObj, full_obj, resultJson, err_7;
+            var graphModel, node_1, node_2, start_weight, stop_weight, step, start_node, goal_node, result, best, best_struct, tmp, limit, i, graph_struct, border, route, resultObj, full_obj, optPath, err_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -377,15 +373,14 @@ var graphController = /** @class */ (function () {
                             best = full_obj;
                             best_struct = graph_struct;
                         }
-                        // per ogni iterazione si aggiunge il risultato sottoforma di JSON
                         tmp += step;
                         _a.label = 5;
                     case 5:
                         i++;
                         return [3 /*break*/, 2];
                     case 6:
-                        resultJson = JSON.stringify(result);
-                        res.status(200).send("Risultati della simulazione\n" + resultJson + "\n\nConfigurazione migliore e percorso ottimo: " + JSON.stringify(best_struct) + "\n" + JSON.stringify(best));
+                        optPath = best.path;
+                        res.status(200).send({ message: "Risultati della simulazione", simulations: result, message_best: "Configurazione migliore e percorso ottimo.", best: best_struct, optimal_path: optPath });
                         next();
                         return [3 /*break*/, 8];
                     case 7:

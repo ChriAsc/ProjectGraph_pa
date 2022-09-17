@@ -1,4 +1,4 @@
-import { ErrorMessage } from "./interface";
+import { ErrorMessage } from "./errorInterface";
 
 /* Ogni classe che implementa il Product rappresenta un Concrete Creator */
 export enum ErrEnum {
